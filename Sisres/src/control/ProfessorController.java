@@ -8,7 +8,7 @@ import model.Professor;
 
 public class ProfessorController {
 	
-	private Vector<Professor> professores_vector = new Vector<Professor>();
+	private Vector<Professor> professorVector = new Vector<Professor>();
 	
 	private static ProfessorController instance;
 	private ProfessorController() {
@@ -42,16 +42,16 @@ public class ProfessorController {
 		return ProfessorDAO.getInstance().searchPhone(value);
 	}	
 		
-	public Vector<Professor> getProfessores_vector() throws SQLException, ClientException{
-		this.professores_vector = ProfessorDAO.getInstance().searchAllProfessors();
-		return this.professores_vector;
+	public Vector<Professor> getProfessorVector() throws SQLException, ClientException{
+		this.professorVector = ProfessorDAO.getInstance().searchAllProfessors();
+		return this.professorVector;
 	}
 	
 	public void insert(String name, String cpf, String registration, String phone,
 			String email) throws ClientException, SQLException {
 		Professor professor = new Professor(name, cpf, registration, phone, email);
 		ProfessorDAO.getInstance().include(professor);
-		this.professores_vector.add(professor);
+		this.professorVector.add(professor);
 	}
 
 	public void alterate(String name, String cpf, String registration, String phone,
@@ -68,7 +68,7 @@ public class ProfessorController {
 
 	public void delete(Professor professor) throws SQLException, ClientException {
 		ProfessorDAO.getInstance().delete(professor);
-		this.professores_vector.remove(professor);
+		this.professorVector.remove(professor);
 	}
 
 }

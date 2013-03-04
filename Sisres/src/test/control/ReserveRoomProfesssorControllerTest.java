@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import control.ReserveRoomProfessorController;
-import exception.ClienteException;
+import exception.ClientException;
 import exception.PatrimonyException;
 import exception.ReserveException;
 
@@ -37,7 +37,7 @@ public class ReserveRoomProfesssorControllerTest {
 		professor1 = new Professor("testInstance", "040.757.021-70", "0058801", "3333-3333", "nome@email");
 		
 		ProfessorDAO.getInstance().include(professor1);
-		RoomDAO.getInstance().incluir(sala1);
+		RoomDAO.getInstance().include(sala1);
 	}
 
 	@AfterClass
@@ -57,7 +57,7 @@ public class ReserveRoomProfesssorControllerTest {
 	
 	
 	@Test
-	public void testInserir() throws SQLException, ReserveException, ClienteException, PatrimonyException {
+	public void testInserir() throws SQLException, ReserveException, ClientException, PatrimonyException {
 		String finalidade = "Room de Estudos";
 		String data = "20/12/33";
 		String hora = "9:11";
@@ -70,7 +70,7 @@ public class ReserveRoomProfesssorControllerTest {
 		assertTrue("Teste de Insercao.", resultado && resultado2);
 	}
 	@Test
-	public void testAlterar() throws ReserveException, SQLException, ClienteException, PatrimonyException {
+	public void testAlterar() throws ReserveException, SQLException, ClientException, PatrimonyException {
 		
 		ReserveRoomProfessor reserva = new ReserveRoomProfessor("20/12/33", "9:11", sala1, "Pesquisa", professor1);
 		this.insert_into(reserva);
@@ -104,11 +104,11 @@ public class ReserveRoomProfesssorControllerTest {
 
 	private String select_id_professor(Professor prof){
 		return "SELECT id_professor FROM professor WHERE " +
-				"professor.nome = \"" + prof.getNome() + "\" and " +
+				"professor.nome = \"" + prof.getName() + "\" and " +
 				"professor.cpf = \"" + prof.getCpf() + "\" and " +
-				"professor.telefone = \"" + prof.getTelefone() + "\" and " +
+				"professor.telefone = \"" + prof.getPhone() + "\" and " +
 				"professor.email = \"" + prof.getEmail() + "\" and " +
-				"professor.matricula = \"" + prof.getMatricula() + "\"";
+				"professor.matricula = \"" + prof.getRegistration() + "\"";
 	}
 	private String select_id_sala(Room room){
 		return "SELECT id_sala FROM room WHERE " +
@@ -121,15 +121,15 @@ public class ReserveRoomProfesssorControllerTest {
 		"id_professor = ( " + select_id_professor(reserva.getProfessor()) + " ) and " +
 		"id_sala = ( " + select_id_sala(reserva.getRoom()) + " ) and " +
 		"finalidade = \"" + reserva.getFinality() + "\" and " +
-		"hora = \"" + reserva.getHora() + "\" and " +
-		"data = \"" + reserva.getData() + "\" ";
+		"hora = \"" + reserva.getHour() + "\" and " +
+		"data = \"" + reserva.getDate() + "\" ";
 	}
 	private String values_reserva_sala_professor(ReserveRoomProfessor reserva){
 		return "( " + select_id_professor(reserva.getProfessor()) + " ), " +
 		"( " + select_id_sala(reserva.getRoom()) + " ), " +
 		"\"" + reserva.getFinality() + "\", " +
-		"\"" + reserva.getHora() + "\", " +
-		"\"" + reserva.getData() + "\"";
+		"\"" + reserva.getHour() + "\", " +
+		"\"" + reserva.getDate() + "\"";
 	}
 	private void insert_into(ReserveRoomProfessor reserva){
 		try {

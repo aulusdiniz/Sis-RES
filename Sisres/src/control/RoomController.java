@@ -29,7 +29,7 @@ public class RoomController {
 
 	public void inserir(String codigo, String descricao, String capacidade) throws PatrimonyException, SQLException {
 		Room room = new Room(codigo, descricao, capacidade);
-		RoomDAO.getInstance().incluir(room);
+		RoomDAO.getInstance().include(room);
 		this.salas_vet.add(room);
 	}
 

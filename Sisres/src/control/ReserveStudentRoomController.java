@@ -34,21 +34,21 @@ public class ReserveStudentRoomController {
 		
 	}
 	
-	public Vector<ReserveRoomStudent> getReservasMes(String data) throws SQLException, PatrimonyException, ClientException, ReserveException{
+	public Vector<ReserveRoomStudent> getReserveMonth(String data) throws SQLException, PatrimonyException, ClientException, ReserveException{
 		this.reserveStudentRoomVector = ReserveStudentRoomDAO.getInstance().findByDate(data);
 		return this.reserveStudentRoomVector;
 	}
 	
-	public Vector<ReserveRoomStudent> getResAlunoSala_vet() throws SQLException, PatrimonyException, ClientException, ReserveException {
+	public Vector<ReserveRoomStudent> getReserveStudentRoomVector() throws SQLException, PatrimonyException, ClientException, ReserveException {
 		this.reserveStudentRoomVector = ReserveStudentRoomDAO.getInstance().findAll();
 		return this.reserveStudentRoomVector;
 	}
 
-	public int cadeirasDisponveis(Room room, String data, String hour) throws SQLException, PatrimonyException, ClientException, ReserveException {
+	public int availableChairs(Room room, String data, String hour) throws SQLException, PatrimonyException, ClientException, ReserveException {
 		return ReserveStudentRoomDAO.getInstance().availableChairs(room, data, hour);
 	}
 
-	public void inserir(Room room, Student student,
+	public void insert(Room room, Student student,
 		String data, String hour, String finalidade, String cadeiras_reservadas)
 		throws SQLException, ReserveException, ClientException, PatrimonyException {
 
@@ -57,7 +57,7 @@ public class ReserveStudentRoomController {
 		this.reserveStudentRoomVector.add(r);
 	}
 
-	public void alterar(String finalidade, String cadeiras_reservadas, ReserveRoomStudent reserveRoomStudent)
+	public void alterate(String finalidade, String cadeiras_reservadas, ReserveRoomStudent reserveRoomStudent)
 		throws SQLException, ReserveException, ClientException, PatrimonyException {
 
 		ReserveRoomStudent oldReserveStudentRoom = new ReserveRoomStudent(reserveRoomStudent.getDate(), reserveRoomStudent.getHour(), reserveRoomStudent.getRoom(),
@@ -67,7 +67,7 @@ public class ReserveStudentRoomController {
 		ReserveStudentRoomDAO.getInstance().alterate(oldReserveStudentRoom, reserveRoomStudent);
 	}
 
-	public void excluir(ReserveRoomStudent r) throws SQLException, ReserveException {
+	public void delete(ReserveRoomStudent r) throws SQLException, ReserveException {
 		ReserveStudentRoomDAO.getInstance().delete(r);
 		this.reserveStudentRoomVector.remove(r);
 	}

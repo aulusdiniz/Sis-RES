@@ -17,7 +17,7 @@ import exception.ClientException;
 import exception.PatrimonyException;
 import exception.ReserveException;
 
-public class ReserveRoomStudentTest{
+public class ReserveStudentRoomTest{
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
