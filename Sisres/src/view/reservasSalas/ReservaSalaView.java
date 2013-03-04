@@ -11,14 +11,14 @@ import javax.swing.JOptionPane;
 
 import model.Aluno;
 import model.Professor;
-import model.Sala;
+import model.Room;
 import control.ManterAluno;
 import control.ManterProfessor;
-import control.ManterResSalaAluno;
-import control.ManterResSalaProfessor;
+import control.ReserveStudentRoomController;
+import control.ReserveRoomProfessorController;
 import exception.ClienteException;
 import exception.PatrimonyException;
-import exception.ReservaException;
+import exception.ReserveException;
 
 /**
  * 
@@ -29,17 +29,17 @@ public abstract class ReservaSalaView extends javax.swing.JDialog {
     protected final int ALUNO = 1;
     protected final int PROF = 2;
     protected final int ERRO = -1;
-    protected ManterResSalaAluno instanceAluno;
-    protected ManterResSalaProfessor instanceProf;
-    protected Sala sala;
+    protected ReserveStudentRoomController instanceAluno;
+    protected ReserveRoomProfessorController instanceProf;
+    protected Room room;
     protected Aluno aluno;
     protected Professor prof;
 
     public ReservaSalaView(java.awt.Frame parent, boolean modal) throws SQLException, PatrimonyException, PatrimonyException,
-            ClienteException, ReservaException {
+            ClienteException, ReserveException {
         super(parent, modal);
-        this.instanceProf = ManterResSalaProfessor.getInstance();
-        this.instanceAluno = ManterResSalaAluno.getInstance();
+        this.instanceProf = ReserveRoomProfessorController.getInstance();
+        this.instanceAluno = ReserveStudentRoomController.getInstance();
         initComponents();
         this.bucarCpfButton.setName("BuscarCpfButton");
 
@@ -148,7 +148,7 @@ public abstract class ReservaSalaView extends javax.swing.JDialog {
                 setName("ReservaPatrimonio"); // NOI18N
                 setResizable(false);
 
-                salaLabel.setText("Sala: ");
+                salaLabel.setText("Room: ");
                 salaLabel.setName("SalaLabel"); // NOI18N
 
                 alunoLabel.setText("Aluno:");

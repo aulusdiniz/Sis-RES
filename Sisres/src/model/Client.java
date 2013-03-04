@@ -135,23 +135,24 @@ public abstract class Client {
 		return false;
 	}
 	
+	
 	private boolean validateCpf(String cpf) {
 
-		int d1, d2; //variáveis responsáveis por guardar o valor da validação.
+		int validationDigit1, validationDigit2; 
 		int digit1, digit2, rest;
 		int digitCPF;
-		String	nDigResult;
+		String	sumDigitResult;
 
-		d1 = d2 = 0;
+		validationDigit1 = validationDigit2 = 0;
 		digit1 = digit2 = rest = 0;
 
 		for (int nCount = 1; nCount < cpf.length()-1; nCount++) {
 			 digitCPF = Integer.valueOf (cpf.substring(nCount-1, nCount)).intValue();
-			 d1 = d1 + ( 11 - nCount ) * digitCPF;
-			 d2 = d2 + ( 12 - nCount ) * digitCPF;
+			 validationDigit1 = validationDigit1 + ( 11 - nCount ) * digitCPF;
+			 validationDigit2 = validationDigit2 + ( 12 - nCount ) * digitCPF;
 		};
 
-		rest = (d1 % 11);
+		rest = (validationDigit1 % 11);
 		
 		if (rest < 2) {
 			 digit1 = 0;
@@ -160,8 +161,8 @@ public abstract class Client {
 			 digit1 = 11 - rest;
 		}
 		
-		d2 += 2 * digit1;
-		rest = (d2 % 11);
+		validationDigit2 += 2 * digit1;
+		rest = (validationDigit2 % 11);
 		
 		if (rest < 2) {
 			 digit2 = 0;
@@ -171,8 +172,8 @@ public abstract class Client {
 		}
 		
 		String nDigVerific = cpf.substring (cpf.length()-2, cpf.length());
-		nDigResult = String.valueOf(digit1) + String.valueOf(digit2);
+		sumDigitResult = String.valueOf(digit1) + String.valueOf(digit2);
 		
-		return nDigVerific.equals(nDigResult);
+		return nDigVerific.equals(sumDigitResult);
 	}
 }

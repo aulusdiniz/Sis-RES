@@ -11,10 +11,10 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import model.ReservaSalaAluno;
-import model.ReservaSalaProfessor;
+import model.ReserveRoomProfessor;
 import exception.ClienteException;
 import exception.PatrimonyException;
-import exception.ReservaException;
+import exception.ReserveException;
 
 /**
  * 
@@ -24,7 +24,7 @@ public class AlterarReservaAlunoSalaView extends ReservaSalaView {
 
     int index;
     ReservaSalaAluno reservaAluno;
-    ReservaSalaProfessor reservaProfessor;
+    ReserveRoomProfessor reservaProfessor;
 
     private void resetComponents() {
         this.reservarButton.setText("Alterar");
@@ -35,7 +35,7 @@ public class AlterarReservaAlunoSalaView extends ReservaSalaView {
     }
 
     public AlterarReservaAlunoSalaView(Frame parent, boolean modal, int index, String data) throws SQLException,
-            PatrimonyException, PatrimonyException, ClienteException, ReservaException {
+            PatrimonyException, PatrimonyException, ClienteException, ReserveException {
         super(parent, modal);
         this.setName("AlterarReservaSalaView");
         this.reservaAluno = instanceAluno.getReservasMes(data).get(index);
@@ -50,7 +50,7 @@ public class AlterarReservaAlunoSalaView extends ReservaSalaView {
             JOptionPane.showMessageDialog(this, "Reserva alterada com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE, null);
 
             this.setVisible(false);
-        } catch (ReservaException ex) {
+        } catch (ReserveException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (PatrimonyException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
@@ -81,18 +81,18 @@ public class AlterarReservaAlunoSalaView extends ReservaSalaView {
         this.horaTextField.setEditable(false);
         this.horaTextField.setText(reservaAluno.getHora());
         this.alunoTextArea.setText(reservaAluno.getAluno().toString());
-        this.salaTextArea.setText(reservaAluno.getSala().toString());
+        this.salaTextArea.setText(reservaAluno.getRoom().toString());
         this.dataTextField.setText(reservaAluno.getData());
-        this.qntCadeirasTxtField.setText(reservaAluno.getSala().getCapacidade());
+        this.qntCadeirasTxtField.setText(reservaAluno.getRoom().getCapacity());
         this.qntCadeirasReservadasTextField.setText(reservaAluno.getCadeiras_reservadas());
-        this.finalidadeTextField.setText(reservaAluno.getFinalidade());
+        this.finalidadeTextField.setText(reservaAluno.getFinality());
     }
 
     @Override protected void verificarAction() {
         try {
-            this.qntCadeirasTxtField.setText(String.valueOf(instanceAluno.cadeirasDisponveis(sala, this.dataTextField.getText(),
+            this.qntCadeirasTxtField.setText(String.valueOf(instanceAluno.cadeirasDisponveis(room, this.dataTextField.getText(),
                     this.horaTextField.getText())));
-        } catch (ReservaException ex) {
+        } catch (ReserveException ex) {
             
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (PatrimonyException ex) {

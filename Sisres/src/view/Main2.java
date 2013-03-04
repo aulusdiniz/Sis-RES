@@ -48,8 +48,8 @@ import view.mainViews.SalaView;
 
         panelReserva1.setBorder(javax.swing.BorderFactory.createTitledBorder("Reserva"));
 
-        salaBtn.setText("Sala");
-        salaBtn.setName("Sala");
+        salaBtn.setText("Room");
+        salaBtn.setName("Room");
         salaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 salaBtnActionPerformed(evt);

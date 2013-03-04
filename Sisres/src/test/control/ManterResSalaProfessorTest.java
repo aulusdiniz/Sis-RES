@@ -9,31 +9,31 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import model.Professor;
-import model.ReservaSalaProfessor;
-import model.Sala;
+import model.ReserveRoomProfessor;
+import model.Room;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import control.ManterResSalaProfessor;
+import control.ReserveRoomProfessorController;
 import exception.ClienteException;
 import exception.PatrimonyException;
-import exception.ReservaException;
+import exception.ReserveException;
 
 import persistence.FactoryConnection;
 import persistence.ProfessorDAO;
 import persistence.SalaDAO;
 
 public class ManterResSalaProfessorTest {
-	private static Sala sala1;
+	private static Room sala1;
 	private static Professor professor1;
-	private static Vector<ReservaSalaProfessor> vet;
+	private static Vector<ReserveRoomProfessor> vet;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		vet = ManterResSalaProfessor.getInstance().getResProfessorSala_vet();
-		sala1 = new Sala("123", "Sala de Aula", "120");
+		vet = ReserveRoomProfessorController.getInstance().getResProfessorSala_vet();
+		sala1 = new Room("123", "Room de Aula", "120");
 		professor1 = new Professor("testInstance", "040.757.021-70", "0058801", "3333-3333", "nome@email");
 		
 		ProfessorDAO.getInstance().include(professor1);
@@ -48,21 +48,21 @@ public class ManterResSalaProfessorTest {
 
 	@Test
 	public void testInstance() {
-		assertTrue("Teste de Instancia.", ManterResSalaProfessor.getInstance() instanceof ManterResSalaProfessor);
+		assertTrue("Teste de Instancia.", ReserveRoomProfessorController.getInstance() instanceof ReserveRoomProfessorController);
 	}
 	@Test
 	public void testSingleton() {
-		assertSame("Teste de Instancia.", ManterResSalaProfessor.getInstance(), ManterResSalaProfessor.getInstance());
+		assertSame("Teste de Instancia.", ReserveRoomProfessorController.getInstance(), ReserveRoomProfessorController.getInstance());
 	}
 	
 	
 	@Test
-	public void testInserir() throws SQLException, ReservaException, ClienteException, PatrimonyException {
-		String finalidade = "Sala de Estudos";
+	public void testInserir() throws SQLException, ReserveException, ClienteException, PatrimonyException {
+		String finalidade = "Room de Estudos";
 		String data = "20/12/33";
 		String hora = "9:11";
-		ReservaSalaProfessor reserva = new ReservaSalaProfessor(data, hora, sala1, finalidade, professor1);
-		ManterResSalaProfessor.getInstance().inserir(sala1, professor1, data, hora, finalidade);
+		ReserveRoomProfessor reserva = new ReserveRoomProfessor(data, hora, sala1, finalidade, professor1);
+		ReserveRoomProfessorController.getInstance().inserir(sala1, professor1, data, hora, finalidade);
 		boolean resultado = this.inDB(reserva);
 		boolean resultado2 = reserva.equals(vet.lastElement());
 		if(resultado)
@@ -70,13 +70,13 @@ public class ManterResSalaProfessorTest {
 		assertTrue("Teste de Insercao.", resultado && resultado2);
 	}
 	@Test
-	public void testAlterar() throws ReservaException, SQLException, ClienteException, PatrimonyException {
+	public void testAlterar() throws ReserveException, SQLException, ClienteException, PatrimonyException {
 		
-		ReservaSalaProfessor reserva = new ReservaSalaProfessor("20/12/33", "9:11", sala1, "Pesquisa", professor1);
+		ReserveRoomProfessor reserva = new ReserveRoomProfessor("20/12/33", "9:11", sala1, "Pesquisa", professor1);
 		this.insert_into(reserva);
 		vet.add(reserva);
-		ReservaSalaProfessor reserva2 = new ReservaSalaProfessor("20/12/33", "9:11", sala1, "Reuniao", professor1);
-		ManterResSalaProfessor.getInstance().alterar("Reuniao", vet.lastElement());
+		ReserveRoomProfessor reserva2 = new ReserveRoomProfessor("20/12/33", "9:11", sala1, "Reuniao", professor1);
+		ReserveRoomProfessorController.getInstance().alterar("Reuniao", vet.lastElement());
 		boolean resultado = this.inDB(reserva2);
 		boolean resultado2 = reserva2.equals(vet.lastElement());
 		if(resultado)
@@ -86,14 +86,14 @@ public class ManterResSalaProfessorTest {
 		assertTrue("Teste de Alteracao.", resultado && resultado2);
 	}
 	@Test
-	public void testExcluir() throws ReservaException, SQLException {
+	public void testExcluir() throws ReserveException, SQLException {
 		String finalidade = "Pesquisa";
 		String data = "20/12/33";
 		String hora = "9:11";
-		ReservaSalaProfessor reserva = new ReservaSalaProfessor(data, hora, sala1, finalidade, professor1);
+		ReserveRoomProfessor reserva = new ReserveRoomProfessor(data, hora, sala1, finalidade, professor1);
 		this.insert_into(reserva);
 		vet.add(reserva);
-		ManterResSalaProfessor.getInstance().excluir(reserva);
+		ReserveRoomProfessorController.getInstance().excluir(reserva);
 		boolean resultado = this.inDB(reserva);
 		vet.remove(reserva);
 
@@ -110,28 +110,28 @@ public class ManterResSalaProfessorTest {
 				"professor.email = \"" + prof.getEmail() + "\" and " +
 				"professor.matricula = \"" + prof.getMatricula() + "\"";
 	}
-	private String select_id_sala(Sala sala){
-		return "SELECT id_sala FROM sala WHERE " +
-				"sala.codigo = \"" + sala.getCode() + "\" and " +
-				"sala.descricao = \"" + sala.getDescription() +  "\" and " +
-				"sala.capacidade = " + sala.getCapacidade();
+	private String select_id_sala(Room room){
+		return "SELECT id_sala FROM room WHERE " +
+				"room.codigo = \"" + room.getCode() + "\" and " +
+				"room.descricao = \"" + room.getDescription() +  "\" and " +
+				"room.capacidade = " + room.getCapacity();
 	}
-	private String where_reserva_sala_professor(ReservaSalaProfessor reserva){
+	private String where_reserva_sala_professor(ReserveRoomProfessor reserva){
 		return " WHERE " +
 		"id_professor = ( " + select_id_professor(reserva.getProfessor()) + " ) and " +
-		"id_sala = ( " + select_id_sala(reserva.getSala()) + " ) and " +
-		"finalidade = \"" + reserva.getFinalidade() + "\" and " +
+		"id_sala = ( " + select_id_sala(reserva.getRoom()) + " ) and " +
+		"finalidade = \"" + reserva.getFinality() + "\" and " +
 		"hora = \"" + reserva.getHora() + "\" and " +
 		"data = \"" + reserva.getData() + "\" ";
 	}
-	private String values_reserva_sala_professor(ReservaSalaProfessor reserva){
+	private String values_reserva_sala_professor(ReserveRoomProfessor reserva){
 		return "( " + select_id_professor(reserva.getProfessor()) + " ), " +
-		"( " + select_id_sala(reserva.getSala()) + " ), " +
-		"\"" + reserva.getFinalidade() + "\", " +
+		"( " + select_id_sala(reserva.getRoom()) + " ), " +
+		"\"" + reserva.getFinality() + "\", " +
 		"\"" + reserva.getHora() + "\", " +
 		"\"" + reserva.getData() + "\"";
 	}
-	private void insert_into(ReservaSalaProfessor reserva){
+	private void insert_into(ReserveRoomProfessor reserva){
 		try {
 			this.executeQuery("INSERT INTO " +
 					"reserva_sala_professor (id_professor, id_sala, finalidade, hora, data) " +
@@ -140,7 +140,7 @@ public class ManterResSalaProfessorTest {
 			e.printStackTrace();
 		}
 	}
-	private void delete_from(ReservaSalaProfessor reserva){
+	private void delete_from(ReserveRoomProfessor reserva){
 		try {
 			this.executeQuery("DELETE FROM reserva_sala_professor " + 
 								this.where_reserva_sala_professor(reserva) + " ;");
@@ -148,7 +148,7 @@ public class ManterResSalaProfessorTest {
 			e.printStackTrace();
 		}
 	}
-	private boolean inDB(ReservaSalaProfessor reserva) throws SQLException{
+	private boolean inDB(ReserveRoomProfessor reserva) throws SQLException{
 		return this.inDBGeneric("SELECT * FROM reserva_sala_professor " + 
 								this.where_reserva_sala_professor(reserva) + " ;");
 	}

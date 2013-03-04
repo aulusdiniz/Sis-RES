@@ -8,19 +8,14 @@ import java.util.Vector;
 
 import exception.ClientException;
 import exception.PatrimonyException;
-import exception.ReservaException;
+import exception.ReserveException;
 
 public abstract class DAO {
-	//Esta classe nao sera testada diretamente.
 	
 	
-	/**
-	 * O vetor obtido deste metodo deve ser convertido pra o vetor
-	 * do tipo que se vai utilizar, se necessario.
-	 * */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected Vector buscar(String query) throws SQLException, ClientException, 
-													PatrimonyException, ReservaException{
+	protected Vector find(String query) throws SQLException, ClientException, 
+													PatrimonyException, ReserveException{
 		Vector vet = new Vector();
 		
 		Connection con =  FactoryConnection.getInstance().getConnection();
@@ -37,9 +32,6 @@ public abstract class DAO {
 		return vet;
 	}
 	
-	/**
-	 * Continua funcionando como antes, checa se o resgistro esta no banco.
-	 * */
 	protected boolean inDBGeneric(String query) throws SQLException{
 		Connection con = FactoryConnection.getInstance().getConnection();
 		PreparedStatement pst = con.prepareStatement(query);
@@ -60,19 +52,10 @@ public abstract class DAO {
 		}
 	}
 
-	/**
-	 * Funcao utilizada no buscar, por isso precisa ser implementada
-	 * Ja foi implementada nas outras classes DAO. A implementacao eh
-	 * semelhante.
-	 * */
 	protected abstract Object fetch(ResultSet rs) throws SQLException, ClientException,
-														PatrimonyException, ReservaException;
+														PatrimonyException, ReserveException;
 	
 	
-	/**
-	 * Este metodo eh utilizado para Incluir e Excluir algum registro do
-	 * banco, dependendo da query.
-	 * */
 	protected void executeQuery(String msg) throws SQLException{
 		Connection con =  FactoryConnection.getInstance().getConnection();
 		PreparedStatement pst = con.prepareStatement(msg);
@@ -81,9 +64,6 @@ public abstract class DAO {
 		con.close();
 	}
 	
-	/**
-	 * Este metodo eh utilizado para Alterar alguma coisa no Banco
-	 * */
 	protected void updateQuery(String msg) throws SQLException{
 		Connection con =  FactoryConnection.getInstance().getConnection();
 		con.setAutoCommit(false);

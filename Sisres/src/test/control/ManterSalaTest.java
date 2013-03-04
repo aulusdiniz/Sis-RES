@@ -7,8 +7,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import persistence.FactoryConnection;
-import control.ManterSala;
-import model.Sala;
+import control.RoomController;
+import model.Room;
 import exception.PatrimonyException;
 
 import java.sql.Connection;
@@ -31,72 +31,72 @@ public class ManterSalaTest {
 	
 	@Test
 	public void testGetInstance() {
-		assertTrue("Verifica metodo getInstance().", ManterSala.getInstance() instanceof ManterSala);
+		assertTrue("Verifica metodo getInstance().", RoomController.getInstance() instanceof RoomController);
 	}
 	
 	@Test
 	public void testSingleton() {
-		ManterSala p = ManterSala.getInstance();
-		ManterSala q = ManterSala.getInstance();
+		RoomController p = RoomController.getInstance();
+		RoomController q = RoomController.getInstance();
 		assertSame("Testando o Padrao Singleton", p, q);
 	}
 
 
 	@Test
 	public void testInserir() throws PatrimonyException, SQLException {
-		Sala sala_new = new Sala("codigo", "descricao", "2");
-		ManterSala.getInstance().inserir("codigo", "descricao", "2");
+		Room sala_new = new Room("codigo", "descricao", "2");
+		RoomController.getInstance().inserir("codigo", "descricao", "2");
 		assertNotNull("Falha ao inserir", this.procurarNoVetor(sala_new));
-		this.executaNoBanco("DELETE FROM sala WHERE " +
-				"sala.codigo = \"" + sala_new.getCode() + "\" and " +
-				"sala.descricao = \"" + sala_new.getDescription() +  "\" and " +
-				"sala.capacidade = " + sala_new.getCapacidade() + ";"
+		this.executaNoBanco("DELETE FROM room WHERE " +
+				"room.codigo = \"" + sala_new.getCode() + "\" and " +
+				"room.descricao = \"" + sala_new.getDescription() +  "\" and " +
+				"room.capacidade = " + sala_new.getCapacity() + ";"
 				);
 	}
 
 	@Test
 	public void testAlterar() throws PatrimonyException, SQLException {
-		Sala sala = new Sala("codigo_old", "descricao", "1");
-		Sala sala_new = new Sala("codigo", "descricao", "2");
+		Room room = new Room("codigo_old", "descricao", "1");
+		Room sala_new = new Room("codigo", "descricao", "2");
 		
 		this.executaNoBanco("INSERT INTO " +
-				"sala (codigo, descricao, capacidade) VALUES (" +
-				"\"" + sala.getCode() + "\", " +
-				"\"" + sala.getDescription() + "\", " +
-				"" + sala.getCapacidade() + "); "
+				"room (codigo, descricao, capacidade) VALUES (" +
+				"\"" + room.getCode() + "\", " +
+				"\"" + room.getDescription() + "\", " +
+				"" + room.getCapacity() + "); "
 				);
-		ManterSala.getInstance().alterar("codigo", "descricao", "2", sala);
+		RoomController.getInstance().alterar("codigo", "descricao", "2", room);
 		
 		assertNotNull("Falha ao alterar", this.procurarNoVetor(sala_new));
 		
-		this.executaNoBanco("DELETE FROM sala WHERE " +
-				"sala.codigo = \"" + sala_new.getCode() + "\" and " +
-				"sala.descricao = \"" + sala_new.getDescription() +  "\" and " +
-				"sala.capacidade = " + sala_new.getCapacidade() + ";"
+		this.executaNoBanco("DELETE FROM room WHERE " +
+				"room.codigo = \"" + sala_new.getCode() + "\" and " +
+				"room.descricao = \"" + sala_new.getDescription() +  "\" and " +
+				"room.capacidade = " + sala_new.getCapacity() + ";"
 				);
 	}
 
 	@Test
 	public void testExcluir() throws SQLException, PatrimonyException {
-		Sala sala = new Sala("codigo_old", "descricao", "1");
+		Room room = new Room("codigo_old", "descricao", "1");
 		
 		this.executaNoBanco("INSERT INTO " +
-				"sala (codigo, descricao, capacidade) VALUES (" +
-				"\"" + sala.getCode() + "\", " +
-				"\"" + sala.getDescription() + "\", " +
-				"" + sala.getCapacidade() + "); "
+				"room (codigo, descricao, capacidade) VALUES (" +
+				"\"" + room.getCode() + "\", " +
+				"\"" + room.getDescription() + "\", " +
+				"" + room.getCapacity() + "); "
 				);
 		
-		ManterSala.getInstance().excluir(sala);
+		RoomController.getInstance().excluir(room);
 		
-		assertNull("Falha ao excluir", this.procurarNoVetor(sala));
+		assertNull("Falha ao excluir", this.procurarNoVetor(room));
 	}
 
-	public Sala procurarNoVetor(Sala teste) throws PatrimonyException, SQLException {
-		Vector<Sala> todos = ManterSala.getInstance().getSalas_vet();
-		Iterator<Sala> i = todos.iterator();
+	public Room procurarNoVetor(Room teste) throws PatrimonyException, SQLException {
+		Vector<Room> todos = RoomController.getInstance().getSalas_vet();
+		Iterator<Room> i = todos.iterator();
 		while(i.hasNext()){
-			Sala e = i.next();
+			Room e = i.next();
 			if(e.equals(teste))
 				return e;			
 		}

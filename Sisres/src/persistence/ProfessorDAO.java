@@ -12,7 +12,7 @@ public class ProfessorDAO {
 		private static final String PROFESSOR_EXISTING = "O Professor ja esta cadastrado.";
 		private static final String PROFESSOR_NOT_EXISTING = "O Professor nao esta cadastrado.";
 		private static final String PROFESSOR_NULL = "O Professor esta nulo.";
-		private static final String PROFESSOR_RESERVED = "Sala esta sendo utilizada em uma reserva.";
+		private static final String PROFESSOR_RESERVED = "Room esta sendo utilizada em uma reserva.";
 		private static final String CPF_EXISTING = "Ja existe um professor cadastrado com esse CPF.";
 		private static final String REGISTRATION_EXISTING = "Ja existe um professor cadastrado com essa matricula.";
 		

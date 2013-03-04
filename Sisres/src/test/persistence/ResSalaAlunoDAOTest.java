@@ -13,7 +13,7 @@ import java.util.Vector;
 
 import model.Aluno;
 import model.ReservaSalaAluno;
-import model.Sala;
+import model.Room;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -21,24 +21,24 @@ import org.junit.Test;
 
 import persistence.AlunoDAO;
 import persistence.FactoryConnection;
-import persistence.ResSalaAlunoDAO;
+import persistence.ReserveStudentRoomDAO;
 import persistence.SalaDAO;
 
 import exception.ClienteException;
 import exception.PatrimonyException;
-import exception.ReservaException;
+import exception.ReserveException;
 
 public class ResSalaAlunoDAOTest {
 
-	private static Sala sala1;
-	private static Sala sala2;
+	private static Room sala1;
+	private static Room sala2;
 	private static Aluno aluno1;
 	private static Aluno aluno2;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		sala1 = new Sala("123", "Sala de Aula", "120");
-		sala2 = new Sala("543", "Laboratorio", "30");
+		sala1 = new Room("123", "Room de Aula", "120");
+		sala2 = new Room("543", "Laboratorio", "30");
 		aluno1 = new Aluno("testInstance", "501.341.852-69", "456678", "", "");
 		aluno2 = new Aluno("Incluindo Matricula Igual", "490.491.781-20", "345543", "2222-2222", "aluno2@email");
 		
@@ -58,20 +58,20 @@ public class ResSalaAlunoDAOTest {
 
 	@Test
 	public void testInstance() {
-		assertTrue("Teste de Instancia", ResSalaAlunoDAO.getInstance() instanceof ResSalaAlunoDAO);
+		assertTrue("Teste de Instancia", ReserveStudentRoomDAO.getInstance() instanceof ReserveStudentRoomDAO);
 	}
 	@Test
 	public void testSingleton() {
-		assertSame("Teste de Singleton", ResSalaAlunoDAO.getInstance(), ResSalaAlunoDAO.getInstance());
+		assertSame("Teste de Singleton", ReserveStudentRoomDAO.getInstance(), ReserveStudentRoomDAO.getInstance());
 	}
 	
 	
 	@Test
-	public void testIncluir() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	public void testIncluir() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 		
-		ResSalaAlunoDAO.getInstance().incluir(reserva);
+		ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		
 		boolean resultado = this.inDB(reserva);
 		
@@ -79,17 +79,17 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva);
 		assertTrue("Teste de Inclusao.", resultado);
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirNulo() throws ReservaException, ClienteException, PatrimonyException, SQLException {
-		ResSalaAlunoDAO.getInstance().incluir(null);
+	@Test (expected= ReserveException.class)
+	public void testIncluirNulo() throws ReserveException, ClienteException, PatrimonyException, SQLException {
+		ReserveStudentRoomDAO.getInstance().incluir(null);
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirAlunoInexistente() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testIncluirAlunoInexistente() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", new Aluno("tepp", "501.341.852-69", "456678", "", ""));
 		
 		try{
-			ResSalaAlunoDAO.getInstance().incluir(reserva);
+			ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		} finally {
 		boolean resultado = this.inDB(reserva);
 
@@ -97,13 +97,13 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirSalaInexistente() throws ReservaException, ClienteException, PatrimonyException, SQLException {
-		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", new Sala("22277883", "Laboratorio", "120"),
+	@Test (expected= ReserveException.class)
+	public void testIncluirSalaInexistente() throws ReserveException, ClienteException, PatrimonyException, SQLException {
+		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", new Room("22277883", "Laboratorio", "120"),
 				"Grupo de Estudos", "120", aluno1);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().incluir(reserva);
+			ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		} finally {
 		boolean resultado = this.inDB(reserva);
 
@@ -111,22 +111,22 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirSalaReservadaProf() throws ReservaException, ClienteException, 
+	@Test (expected= ReserveException.class)
+	public void testIncluirSalaReservadaProf() throws ReserveException, ClienteException, 
 											PatrimonyException, SQLException 
 	{
 		this.executeQuery("INSERT INTO professor (nome, cpf, matricula) " +
 		"VALUES (\"ProfessorDAO\", \"257.312.954-33\", \"11009988\");");
 		this.executeQuery("INSERT INTO reserva_sala_professor (id_professor,id_sala,finalidade,hora,data) "+
 		"VALUES ((SELECT id_professor FROM professor WHERE cpf = \"257.312.954-33\")," +
-				"(SELECT id_sala FROM sala WHERE codigo = \"123\")," +
+				"(SELECT id_sala FROM room WHERE codigo = \"123\")," +
 				"\"Aula de Calculo\", \"08:00\", \"20/12/2034\");");
 		
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "60", aluno1);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().incluir(reserva);
+			ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		} finally {
 		if(this.inDB(reserva))
 			this.delete_from(reserva);
@@ -137,15 +137,15 @@ public class ResSalaAlunoDAOTest {
 		}
 		
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirAlunoOcupado() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testIncluirAlunoOcupado() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno("20/12/34", "8:00", sala2,
-				"Grupo de Estudos", ""+sala2.getCapacidade(), aluno1);
-		ResSalaAlunoDAO.getInstance().incluir(reserva);
+				"Grupo de Estudos", ""+sala2.getCapacity(), aluno1);
+		ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		try{
-			ResSalaAlunoDAO.getInstance().incluir(reserva2);
+			ReserveStudentRoomDAO.getInstance().incluir(reserva2);
 		} finally {
 			if(this.inDB(reserva))
 				this.delete_from(reserva);
@@ -153,15 +153,15 @@ public class ResSalaAlunoDAOTest {
 				this.delete_from(reserva2);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirSalaCheia() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testIncluirSalaCheia() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "60", aluno1);
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "70", aluno2);
-		ResSalaAlunoDAO.getInstance().incluir(reserva);
+		ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		try{
-			ResSalaAlunoDAO.getInstance().incluir(reserva2);
+			ReserveStudentRoomDAO.getInstance().incluir(reserva2);
 		} finally {
 			if(this.inDB(reserva))
 				this.delete_from(reserva);
@@ -169,58 +169,58 @@ public class ResSalaAlunoDAOTest {
 				this.delete_from(reserva2);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirDataPassouAno() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testIncluirDataPassouAno() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/1990", "8:00", sala1,
 				"Grupo de Estudos", "60", aluno1);
 		try{
-			ResSalaAlunoDAO.getInstance().incluir(reserva);
+			ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		} finally {
 			if(this.inDB(reserva))
 				this.delete_from(reserva);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirDataPassouMes() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testIncluirDataPassouMes() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/01/2013", "8:00", sala1,
 				"Grupo de Estudos", "60", aluno1);
 		try{
-			ResSalaAlunoDAO.getInstance().incluir(reserva);
+			ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		} finally {
 			if(this.inDB(reserva))
 				this.delete_from(reserva);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirDataPassouDia() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testIncluirDataPassouDia() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno(this.dataAtualAMais(-100000000), this.horaAtual(), sala1,
 				"Grupo de Estudos", "60", aluno1);
 		try{
-			ResSalaAlunoDAO.getInstance().incluir(reserva);
+			ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		} finally {
 			if(this.inDB(reserva))
 				this.delete_from(reserva);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirHoraPassouHora() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testIncluirHoraPassouHora() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno(this.dataAtual(),
 				 this.horaAtualAMais(-10000000), sala1,
 				"Grupo de Estudos", "60", aluno1);
 		try{
-			ResSalaAlunoDAO.getInstance().incluir(reserva);
+			ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		} finally {
 			if(this.inDB(reserva))
 				this.delete_from(reserva);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testIncluirHoraPassouMinutos() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testIncluirHoraPassouMinutos() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno(this.dataAtual(),
 				this.horaAtualAMais(-100000), sala1,
 				"Grupo de Estudos", "60", aluno1);
 		try{
-			ResSalaAlunoDAO.getInstance().incluir(reserva);
+			ReserveStudentRoomDAO.getInstance().incluir(reserva);
 		} finally {
 			if(this.inDB(reserva))
 				this.delete_from(reserva);
@@ -229,7 +229,7 @@ public class ResSalaAlunoDAOTest {
 	
 	
 	@Test
-	public void testAlterar() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	public void testAlterar() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 		
@@ -238,7 +238,7 @@ public class ResSalaAlunoDAOTest {
 		
 		this.insert_into(reserva);
 		
-		ResSalaAlunoDAO.getInstance().alterar(reserva, reserva2);
+		ReserveStudentRoomDAO.getInstance().alterar(reserva, reserva2);
 		
 		boolean resultado = this.inDB(reserva2);
 		
@@ -248,43 +248,43 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva);
 		assertTrue("Teste de Inclusao.", resultado);
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarNulo1() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarNulo1() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
-		ResSalaAlunoDAO.getInstance().alterar(null, reserva);
+		ReserveStudentRoomDAO.getInstance().alterar(null, reserva);
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarNulo2() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarNulo2() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 			"Grupo de Estudos", "120", aluno1);
-		ResSalaAlunoDAO.getInstance().alterar(reserva, null);
+		ReserveStudentRoomDAO.getInstance().alterar(reserva, null);
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarInexistente() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarInexistente() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 		
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva, reserva2);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva, reserva2);
 		} finally {
 			if(this.inDB(reserva2))
 				this.delete_from(reserva2);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarJaInexistente() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarJaInexistente() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno("27/12/34", "9:00", sala2,
-				"Grupo d", ""+sala2.getCapacidade(), aluno2);
+				"Grupo d", ""+sala2.getCapacity(), aluno2);
 		this.insert_into(reserva);
 		this.insert_into(reserva2);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva2, reserva);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva2, reserva);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -293,8 +293,8 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva2);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarHoraDifAlunoOcupado() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarHoraDifAlunoOcupado() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno("20/12/34", "9:00", sala1,
@@ -303,10 +303,10 @@ public class ResSalaAlunoDAOTest {
 		this.insert_into(reserva2);
 		
 		ReservaSalaAluno reserva3 = new ReservaSalaAluno("20/12/34", "8:00", sala2,
-				"Grupo de Estudos", ""+sala2.getCapacidade(), aluno1);
+				"Grupo de Estudos", ""+sala2.getCapacity(), aluno1);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva2, reserva3);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva2, reserva3);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -317,13 +317,13 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva3);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarDataDifSalaOcupado() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarDataDifSalaOcupado() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		this.executeQuery("INSERT INTO professor (nome, cpf, matricula) " +
 				"VALUES (\"ProfessorDAO\", \"257.312.954-33\", \"11009988\");");
 		this.executeQuery("INSERT INTO reserva_sala_professor (id_professor,id_sala,finalidade,hora,data) "+
 				"VALUES ((SELECT id_professor FROM professor WHERE cpf = \"257.312.954-33\")," +
-						"(SELECT id_sala FROM sala WHERE codigo = \"123\")," +
+						"(SELECT id_sala FROM room WHERE codigo = \"123\")," +
 						"\"Aula de Calculo\", \"08:00\", \"20/12/2034\");");
 				
 		
@@ -335,7 +335,7 @@ public class ResSalaAlunoDAOTest {
 				"Grupo de Estudos", "120", aluno1);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva, reserva2);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva, reserva2);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -347,8 +347,8 @@ public class ResSalaAlunoDAOTest {
 		this.executeQuery("DELETE FROM reserva_sala_professor WHERE data = \"20/12/2034\";");
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarAlunoInexistente() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarAlunoInexistente() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("21/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 		this.insert_into(reserva);
@@ -357,7 +357,7 @@ public class ResSalaAlunoDAOTest {
 				"Grupo de Estudos", "120", new Aluno("tepp", "501.341.852-69", "456678", "", ""));
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva, reserva2);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva, reserva2);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -366,17 +366,17 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva2);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarSalaInexistente() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarSalaInexistente() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("21/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 		this.insert_into(reserva);
 		
-		ReservaSalaAluno reserva2 = new ReservaSalaAluno("20/12/34", "8:00", new Sala("22277883", "Laboratorio", "120"),
+		ReservaSalaAluno reserva2 = new ReservaSalaAluno("20/12/34", "8:00", new Room("22277883", "Laboratorio", "120"),
 				"Grupo de Estudos", "120", aluno1);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva, reserva2);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva, reserva2);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -385,8 +385,8 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva2);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarNaoHaCadeira() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarNaoHaCadeira() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "30", aluno1);
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno("20/12/34", "8:00", sala1,
@@ -397,7 +397,7 @@ public class ResSalaAlunoDAOTest {
 		this.insert_into(reserva2);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva2, reserva3);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva2, reserva3);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -408,8 +408,8 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva3);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarDataPassouAno() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarDataPassouAno() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "30", aluno1);
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno("20/12/1990", "8:00", sala1,
@@ -417,7 +417,7 @@ public class ResSalaAlunoDAOTest {
 		this.insert_into(reserva);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva, reserva2);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva, reserva2);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -426,8 +426,8 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva2);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarDataPassouMes() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarDataPassouMes() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "30", aluno1);
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno("20/01/2013", "8:00", sala1,
@@ -435,7 +435,7 @@ public class ResSalaAlunoDAOTest {
 		this.insert_into(reserva);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva, reserva2);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva, reserva2);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -444,8 +444,8 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva2);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarDataPassouDia() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarDataPassouDia() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "30", aluno1);
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno(this.dataAtualAMais(-100000000), this.horaAtual(), sala1,
@@ -453,7 +453,7 @@ public class ResSalaAlunoDAOTest {
 		this.insert_into(reserva);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva, reserva2);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva, reserva2);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -462,8 +462,8 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva2);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarHoraPassouHora() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarHoraPassouHora() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "30", aluno1);
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno(this.dataAtual(),
@@ -472,7 +472,7 @@ public class ResSalaAlunoDAOTest {
 		this.insert_into(reserva);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva, reserva2);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva, reserva2);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -481,8 +481,8 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva2);
 		}
 	}
-	@Test (expected= ReservaException.class)
-	public void testAlterarHoraPassouMinutos() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testAlterarHoraPassouMinutos() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "30", aluno1);
 		ReservaSalaAluno reserva2 = new ReservaSalaAluno(this.dataAtual(),
@@ -491,7 +491,7 @@ public class ResSalaAlunoDAOTest {
 		this.insert_into(reserva);
 		
 		try{
-			ResSalaAlunoDAO.getInstance().alterar(reserva, reserva2);
+			ReserveStudentRoomDAO.getInstance().alterar(reserva, reserva2);
 		} finally {
 		
 		if(this.inDB(reserva))
@@ -504,12 +504,12 @@ public class ResSalaAlunoDAOTest {
 	
 	
 	@Test
-	public void testExcluir() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	public void testExcluir() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 		this.insert_into(reserva);
 		
-		ResSalaAlunoDAO.getInstance().excluir(reserva);
+		ReserveStudentRoomDAO.getInstance().delete(reserva);
 		
 		boolean resultado = this.inDB(reserva);
 		
@@ -517,16 +517,16 @@ public class ResSalaAlunoDAOTest {
 			this.delete_from(reserva);
 		assertFalse("Teste de Exclusao.", resultado);
 	}
-	@Test (expected= ReservaException.class)
-	public void testExcluirNulo() throws ReservaException, ClienteException, PatrimonyException, SQLException {
-		ResSalaAlunoDAO.getInstance().excluir(null);
+	@Test (expected= ReserveException.class)
+	public void testExcluirNulo() throws ReserveException, ClienteException, PatrimonyException, SQLException {
+		ReserveStudentRoomDAO.getInstance().delete(null);
 	}
-	@Test (expected= ReservaException.class)
-	public void testExcluirInexistente() throws ReservaException, ClienteException, PatrimonyException, SQLException {
+	@Test (expected= ReserveException.class)
+	public void testExcluirInexistente() throws ReserveException, ClienteException, PatrimonyException, SQLException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "8:00", sala1,
 				"Grupo de Estudos", "120", aluno1);
 
-		ResSalaAlunoDAO.getInstance().excluir(reserva);
+		ReserveStudentRoomDAO.getInstance().delete(reserva);
 		
 		boolean resultado = this.inDB(reserva);
 		
@@ -536,7 +536,7 @@ public class ResSalaAlunoDAOTest {
 	
 	
 	@Test
-	public void testBuscarPorDia() throws SQLException, PatrimonyException, ClienteException, ReservaException {
+	public void testBuscarPorDia() throws SQLException, PatrimonyException, ClienteException, ReserveException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("21/12/34", "8:00", sala1,
 				"Grupo de Estudos", "40", aluno1);
 		
@@ -545,7 +545,7 @@ public class ResSalaAlunoDAOTest {
 		
 		this.insert_into(reserva);
 		this.insert_into(reserva2);
-		Vector<ReservaSalaAluno> vet = ResSalaAlunoDAO.getInstance().buscarPorDia("21/12/34");
+		Vector<ReservaSalaAluno> vet = ReserveStudentRoomDAO.getInstance().findByDate("21/12/34");
 		this.delete_from(reserva);
 		this.delete_from(reserva2);
 		
@@ -564,7 +564,7 @@ public class ResSalaAlunoDAOTest {
 		assertTrue("Teste de busca", resultado && resultado2);
 	}
 	@Test
-	public void testBuscarPorHora() throws SQLException, PatrimonyException, ClienteException, ReservaException {
+	public void testBuscarPorHora() throws SQLException, PatrimonyException, ClienteException, ReserveException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("20/12/34", "9:00", sala1,
 				"Grupo de Estudos", "40", aluno1);
 		
@@ -573,7 +573,7 @@ public class ResSalaAlunoDAOTest {
 		
 		this.insert_into(reserva);
 		this.insert_into(reserva2);
-		Vector<ReservaSalaAluno> vet = ResSalaAlunoDAO.getInstance().buscarPorHora("09:00");
+		Vector<ReservaSalaAluno> vet = ReserveStudentRoomDAO.getInstance().buscarPorHora("09:00");
 		this.delete_from(reserva);
 		this.delete_from(reserva2);
 		
@@ -594,7 +594,7 @@ public class ResSalaAlunoDAOTest {
 	
 	
 	@Test
-	public void testCadeirasDisponiveis() throws SQLException, PatrimonyException, ClienteException, ReservaException {
+	public void testCadeirasDisponiveis() throws SQLException, PatrimonyException, ClienteException, ReserveException {
 		ReservaSalaAluno reserva = new ReservaSalaAluno("21/12/34", "19:00", sala1,
 				"Grupo de Estudos", "40", aluno1);
 		
@@ -603,7 +603,7 @@ public class ResSalaAlunoDAOTest {
 		
 		this.insert_into(reserva);
 		this.insert_into(reserva2);
-		int c = ResSalaAlunoDAO.getInstance().cadeirasDisponiveis(sala1, "21/12/34", "19:00");
+		int c = ReserveStudentRoomDAO.getInstance().availableChairs(sala1, "21/12/34", "19:00");
 		this.delete_from(reserva);
 		this.delete_from(reserva2);
 		assertEquals("Teste de disponibilidade de Cadeiras", c, 30);
@@ -641,25 +641,25 @@ public class ResSalaAlunoDAOTest {
 				"aluno.email = \"" + a.getEmail() + "\" and " +
 				"aluno.matricula = \"" + a.getMatricula() + "\"";
 	}
-	private String select_id_sala(Sala sala){
-		return "SELECT id_sala FROM sala WHERE " +
-				"sala.codigo = \"" + sala.getCode() + "\" and " +
-				"sala.descricao = \"" + sala.getDescription() +  "\" and " +
-				"sala.capacidade = " + sala.getCapacidade();
+	private String select_id_sala(Room room){
+		return "SELECT id_sala FROM room WHERE " +
+				"room.codigo = \"" + room.getCode() + "\" and " +
+				"room.descricao = \"" + room.getDescription() +  "\" and " +
+				"room.capacidade = " + room.getCapacity();
 	}
 	private String where_reserva_sala_aluno(ReservaSalaAluno r){
 		return " WHERE " +
 		"id_aluno = ( " + select_id_aluno(r.getAluno()) + " ) and " +
-		"id_sala = ( " + select_id_sala(r.getSala()) + " ) and " +
-		"finalidade = \"" + r.getFinalidade() + "\" and " +
+		"id_sala = ( " + select_id_sala(r.getRoom()) + " ) and " +
+		"finalidade = \"" + r.getFinality() + "\" and " +
 		"hora = \"" + r.getHora() + "\" and " +
 		"data = \"" + r.getData() + "\" and " +
 		"cadeiras_reservadas = " + r.getCadeiras_reservadas();
 	}
 	private String values_reserva_sala_aluno(ReservaSalaAluno r){
 		return "( " + select_id_aluno(r.getAluno()) + " ), " +
-		"( " + select_id_sala(r.getSala()) + " ), " +
-		"\"" + r.getFinalidade() + "\", " +
+		"( " + select_id_sala(r.getRoom()) + " ), " +
+		"\"" + r.getFinality() + "\", " +
 		"\"" + r.getHora() + "\", " +
 		"\"" + r.getData() + "\", " +
 		r.getCadeiras_reservadas();

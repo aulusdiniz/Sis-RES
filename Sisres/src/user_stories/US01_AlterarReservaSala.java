@@ -8,8 +8,8 @@ import java.util.Date;
 import model.Aluno;
 import model.Professor;
 import model.ReservaSalaAluno;
-import model.ReservaSalaProfessor;
-import model.Sala;
+import model.ReserveRoomProfessor;
+import model.Room;
 
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
@@ -21,19 +21,19 @@ import org.junit.Test;
 
 import persistence.AlunoDAO;
 import persistence.ProfessorDAO;
-import persistence.ResSalaAlunoDAO;
+import persistence.ReserveStudentRoomDAO;
 import persistence.ResSalaProfessorDAO;
 import persistence.SalaDAO;
 import view.Main2;
 import exception.ClienteException;
 import exception.PatrimonyException;
-import exception.ReservaException;
+import exception.ReserveException;
 
 public class US01_AlterarReservaSala {
     private FrameFixture window;
     private Robot robot;
-    private Sala sala;
-    private ReservaSalaProfessor reservaProf;
+    private Room room;
+    private ReserveRoomProfessor reservaProf;
     private ReservaSalaAluno reservaAluno;
     private Aluno aluno;
     private Professor prof;
@@ -49,15 +49,15 @@ public class US01_AlterarReservaSala {
         this.data = formatador.format(date);
     }
 
-    @Before public void setUp() throws PatrimonyException, SQLException, ClienteException, ReservaException {
+    @Before public void setUp() throws PatrimonyException, SQLException, ClienteException, ReserveException {
         robot = BasicRobot.robotWithNewAwtHierarchy();
         robot.settings().delayBetweenEvents(5);
 
         window = new FrameFixture(robot, new Main2());
         window.show(new Dimension(900, 500)); // shows the frame to test
 
-        sala = new Sala("code", "Sala para testes de aceitacao", "123");
-        SalaDAO.getInstance().incluir(sala);
+        room = new Room("code", "Room para testes de aceitacao", "123");
+        SalaDAO.getInstance().incluir(room);
 
         prof = new Professor("Professor Teste", "658.535.144-40", "110038096", "9211-2144", "teste incluir repetido");
         ProfessorDAO.getInstance().include(prof);
@@ -72,20 +72,20 @@ public class US01_AlterarReservaSala {
 
         AlunoDAO.getInstance().include(aluno);
 
-        reservaAluno = new ReservaSalaAluno(data, "23:59", sala, "abc", "100", aluno);
-        ResSalaAlunoDAO.getInstance().incluir(reservaAluno);
+        reservaAluno = new ReservaSalaAluno(data, "23:59", room, "abc", "100", aluno);
+        ReserveStudentRoomDAO.getInstance().incluir(reservaAluno);
 
-        window.button("Sala").click();
+        window.button("Room").click();
         dialog = window.dialog("SalaView");
     }
 
-    @After public void tearDown() throws SQLException, PatrimonyException, ClienteException, ReservaException {
+    @After public void tearDown() throws SQLException, PatrimonyException, ClienteException, ReserveException {
         if (reservaProf != null)
             ResSalaProfessorDAO.getInstance().excluir(reservaProf);
         if (reservaAluno != null)
-            ResSalaAlunoDAO.getInstance().excluir(reservaAluno);
-        if (sala != null)
-            SalaDAO.getInstance().excluir(sala);
+            ReserveStudentRoomDAO.getInstance().delete(reservaAluno);
+        if (room != null)
+            SalaDAO.getInstance().excluir(room);
         if (aluno != null)
             AlunoDAO.getInstance().delete(aluno);
         if (prof != null)
@@ -101,7 +101,7 @@ public class US01_AlterarReservaSala {
         }
 
     }
-    @Test public void testCenario2AlunoCadeirasIndisponiveis() throws SQLException, ClienteException, PatrimonyException, ReservaException {
+    @Test public void testCenario2AlunoCadeirasIndisponiveis() throws SQLException, ClienteException, PatrimonyException, ReserveException {
         
         dialog.table("tabelaPatrimonio").selectRows(index);
         dialog.button("Visualizar Horarios").click();
@@ -122,7 +122,7 @@ public class US01_AlterarReservaSala {
         fazerReservaSalaView.textBox("Quantidade de Cadeiras Reservadas").enterText("1234");
         fazerReservaSalaView.button("Reservar").click();
 
-        fazerReservaSalaView.optionPane().requireMessage("A sala nao possui este numero de cadeiras para reservar.");
+        fazerReservaSalaView.optionPane().requireMessage("A room nao possui este numero de cadeiras para reservar.");
         fazerReservaSalaView.optionPane().okButton().click();
 
     }

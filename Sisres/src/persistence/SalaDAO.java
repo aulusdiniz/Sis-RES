@@ -1,6 +1,6 @@
 package persistence;
 
-import model.Sala;
+import model.Room;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,11 +13,11 @@ import exception.PatrimonyException;
 public class SalaDAO {
 
 	//Mensagens
-		private static final String SALA_JA_EXISTENTE = "Sala ja cadastrada.";
-		private static final String SALA_NAO_EXISTENTE = "Sala nao cadastrada.";
-		private static final String SALA_EM_USO = "Sala esta sendo utilizada em uma reserva.";
-		private static final String SALA_NULA = "Sala esta nula.";
-		private static final String CODIGO_JA_EXISTENTE = "Sala com o mesmo codigo ja cadastrada.";
+		private static final String SALA_JA_EXISTENTE = "Room ja cadastrada.";
+		private static final String SALA_NAO_EXISTENTE = "Room nao cadastrada.";
+		private static final String SALA_EM_USO = "Room esta sendo utilizada em uma reserva.";
+		private static final String SALA_NULA = "Room esta nula.";
+		private static final String CODIGO_JA_EXISTENTE = "Room com o mesmo codigo ja cadastrada.";
 	
 	//Singleton
 		private static SalaDAO instance;
@@ -31,19 +31,19 @@ public class SalaDAO {
 	//
 
 		
-	public void incluir(Sala sala) throws SQLException, PatrimonyException {	
-		if(sala == null)
+	public void incluir(Room room) throws SQLException, PatrimonyException {	
+		if(room == null)
 			throw new PatrimonyException(SALA_NULA);
-		else if(this.inDBCodigo(sala.getCode()))
+		else if(this.inDBCodigo(room.getCode()))
 			throw new PatrimonyException(CODIGO_JA_EXISTENTE);
 		this.updateQuery("INSERT INTO " +
-					"sala (codigo, descricao, capacidade) VALUES (" +
-					"\"" + sala.getCode() + "\", " +
-					"\"" + sala.getDescription() + "\", " +
-					sala.getCapacidade() + ");");
+					"room (codigo, descricao, capacidade) VALUES (" +
+					"\"" + room.getCode() + "\", " +
+					"\"" + room.getDescription() + "\", " +
+					room.getCapacity() + ");");
 	}
 
-	public void alterar(Sala old_sala, Sala new_sala) throws SQLException, PatrimonyException {
+	public void alterar(Room old_sala, Room new_sala) throws SQLException, PatrimonyException {
 		if(new_sala == null)
 			throw new PatrimonyException(SALA_NULA);
 		if(old_sala == null)
@@ -59,14 +59,14 @@ public class SalaDAO {
 		else if(!old_sala.getCode().equals(new_sala.getCode()) && this.inDBCodigo(new_sala.getCode()))
 			throw new PatrimonyException(CODIGO_JA_EXISTENTE);
 		if(!this.inDB(new_sala)){
-			String msg = "UPDATE sala SET " +				
+			String msg = "UPDATE room SET " +				
 				"codigo = \"" + new_sala.getCode() + "\", " +
 				"descricao = \"" + new_sala.getDescription() + "\", " +
-				"capacidade = " + new_sala.getCapacidade() +
+				"capacidade = " + new_sala.getCapacity() +
 				" WHERE " +
-				"sala.codigo = \"" + old_sala.getCode() + "\" and " +
-				"sala.descricao = \"" + old_sala.getDescription() +  "\" and " +
-				"sala.capacidade = " + old_sala.getCapacidade() +";";
+				"room.codigo = \"" + old_sala.getCode() + "\" and " +
+				"room.descricao = \"" + old_sala.getDescription() +  "\" and " +
+				"room.capacidade = " + old_sala.getCapacity() +";";
 			con.setAutoCommit(false);
 			pst = con.prepareStatement(msg);
 			pst.executeUpdate();
@@ -79,16 +79,16 @@ public class SalaDAO {
 		con.close();
 	}
 
-	public void excluir(Sala sala) throws SQLException, PatrimonyException {
-		if(sala == null)
+	public void excluir(Room room) throws SQLException, PatrimonyException {
+		if(room == null)
 			throw new PatrimonyException(SALA_NULA);
-		else if(this.inOtherDB(sala))
+		else if(this.inOtherDB(room))
 			throw new PatrimonyException(SALA_EM_USO);
-		else if(this.inDB(sala)){
-			this.updateQuery("DELETE FROM sala WHERE " +
-				"sala.codigo = \"" + sala.getCode() + "\" and " +
-				"sala.descricao = \"" + sala.getDescription() +  "\" and " +
-				"sala.capacidade = " + sala.getCapacidade() + ";"				
+		else if(this.inDB(room)){
+			this.updateQuery("DELETE FROM room WHERE " +
+				"room.codigo = \"" + room.getCode() + "\" and " +
+				"room.descricao = \"" + room.getDescription() +  "\" and " +
+				"room.capacidade = " + room.getCapacity() + ";"				
 				);
 		}
 		else
@@ -97,17 +97,17 @@ public class SalaDAO {
 
 	
 	
-	public Vector<Sala> buscarTodos() throws SQLException, PatrimonyException {
-		return this.buscar("SELECT * FROM sala;");
+	public Vector<Room> buscarTodos() throws SQLException, PatrimonyException {
+		return this.buscar("SELECT * FROM room;");
 	}
-	public Vector<Sala> buscarPorCodigo(String valor) throws SQLException, PatrimonyException {
-		return this.buscar("SELECT * FROM sala WHERE codigo = " + "\"" + valor + "\";");
+	public Vector<Room> buscarPorCodigo(String valor) throws SQLException, PatrimonyException {
+		return this.buscar("SELECT * FROM room WHERE codigo = " + "\"" + valor + "\";");
 	}
-	public Vector<Sala> buscarPorDescricao(String valor) throws SQLException, PatrimonyException {
-		return this.buscar("SELECT * FROM sala WHERE descricao = " + "\"" + valor + "\";");
+	public Vector<Room> buscarPorDescricao(String valor) throws SQLException, PatrimonyException {
+		return this.buscar("SELECT * FROM room WHERE descricao = " + "\"" + valor + "\";");
 	}
-	public Vector<Sala> buscarPorCapacidade(String valor) throws SQLException, PatrimonyException {
-		return this.buscar("SELECT * FROM sala WHERE capacidade = " + valor + ";");
+	public Vector<Room> buscarPorCapacidade(String valor) throws SQLException, PatrimonyException {
+		return this.buscar("SELECT * FROM room WHERE capacidade = " + valor + ";");
 	}
 	
 	
@@ -115,8 +115,8 @@ public class SalaDAO {
 	 * Metodos Privados
 	 * */
 	
-	private Vector<Sala> buscar(String query) throws SQLException, PatrimonyException {
-		Vector<Sala> vet = new Vector<Sala>();
+	private Vector<Room> buscar(String query) throws SQLException, PatrimonyException {
+		Vector<Room> vet = new Vector<Room>();
 		
 		Connection con =  FactoryConnection.getInstance().getConnection();
 		
@@ -152,29 +152,29 @@ public class SalaDAO {
 			return true;
 		}
 	}
-	private boolean inDB(Sala sala) throws SQLException{
-		return this.inDBGeneric("SELECT * FROM sala WHERE " +
-				"sala.codigo = \"" + sala.getCode() + "\" and " +
-				"sala.descricao = \"" + sala.getDescription() + "\" and " +
-				"sala.capacidade = " + sala.getCapacidade() +
+	private boolean inDB(Room room) throws SQLException{
+		return this.inDBGeneric("SELECT * FROM room WHERE " +
+				"room.codigo = \"" + room.getCode() + "\" and " +
+				"room.descricao = \"" + room.getDescription() + "\" and " +
+				"room.capacidade = " + room.getCapacity() +
 				";");
 	}
 	private boolean inDBCodigo(String codigo) throws SQLException{
-		return this.inDBGeneric("SELECT * FROM sala WHERE " +
-				"sala.codigo = \"" + codigo + "\";");
+		return this.inDBGeneric("SELECT * FROM room WHERE " +
+				"room.codigo = \"" + codigo + "\";");
 	}
-	private boolean inOtherDB(Sala sala) throws SQLException{
+	private boolean inOtherDB(Room room) throws SQLException{
 		if( this.inDBGeneric("SELECT * FROM reserva_sala_professor WHERE " +
-				"id_sala = (SELECT id_sala FROM sala WHERE " +
-				"sala.codigo = \"" + sala.getCode() + "\" and " +
-				"sala.descricao = \"" + sala.getDescription() +  "\" and " +
-				"sala.capacidade = " + sala.getCapacidade() +" );") == false)
+				"id_sala = (SELECT id_sala FROM room WHERE " +
+				"room.codigo = \"" + room.getCode() + "\" and " +
+				"room.descricao = \"" + room.getDescription() +  "\" and " +
+				"room.capacidade = " + room.getCapacity() +" );") == false)
 		{
 			if(this.inDBGeneric("SELECT * FROM reserva_sala_aluno WHERE " +
-							"id_sala = (SELECT id_sala FROM sala WHERE " +
-							"sala.codigo = \"" + sala.getCode() + "\" and " +
-							"sala.descricao = \"" + sala.getDescription() +  "\" and " +
-							"sala.capacidade = " + sala.getCapacidade() +" );") == false)
+							"id_sala = (SELECT id_sala FROM room WHERE " +
+							"room.codigo = \"" + room.getCode() + "\" and " +
+							"room.descricao = \"" + room.getDescription() +  "\" and " +
+							"room.capacidade = " + room.getCapacity() +" );") == false)
 			{
 				return false;
 			}
@@ -184,8 +184,8 @@ public class SalaDAO {
 	}
 	
 	
-	private Sala fetchSala(ResultSet rs) throws PatrimonyException, SQLException{
-		return new Sala(rs.getString("codigo"), rs.getString("descricao"), rs.getString("capacidade"));
+	private Room fetchSala(ResultSet rs) throws PatrimonyException, SQLException{
+		return new Room(rs.getString("codigo"), rs.getString("descricao"), rs.getString("capacidade"));
 	}
 	
 	private void updateQuery(String msg) throws SQLException{
