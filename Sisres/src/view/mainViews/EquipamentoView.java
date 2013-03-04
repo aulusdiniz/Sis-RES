@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import model.Equipament;
-import view.alteracoes.AlterarEquipamento;
+import view.alteracoes.AlterateEquipament;
 import view.cadastros.CadastroEquipamento;
 import view.diasReservas.DiaReservaEquipamento;
 import control.EquipamentController;
@@ -76,7 +76,7 @@ public class EquipamentoView extends PatrimonioView {
 
     @Override protected void alterarAction(int index) {
 
-        AlterarEquipamento alteracao = new AlterarEquipamento(new javax.swing.JFrame(), true, index);
+        AlterateEquipament alteracao = new AlterateEquipament(new javax.swing.JFrame(), true, index);
         alteracao.setResizable(false);
         alteracao.setVisible(true);
         this.tabelaPatrimonio.setModel(fillTable());

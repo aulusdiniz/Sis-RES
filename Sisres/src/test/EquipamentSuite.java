@@ -11,6 +11,6 @@ import test.persistence.EquipamentDAOTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({EquipamentTest.class, EquipamentDAOTest.class, EquipamentControllerTest.class })
-public class EquipamentoSuite {
+public class EquipamentSuite {
 
 }

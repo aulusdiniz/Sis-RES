@@ -9,15 +9,20 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import control.ProfessorController;
-import exception.ClienteException;
+import exception.ClientException;
 
 /**
  * 
- * @author Parley
+ * @author Arthur
  */
-public class CadastroProfessor extends CadastroCliente {
+public class CadastroProfessor extends CreateClient {
 
-    public CadastroProfessor(java.awt.Frame parent, boolean modal) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4223711910136839110L;
+
+	public CadastroProfessor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.setName("CadastroProfessor");
 
@@ -26,7 +31,6 @@ public class CadastroProfessor extends CadastroCliente {
     @Override public void cadastroAction() {
         try {
             if (cadastroBtn.getText().equals("Cadastrar")) {
-                // TODO add your handling code here:
                 ProfessorController.getInstance().insert(nomeTxtField.getText(), cpfTxtField.getText(), matriculaTxtField.getText(),
                         telefoneTxtField.getText(), emailTxtField.getText());
 
@@ -35,7 +39,7 @@ public class CadastroProfessor extends CadastroCliente {
 
                 this.setVisible(false);
             }
-        } catch (ClienteException ex) {
+        } catch (ClientException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);

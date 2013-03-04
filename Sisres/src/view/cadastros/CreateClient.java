@@ -9,14 +9,14 @@ package view.cadastros;
  * 
  * @author Parley
  */
-public abstract class CadastroCliente extends javax.swing.JDialog {// implements
+public abstract class CreateClient extends javax.swing.JDialog {// implements
                                                                    // CadastroGeral
                                                                    // {
 
     /**
-     * Creates new form CadastroCliente
+     * Creates new form CreateClient
      */
-    public CadastroCliente(java.awt.Frame parent, boolean modal) {
+    public CreateClient(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 

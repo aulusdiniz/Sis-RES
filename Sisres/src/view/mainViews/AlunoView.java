@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 import view.alteracoes.AlterarAluno;
 import view.cadastros.CadastroAluno;
-import view.cadastros.CadastroCliente;
+import view.cadastros.CreateClient;
 import control.ManterAluno;
 import exception.ClienteException;
 
@@ -40,7 +40,7 @@ public class AlunoView extends ClienteView {
 
     @Override public void cadastrarAction() {
 
-        CadastroCliente cadastrar = new CadastroAluno(new javax.swing.JFrame(), true);
+        CreateClient cadastrar = new CadastroAluno(new javax.swing.JFrame(), true);
         cadastrar.setResizable(false);
         cadastrar.setVisible(true);
         tabelaCliente.setModel(fillTable());

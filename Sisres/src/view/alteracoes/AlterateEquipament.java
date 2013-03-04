@@ -9,17 +9,21 @@ import control.EquipamentController;
 import exception.PatrimonyException;
 
 /**
- * 
  * @author Parley
+ * @editor Aulus & Arthur
  */
-public class AlterarEquipamento extends CadastroPatrimonio {
+public class AlterateEquipament extends CadastroPatrimonio {
 
-    private int index2 = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1965502144129340786L;
+	private int index2 = 0;
 
-    public AlterarEquipamento(java.awt.Frame parent, boolean modal, int index) {
+    public AlterateEquipament(java.awt.Frame parent, boolean modal, int index) {
         super(parent, modal);
         this.setTitle("Alterar");
-        this.setName("AlterarEquipamento");
+        this.setName("AlterateEquipament");
         this.cadastroBtn.setText("Alterar");
         this.cadastroBtn.setName("Alterar");
         this.capacidadeLbl.setVisible(false);
@@ -45,7 +49,7 @@ public class AlterarEquipamento extends CadastroPatrimonio {
     @Override protected void cadastroAction() {
         try {
 
-            EquipamentController.getInstance().alterar(codigoTxtField.getText(), descricaoTextArea.getText(),
+            EquipamentController.getInstance().alterate(codigoTxtField.getText(), descricaoTextArea.getText(),
                     EquipamentController.getInstance().getEquipamentVector().get(index2));
 
             JOptionPane.showMessageDialog(this, "Equipamento alterado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE,
