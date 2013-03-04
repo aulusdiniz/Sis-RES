@@ -77,7 +77,7 @@ public class EquipamentControllerTest {
 	
 	@Test
 	public void testAlterarVet() throws SQLException, PatrimonyException {
-		instance.alterar("codigo alterado", "descricao alterarda", e);
+		instance.alterate("codigo alterado", "descricao alterarda", e);
 		Equipament e2 = new Equipament("codigo alterado", "descricao alterarda");
 		assertNotNull("Teste de Inclusao no Equipamento Vet.", procurarNoVetor(e2));
 	}
@@ -85,12 +85,12 @@ public class EquipamentControllerTest {
 	@Test(expected = PatrimonyException.class)
 	public void testAlterarNaoExistente() throws SQLException, PatrimonyException {
 		Equipament eq = new Equipament("codigo", "nao existe");
-		instance.alterar("codigo alterado", "descricao alterarda", eq);
+		instance.alterate("codigo alterado", "descricao alterarda", eq);
 	}
 	
 	@Test(expected = PatrimonyException.class)
 	public void testAlterarNull() throws SQLException, PatrimonyException {
-		instance.alterar("codigo alterado", "descricao alterarda", null);
+		instance.alterate("codigo alterado", "descricao alterarda", null);
 	}
 	
 	@Test (expected = PatrimonyException.class)

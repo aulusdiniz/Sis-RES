@@ -14,7 +14,7 @@ import exception.PatrimonyException;
  * Testa Patrimonio, de modo indireto por causa da Heranca de Equipamento
  * */
 
-public class EquipamentoTest {
+public class EquipamentTest {
 
 	Equipament eq;
 	
