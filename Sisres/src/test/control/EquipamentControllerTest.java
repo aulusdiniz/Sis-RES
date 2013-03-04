@@ -1,6 +1,6 @@
 package test.control;
 
-import control.KeepEquipament;
+import control.EquipamentController;
 import exception.PatrimonyException;
 
 import java.sql.SQLException;
@@ -16,18 +16,18 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class ManterEquipamentoTest {
+public class EquipamentControllerTest {
 
-	static KeepEquipament instance;
+	static EquipamentController instance;
 	Vector<Equipament> todos;
 	Equipament e;
  
-	public ManterEquipamentoTest() {
+	public EquipamentControllerTest() {
 	}
 
 	@BeforeClass
 	public static void setUpClass() throws PatrimonyException {
-		instance = KeepEquipament.getInstance();
+		instance = EquipamentController.getInstance();
 	}
 
 	@AfterClass
@@ -39,12 +39,12 @@ public class ManterEquipamentoTest {
 	public void setUp() throws Exception {
 		e = new Equipament("codigo", "descricao");
 		instance.insert("codigo","descricao");
-		todos = instance.getEquipament_vector();
+		todos = instance.getEquipamentVector();
 	}
 
 	@After
 	public void tearDown() throws SQLException, PatrimonyException {
-		todos = instance.getEquipament_vector();
+		todos = instance.getEquipamentVector();
 		Iterator<Equipament> i = todos.iterator();
 		while(i.hasNext()){
 			e = i.next();
@@ -65,7 +65,7 @@ public class ManterEquipamentoTest {
 	
 	@Test
 	public void testSingleton(){
-		KeepEquipament me = KeepEquipament.getInstance();
+		EquipamentController me = EquipamentController.getInstance();
 		assertSame("Instancias diferentes", me, instance);
 		
 	}
@@ -100,7 +100,7 @@ public class ManterEquipamentoTest {
 	}
 	
 	public Equipament procurarNoVetor(Equipament teste) throws PatrimonyException, SQLException {
-		todos = instance.getEquipament_vector();
+		todos = instance.getEquipamentVector();
 		Iterator<Equipament> i = todos.iterator();
 		while(i.hasNext()){
 			Equipament e = i.next();

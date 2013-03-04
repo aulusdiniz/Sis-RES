@@ -10,7 +10,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import model.Professor;
-import control.ManterProfessor;
+import control.ProfessorController;
 import control.ReserveEquipamentProfessorController;
 import exception.ClienteException;
 import exception.PatrimonyException;
@@ -33,7 +33,7 @@ public abstract class ReservaEquipamentoView extends javax.swing.JDialog {
 
     protected void getProfessor() {
         try {
-            Vector<Professor> professor = ManterProfessor.getInstance().searchCpf(this.cpfTextField.getText());
+            Vector<Professor> professor = ProfessorController.getInstance().searchCpf(this.cpfTextField.getText());
             if (professor.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Professor nao Cadastrado."
                         + " Digite o CPF correto ou cadastre o professor desejado", "Erro", JOptionPane.ERROR_MESSAGE, null);

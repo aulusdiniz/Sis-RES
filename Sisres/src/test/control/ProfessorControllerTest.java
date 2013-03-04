@@ -17,16 +17,16 @@ import org.junit.Test;
 import persistence.FactoryConnection;
 
 
-import control.ManterProfessor;
+import control.ProfessorController;
 import exception.ClienteException;
 
-public class ManterProfessorTest {
+public class ProfessorControllerTest {
 
 	private static Vector<Professor> vet;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		vet = ManterProfessor.getInstance().getProfessores_vet();
+		vet = ProfessorController.getInstance().getProfessores_vet();
 	}
 
 	@AfterClass
@@ -37,14 +37,14 @@ public class ManterProfessorTest {
 	
 	@Test
 	public void testInstance() {
-		assertTrue("Teste de Intancia de ManterProfessor", ManterProfessor.getInstance() instanceof ManterProfessor);
+		assertTrue("Teste de Intancia de ProfessorController", ProfessorController.getInstance() instanceof ProfessorController);
 	}
 	
 	@Test
 	public void testSingleton() {
-		ManterProfessor p = ManterProfessor.getInstance();
-		ManterProfessor q = ManterProfessor.getInstance();
-		assertSame("Teste Singleton de ManterProfessor", p, q);
+		ProfessorController p = ProfessorController.getInstance();
+		ProfessorController q = ProfessorController.getInstance();
+		assertSame("Teste Singleton de ProfessorController", p, q);
 	}
 	
 	
@@ -52,7 +52,7 @@ public class ManterProfessorTest {
 	@Test
 	public void testInserirVet() throws ClienteException, SQLException {
 		Professor prof = new Professor("Nome para Incluir", "868.563.327-34", "123456", "1234-5678", "Nome@email");
-		ManterProfessor.getInstance().insert("Nome para Incluir", "868.563.327-34", "123456", "1234-5678", "Nome@email");
+		ProfessorController.getInstance().insert("Nome para Incluir", "868.563.327-34", "123456", "1234-5678", "Nome@email");
 		
 		boolean resultado = this.estaNoBanco("SELECT * FROM professor WHERE " +
 				"professor.nome = \"" + prof.getNome() + "\" and " +
@@ -89,7 +89,7 @@ public class ManterProfessorTest {
 				"\"" + prof.getEmail() + "\", " +
 				"\"" + prof.getMatricula() + "\"); ");
 		
-		ManterProfessor.getInstance().alterar("Nome para Alterar", "868.563.327-34", "123456", 
+		ProfessorController.getInstance().alterar("Nome para Alterar", "868.563.327-34", "123456", 
 				"1234-5678", "Nome@email", prof);
 		
 		boolean resultado =  this.estaNoBanco("SELECT * FROM professor WHERE " +
@@ -121,7 +121,7 @@ public class ManterProfessorTest {
 				"\"" + prof.getEmail() + "\", " +
 				"\"" + prof.getMatricula() + "\");");
 		
-		ManterProfessor.getInstance().delete(prof);
+		ProfessorController.getInstance().delete(prof);
 		
 		boolean resultado =  this.estaNoBanco("SELECT * FROM professor WHERE " +
 				"professor.nome = \"" + prof.getNome() + "\" and " +

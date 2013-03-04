@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import control.KeepEquipament;
+import control.EquipamentController;
 import exception.PatrimonyException;
 
 /**
@@ -27,7 +27,7 @@ public class CadastroEquipamento extends CadastroPatrimonio {
     @Override protected void cadastroAction() {
 
         try {
-            KeepEquipament.getInstance().insert(codigoTxtField.getText(), descricaoTextArea.getText());
+            EquipamentController.getInstance().insert(codigoTxtField.getText(), descricaoTextArea.getText());
             JOptionPane.showMessageDialog(this, "Equipamento Cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE,
                     null);
             this.setVisible(false);

@@ -19,7 +19,7 @@ import persistence.FactoryConnection;
 import control.ManterAluno;
 import exception.ClienteException;
 
-public class ManterAlunoTest {
+public class StudentControllerTest {
 
 	private static Vector<Aluno> alunos;
 	

@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 
-public class ManterSalaTest {
+public class RoomControllerTest {
 	
 	@BeforeClass
 	public static void setUpClass(){

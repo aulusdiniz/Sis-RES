@@ -7,18 +7,18 @@ import persistence.StudentDAO;
 import exception.ClientException;
 import model.Student;
 
-public class KeepStudent {
+public class StudentController {
 	
 	private Vector<Student> students_vet = new Vector<Student>();
 	
 		//Singleton
-		private static KeepStudent instance;
-		private KeepStudent() {
+		private static StudentController instance;
+		private StudentController() {
 			//nothing
 		}
-		public static KeepStudent getInstance() {
+		public static StudentController getInstance() {
 		if(instance == null) {
-			instance = new KeepStudent();
+			instance = new StudentController();
 		}
 		return instance;
 	}

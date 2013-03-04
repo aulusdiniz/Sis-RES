@@ -6,18 +6,18 @@ import persistence.ProfessorDAO;
 import exception.ClientException;
 import model.Professor;
 
-public class ManterProfessor {
+public class ProfessorController {
 	
 	private Vector<Professor> professores_vector = new Vector<Professor>();
 	
-	private static ManterProfessor instance;
-	private ManterProfessor() {
+	private static ProfessorController instance;
+	private ProfessorController() {
 		//nothing
 	}
 	
-	public static ManterProfessor getInstance() {
+	public static ProfessorController getInstance() {
 		if(instance == null) {
-			instance = new ManterProfessor();
+			instance = new ProfessorController();
 		}
 	return instance;
 	} 

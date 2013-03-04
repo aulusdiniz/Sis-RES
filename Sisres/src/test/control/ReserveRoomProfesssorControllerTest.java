@@ -25,7 +25,7 @@ import persistence.FactoryConnection;
 import persistence.ProfessorDAO;
 import persistence.SalaDAO;
 
-public class ManterResSalaProfessorTest {
+public class ReserveRoomProfesssorControllerTest {
 	private static Room sala1;
 	private static Professor professor1;
 	private static Vector<ReserveRoomProfessor> vet;
