@@ -53,7 +53,7 @@ public class US06_CadastrarSala {
         window = new FrameFixture(robot, new Main2());
         window.show(new Dimension(900, 500)); // shows the frame to test
         window.button("Room").click();
-        dialog = window.dialog("SalaView");
+        dialog = window.dialog("RoomView");
     }
 
     @After public void tearDown() throws SQLException, PatrimonyException {

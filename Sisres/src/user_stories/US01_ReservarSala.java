@@ -25,7 +25,7 @@ import persistence.ReserveStudentRoomDAO;
 import persistence.ResSalaProfessorDAO;
 import persistence.RoomDAO;
 import view.Main2;
-import view.mainViews.AlunoView;
+import view.mainViews.StudentView;
 import exception.ClienteException;
 import exception.PatrimonyException;
 import exception.ReserveException;
@@ -104,7 +104,7 @@ public class US01_ReservarSala {
         indexReserva = ResSalaProfessorDAO.getInstance().buscarPorData(data).size() - 1;
 
         window.button("Room").click();
-        dialog = window.dialog("SalaView");
+        dialog = window.dialog("RoomView");
     }
 
     @After public void tearDown() throws SQLException, PatrimonyException, ClienteException, ReserveException {

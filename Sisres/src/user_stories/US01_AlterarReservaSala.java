@@ -76,7 +76,7 @@ public class US01_AlterarReservaSala {
         ReserveStudentRoomDAO.getInstance().incluir(reservaAluno);
 
         window.button("Room").click();
-        dialog = window.dialog("SalaView");
+        dialog = window.dialog("RoomView");
     }
 
     @After public void tearDown() throws SQLException, PatrimonyException, ClienteException, ReserveException {

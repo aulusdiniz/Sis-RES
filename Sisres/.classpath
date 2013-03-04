@@ -5,6 +5,7 @@
 	<classpathentry exported="true" kind="lib" path="C:/Program Files/mysql-connector-java/emma.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Program Files/mysql-connector-java/emma_ant.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Program Files/mysql-connector-java/mysql-connector-java-5.1.22-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Desktop/JCaledar/lib/jcalendar-1.4.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -2,7 +2,7 @@ package model;
 
 import exception.ReserveException;
 
-public class ReserveRoomStudent extends ReserveRoom{
+public class ReserveStudentRoom extends ReserveRoom{
 	
 	private Student student;
 	private String reservedChairs;
@@ -14,7 +14,7 @@ public class ReserveRoomStudent extends ReserveRoom{
 		private final String CHAIRS_OVER_LIMIT = "A room nao possui este numero de cadeiras para reservar.";
 		private final String CHAIRS_PATTERN = "^[\\d]+$";
 
-	public ReserveRoomStudent(String data, String hora, Room room,
+	public ReserveStudentRoom(String data, String hora, Room room,
 			String finalidade, String reservedChairs, Student student) throws ReserveException {
 		super(data, hora, room, finalidade);
 		this.setStudent(student);
@@ -53,10 +53,10 @@ public class ReserveRoomStudent extends ReserveRoom{
 	}
 
 
-	public boolean equals(ReserveRoomStudent reserveRoomStudent) {
-		return (super.equals(reserveRoomStudent) &&
-				this.getStudent().equals(reserveRoomStudent.getStudent()) &&
-				this.getReservedChairs().equals(reserveRoomStudent.getReservedChairs())
+	public boolean equals(ReserveStudentRoom reserveStudentRoom) {
+		return (super.equals(reserveStudentRoom) &&
+				this.getStudent().equals(reserveStudentRoom.getStudent()) &&
+				this.getReservedChairs().equals(reserveStudentRoom.getReservedChairs())
 				);
 	}
 

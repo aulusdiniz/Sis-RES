@@ -18,13 +18,13 @@ import exception.PatrimonyException;
  * 
  * @author Parley
  */
-public class EquipamentoView extends PatrimonioView {
+public class EquipamentView extends PatrimonioView {
 
-    public EquipamentoView(java.awt.Frame parent, boolean modal) {
+    public EquipamentView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         pesquisarLbl.setText("Digite o eqpto. desejado: ");
         this.setTitle("Equipamentos");
-        this.setName("EquipamentoView");
+        this.setName("EquipamentView");
     }
 
     private Vector<String> fillDataVector(Equipament equipamento) {

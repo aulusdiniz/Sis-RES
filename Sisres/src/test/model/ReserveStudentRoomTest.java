@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import model.Student;
-import model.ReserveRoomStudent;
+import model.ReserveStudentRoom;
 import model.Room;
 
 import org.junit.AfterClass;
@@ -31,9 +31,9 @@ public class ReserveStudentRoomTest{
 	public void testInstance() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		ReserveRoomStudent reserva = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno);
-		assertTrue("Teste de Instancia.", reserva instanceof ReserveRoomStudent);
+		assertTrue("Teste de Instancia.", reserva instanceof ReserveStudentRoom);
 	}
 	
 	
@@ -42,7 +42,7 @@ public class ReserveStudentRoomTest{
 	public void testStudentNulo() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = null;
-		new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", "30", aluno);
+		new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", "30", aluno);
 	}
 	
 	
@@ -51,28 +51,28 @@ public class ReserveStudentRoomTest{
 	public void testCadeirasNula() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", null, aluno);
+		new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", null, aluno);
 	}
 	
 	@Test (expected= ReserveException.class)
 	public void testCadeirasVazias() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", "     ", aluno);
+		new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", "     ", aluno);
 	}
 	
 	@Test (expected= ReserveException.class)
 	public void testCadeirasDespadronizadas() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", "3A-", aluno);
+		new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", "3A-", aluno);
 	}
 	
 	@Test (expected= ReserveException.class)
 	public void testCadeirasAcimaCapacidade() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", "121", aluno);
+		new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", "121", aluno);
 	}
 	
 	
@@ -81,13 +81,13 @@ public class ReserveStudentRoomTest{
 	public void testFinalidadeNula() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room, null, "11", aluno);
+		new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room, null, "11", aluno);
 	}
 	@Test (expected= ReserveException.class)
 	public void testFinalidadeVazia() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room, "     ", "11", aluno);
+		new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room, "     ", "11", aluno);
 	}
 	
 	
@@ -96,7 +96,7 @@ public class ReserveStudentRoomTest{
 	public void testSalaNula() throws PatrimonyException, ClientException, ReserveException {
 		Room room = null;
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", "30", aluno);
+		new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room, "Grupo de Estudos", "30", aluno);
 	}
 	
 	
@@ -106,7 +106,7 @@ public class ReserveStudentRoomTest{
 		String hora = this.horaAtualAMais(100000000);
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		ReserveRoomStudent reserva = new ReserveRoomStudent(this.dataAtual(),
+		ReserveStudentRoom reserva = new ReserveStudentRoom(this.dataAtual(),
 				hora, room,
 				"Grupo de Estudos", "120", aluno);
 		assertTrue("", reserva.getHour() == hora);
@@ -115,19 +115,19 @@ public class ReserveStudentRoomTest{
 	public void testHoraNula() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(this.dataAtual(), null, room, "Grupo de Estudos", "120", aluno);
+		new ReserveStudentRoom(this.dataAtual(), null, room, "Grupo de Estudos", "120", aluno);
 	}
 	@Test (expected= ReserveException.class)
 	public void testHoraVazia() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(this.dataAtual(), "    ", room, "Grupo de Estudos", "120", aluno);
+		new ReserveStudentRoom(this.dataAtual(), "    ", room, "Grupo de Estudos", "120", aluno);
 	}
 	@Test (expected= ReserveException.class)
 	public void testHoraDespadronizada() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(this.dataAtual(), "1000", room, "Grupo de Estudos", "120", aluno);
+		new ReserveStudentRoom(this.dataAtual(), "1000", room, "Grupo de Estudos", "120", aluno);
 	}
 	
 	
@@ -137,7 +137,7 @@ public class ReserveStudentRoomTest{
 		String data = "12/2/33";
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		ReserveRoomStudent reserva = new ReserveRoomStudent(data,
+		ReserveStudentRoom reserva = new ReserveStudentRoom(data,
 				"8:00", room, "Grupo de Estudos", "120", aluno);
 
 		assertTrue("", reserva.getDate().equals("12/02/2033"));
@@ -146,19 +146,19 @@ public class ReserveStudentRoomTest{
 	public void testDataNula() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent(null, this.horaAtual(), room, "Grupo de Estudos", "120", aluno);
+		new ReserveStudentRoom(null, this.horaAtual(), room, "Grupo de Estudos", "120", aluno);
 	}
 	@Test (expected= ReserveException.class)
 	public void testDataVazia() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent("    ", this.horaAtual(), room, "Grupo de Estudos", "120", aluno);
+		new ReserveStudentRoom("    ", this.horaAtual(), room, "Grupo de Estudos", "120", aluno);
 	}
 	@Test (expected= ReserveException.class)
 	public void testDataDespadronizada() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		new ReserveRoomStudent("12/q2/2030", this.horaAtual(), room, "Grupo de Estudos", "120", aluno);
+		new ReserveStudentRoom("12/q2/2030", this.horaAtual(), room, "Grupo de Estudos", "120", aluno);
 	}
 	
 	
@@ -166,9 +166,9 @@ public class ReserveStudentRoomTest{
 	public void testEqualsTrue() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		ReserveRoomStudent reserva = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno);
-		ReserveRoomStudent reserva2 = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva2 = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno);
 		assertTrue("Teste de Equals.", reserva.equals(reserva2));
 	}
@@ -177,9 +177,9 @@ public class ReserveStudentRoomTest{
 		Room room = new Room("123", "Room de Aula", "120");
 		Room sala2 = new Room("1233", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		ReserveRoomStudent reserva = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno);
-		ReserveRoomStudent reserva2 = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), sala2,
+		ReserveStudentRoom reserva2 = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), sala2,
 				"Grupo de Estudos", "120", aluno);
 		assertFalse("Teste de Equals False.", reserva.equals(reserva2));
 	}
@@ -188,9 +188,9 @@ public class ReserveStudentRoomTest{
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
 		Student aluno2 = new Student("testInstanceD", "501.341.852-69", "456678", "", "");
-		ReserveRoomStudent reserva = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno);
-		ReserveRoomStudent reserva2 = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva2 = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno2);
 		assertFalse("Teste de Equals False.", reserva.equals(reserva2));
 	}
@@ -198,9 +198,9 @@ public class ReserveStudentRoomTest{
 	public void testEqualsFalseData() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		ReserveRoomStudent reserva = new ReserveRoomStudent(this.dataAtualAMais(100000000), this.horaAtual(), room,
+		ReserveStudentRoom reserva = new ReserveStudentRoom(this.dataAtualAMais(100000000), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno);
-		ReserveRoomStudent reserva2 = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva2 = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno);
 		assertFalse("Teste de Equals False.", reserva.equals(reserva2));
 	}
@@ -208,9 +208,9 @@ public class ReserveStudentRoomTest{
 	public void testEqualsFalseHora() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		ReserveRoomStudent reserva = new ReserveRoomStudent(this.dataAtual(), this.horaAtualAMais(10000000), room,
+		ReserveStudentRoom reserva = new ReserveStudentRoom(this.dataAtual(), this.horaAtualAMais(10000000), room,
 				"Grupo de Estudos", "120", aluno);
-		ReserveRoomStudent reserva2 = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva2 = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno);
 		assertFalse("Teste de Equals False.", reserva.equals(reserva2));
 	}
@@ -218,9 +218,9 @@ public class ReserveStudentRoomTest{
 	public void testEqualsFalseFinalidade() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		ReserveRoomStudent reserva = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos So q n", "120", aluno);
-		ReserveRoomStudent reserva2 = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva2 = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno);
 		assertFalse("Teste de Equals False.", reserva.equals(reserva2));
 	}
@@ -228,9 +228,9 @@ public class ReserveStudentRoomTest{
 	public void testEqualsFalseCadierasReservadas() throws PatrimonyException, ClientException, ReserveException {
 		Room room = new Room("123", "Room de Aula", "120");
 		Student aluno = new Student("testInstance", "501.341.852-69", "456678", "", "");
-		ReserveRoomStudent reserva = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "120", aluno);
-		ReserveRoomStudent reserva2 = new ReserveRoomStudent(this.dataAtual(), this.horaAtual(), room,
+		ReserveStudentRoom reserva2 = new ReserveStudentRoom(this.dataAtual(), this.horaAtual(), room,
 				"Grupo de Estudos", "1", aluno);
 		assertFalse("Teste de Equals False.", reserva.equals(reserva2));
 	}

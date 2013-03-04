@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import model.ReserveEquipamentProfessor;
-import exception.ClienteException;
+import exception.ClientException;
 import exception.PatrimonyException;
 import exception.ReserveException;
 
@@ -30,23 +30,23 @@ public class AlterarReservaEquipamentoView extends ReservaEquipamentoView {
         this.cpfLabel.setEnabled(false);
         this.cpfTextField.setBackground(new Color(200, 208, 254));
         this.cpfTextField.setEditable(false);
-        this.horaTextField.setText(reserva.getHora());
-        this.dataTextField.setText(reserva.getData());
+        this.horaTextField.setText(reserva.getHour());
+        this.dataTextField.setText(reserva.getDate());
         this.professorTextArea.setText(reserva.getProfessor().toString());
     }
 
     public AlterarReservaEquipamentoView(Frame parent, boolean modal, int index, int mes) throws SQLException, PatrimonyException,
-            PatrimonyException, ClienteException, ReserveException {
+            PatrimonyException, ClientException, ReserveException {
         super(parent, modal);
         this.index = index;
-        reserva = this.instanceProf.getReservasMes(mes).get(index);
+        reserva = this.instanceProf.getReserveMonth(mes).get(index);
         resetComponents();
     }
 
     @Override protected void reservarProfessor() {
         try {
 
-            instanceProf.alterar(null, reserva);
+            instanceProf.alterate(null, reserva);
             JOptionPane.showMessageDialog(this, "Reserva alterada com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE, null);
             this.setVisible(false);
         } catch (ReserveException ex) {

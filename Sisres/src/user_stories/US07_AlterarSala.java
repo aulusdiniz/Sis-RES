@@ -56,7 +56,7 @@ public class US07_AlterarSala {
         index = RoomDAO.getInstance().buscarTodos().size() - 1;
 
         window.button("Room").click();
-        dialog = window.dialog("SalaView");
+        dialog = window.dialog("RoomView");
 
     }
 

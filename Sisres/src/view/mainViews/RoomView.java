@@ -23,12 +23,12 @@ import exception.PatrimonyException;
  * 
  * @author Parley
  */
-public class SalaView extends PatrimonioView {
+public class RoomView extends PatrimonioView {
 
-    public SalaView(java.awt.Frame parent, boolean modal) {
+    public RoomView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         pesquisarLbl.setText("Digite a room desejada: ");
-        this.setName("SalaView");
+        this.setName("RoomView");
     }
 
     protected Vector<String> fillDataVector(Room room) {

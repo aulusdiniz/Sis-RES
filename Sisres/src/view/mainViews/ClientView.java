@@ -10,18 +10,18 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import model.Cliente;
+import model.Client;
 
 /**
  * 
  * @author Parley
  */
-public abstract class ClienteView extends javax.swing.JDialog {
+public abstract class ClientView extends javax.swing.JDialog {
 
     /**
-     * Creates new form ClienteView
+     * Creates new form ClientView
      */
-    public ClienteView(java.awt.Frame parent, boolean modal) {
+    public ClientView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -39,19 +39,19 @@ public abstract class ClienteView extends javax.swing.JDialog {
 
     public abstract void excluirAction();
 
-    protected Vector<String> fillDataVector(Cliente cliente) {
+    protected Vector<String> fillDataVector(Client client) {
 
         Vector<String> nomesTabela = new Vector<String>();
 
-        if (cliente == null) {
+        if (client == null) {
             return null;
         }
 
-        nomesTabela.add(cliente.getMatricula());
-        nomesTabela.add(cliente.getNome());
-        nomesTabela.add(cliente.getTelefone());
-        nomesTabela.add(cliente.getCpf());
-        nomesTabela.add(cliente.getEmail());
+        nomesTabela.add(client.getRegistration());
+        nomesTabela.add(client.getName());
+        nomesTabela.add(client.getPhone());
+        nomesTabela.add(client.getCpf());
+        nomesTabela.add(client.getEmail());
 
         return nomesTabela;
 
@@ -60,7 +60,7 @@ public abstract class ClienteView extends javax.swing.JDialog {
     protected DefaultTableModel fillTable() {
         DefaultTableModel table = new DefaultTableModel();
 
-        Iterator<Cliente> i = getIterator();
+        Iterator<Client> i = getIterator();
 
         table.addColumn("Matricula");
         table.addColumn("Nome");
@@ -70,8 +70,8 @@ public abstract class ClienteView extends javax.swing.JDialog {
 
         while (i.hasNext()) {
             // int col, row = 0;
-            Cliente cliente = i.next();
-            table.addRow(fillDataVector(cliente));
+            Client client = i.next();
+            table.addRow(fillDataVector(client));
         }
 
         return table;

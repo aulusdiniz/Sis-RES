@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
 public abstract class PatrimonioView extends JDialog {
 
     /**
-     * Creates new form ClienteView
+     * Creates new form ClientView
      */
     public PatrimonioView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);

@@ -19,7 +19,7 @@ import model.ReserveEquipamentProfessor;
 import view.reservasEquipamentos.FazerReservaEquipamentoView;
 import view.reservasEquipamentos.ReservaEquipamentoView;
 import control.ReserveEquipamentProfessorController;
-import exception.ClienteException;
+import exception.ClientException;
 import exception.PatrimonyException;
 import exception.ReserveException;
 
@@ -29,7 +29,11 @@ import exception.ReserveException;
  */
 public class HorariosReservaEquipamento extends HorariosReservaPatrimonio {
 
-    Equipament eq;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7434906724251517678L;
+	Equipament eq;
     ReserveEquipamentProfessorController instance;
 
     public HorariosReservaEquipamento(java.awt.Frame parent, boolean modal, String data, Equipament eq) {
@@ -41,14 +45,14 @@ public class HorariosReservaEquipamento extends HorariosReservaPatrimonio {
         Vector<String> nomesTabela = new Vector<String>();
         if (o instanceof ReserveEquipamentProfessor) {
             ReserveEquipamentProfessor r = (ReserveEquipamentProfessor) o;
-            if (this.eq != null && (r.getEquipamento().equals(this.eq))) {
+            if (this.eq != null && (r.getEquipament().equals(this.eq))) {
 
                 nomesTabela.add(String.valueOf(index));
-                nomesTabela.add(r.getHora());
-                nomesTabela.add(r.getProfessor().getNome());
-                nomesTabela.add(r.getProfessor().getMatricula());
-                nomesTabela.add(r.getEquipamento().getCode());
-                nomesTabela.add(r.getEquipamento().getDescription());
+                nomesTabela.add(r.getHour());
+                nomesTabela.add(r.getProfessor().getName());
+                nomesTabela.add(r.getProfessor().getRegistration());
+                nomesTabela.add(r.getEquipament().getCode());
+                nomesTabela.add(r.getEquipament().getDescription());
             }
         }
 
@@ -70,7 +74,7 @@ public class HorariosReservaEquipamento extends HorariosReservaPatrimonio {
 
             this.mes = Integer.parseInt(this.data.substring(3, 5));
 
-            Vector<ReserveEquipamentProfessor> v = instance.getReservasMes(mes);
+            Vector<ReserveEquipamentProfessor> v = instance.getReserveMonth(mes);
             if (v != null)
                 for (int i = 0; i < v.size(); i++) {
                     table.addRow(fillDataVector(v.get(i), i));
@@ -81,7 +85,7 @@ public class HorariosReservaEquipamento extends HorariosReservaPatrimonio {
             Logger.getLogger(HorariosReservaPatrimonio.class.getName()).log(Level.SEVERE, null, ex);
         } catch (PatrimonyException ex) {
             Logger.getLogger(HorariosReservaPatrimonio.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClienteException ex) {
+        } catch (ClientException ex) {
             Logger.getLogger(HorariosReservaPatrimonio.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ReserveException ex) {
             Logger.getLogger(HorariosReservaPatrimonio.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,11 +97,11 @@ public class HorariosReservaEquipamento extends HorariosReservaPatrimonio {
     @Override protected void cancelarReservaAction(int index) {
         try {
             int confirm = JOptionPane.showConfirmDialog(this,
-                    "Deseja mesmo excluir Reserva?\n" + instance.getReservasMes(mes).get(index).toString(), "Excluir",
+                    "Deseja mesmo excluir Reserva?\n" + instance.getReserveMonth(mes).get(index).toString(), "Excluir",
                     JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                this.instance.delete(instance.getReservasMes(mes).get(index));
+                this.instance.delete(instance.getReserveMonth(mes).get(index));
                 JOptionPane.showMessageDialog(this, "Reserva excluida com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE,
                         null);
             }
@@ -106,7 +110,7 @@ public class HorariosReservaEquipamento extends HorariosReservaPatrimonio {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (PatrimonyException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
-        } catch (ClienteException ex) {
+        } catch (ClientException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (ReserveException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
@@ -121,7 +125,7 @@ public class HorariosReservaEquipamento extends HorariosReservaPatrimonio {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (PatrimonyException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
-        } catch (ClienteException ex) {
+        } catch (ClientException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (ReserveException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
@@ -140,7 +144,7 @@ public class HorariosReservaEquipamento extends HorariosReservaPatrimonio {
          * ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null); } catch
          * (PatrimonioException ex) { JOptionPane.showMessageDialog(this,
          * ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null); } catch
-         * (ClienteException ex) { JOptionPane.showMessageDialog(this,
+         * (ClientException ex) { JOptionPane.showMessageDialog(this,
          * ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null); } catch
          * (ReserveException ex) { JOptionPane.showMessageDialog(this,
          * ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null); }

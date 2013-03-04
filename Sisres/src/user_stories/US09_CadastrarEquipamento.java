@@ -59,7 +59,7 @@ public class US09_CadastrarEquipamento {
         window = new FrameFixture(robot, new Main2());
         window.show(new Dimension(900, 500)); // shows the frame to test
         window.button("Equipamento").click();
-        dialog = window.dialog("EquipamentoView");
+        dialog = window.dialog("EquipamentView");
     }
 
     @After public void tearDown() throws SQLException, PatrimonyException {

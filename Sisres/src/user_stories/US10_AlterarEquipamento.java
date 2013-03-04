@@ -67,7 +67,7 @@ public class US10_AlterarEquipamento {
     index = EquipamentDAO.getInstance().searchAllEquipaments().size() - 1;
 
     window.button("Equipamento").click();
-    dialog = window.dialog("EquipamentoView");
+    dialog = window.dialog("EquipamentView");
 
 }
 

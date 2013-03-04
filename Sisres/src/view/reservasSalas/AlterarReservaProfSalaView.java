@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import model.ReserveRoomProfessor;
-import exception.ClienteException;
+import exception.ClientException;
 import exception.PatrimonyException;
 import exception.ReserveException;
 
@@ -33,7 +33,7 @@ public class AlterarReservaProfSalaView extends ReservaSalaView {
     }
 
     public AlterarReservaProfSalaView(Frame parent, boolean modal, int index, String data) throws SQLException,
-            PatrimonyException, PatrimonyException, ClienteException, ReserveException {
+            PatrimonyException, PatrimonyException, ClientException, ReserveException {
         super(parent, modal);
         this.setName("AlterarReservaSalaView");
         this.reservaProfessor = instanceProf.buscarPorData(data).get(index);
@@ -60,17 +60,17 @@ public class AlterarReservaProfSalaView extends ReservaSalaView {
     @Override protected void professorRadioButtonAction() {
         Color blue = new Color(200, 208, 254);
         this.instanceAluno = null;
-        this.alunoRadioButton.setEnabled(false);
+        this.studentRadioButton.setEnabled(false);
         this.cpfTextField.setBackground(blue);
         this.cpfTextField.setEditable(false);
         this.qntCadeirasReservadasTextField.setEditable(true);
         this.qntCadeirasReservadasTextField.setBackground(Color.white);
         this.horaTextField.setBackground(blue);
         this.horaTextField.setEditable(false);
-        this.horaTextField.setText(reservaProfessor.getHora());
-        this.alunoTextArea.setText(reservaProfessor.getProfessor().toString());
+        this.horaTextField.setText(reservaProfessor.getHour());
+        this.studentTextArea.setText(reservaProfessor.getProfessor().toString());
         this.salaTextArea.setText(reservaProfessor.getRoom().toString());
-        this.dataTextField.setText(reservaProfessor.getData());
+        this.dataTextField.setText(reservaProfessor.getDate());
         this.qntCadeirasTxtField.setText(reservaProfessor.getRoom().getCapacity());
         this.qntCadeirasReservadasTextField.setText(reservaProfessor.getRoom().getCapacity());
         this.qntCadeirasReservadasTextField.setBackground(blue);
@@ -79,7 +79,7 @@ public class AlterarReservaProfSalaView extends ReservaSalaView {
         this.verificarCadeiraButton.setEnabled(false);
     }
 
-    @Override protected void alunoRadioButtonAction() {
+    @Override protected void studentRadioButtonAction() {
 
     }
 

@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import model.Professor;
 import control.ProfessorController;
 import control.ReserveEquipamentProfessorController;
-import exception.ClienteException;
+import exception.ClientException;
 import exception.PatrimonyException;
 import exception.ReserveException;
 
@@ -22,7 +22,7 @@ public abstract class ReservaEquipamentoView extends javax.swing.JDialog {
     protected Professor prof;
 
     public ReservaEquipamentoView(java.awt.Frame parent, boolean modal) throws SQLException, PatrimonyException,
-            PatrimonyException, ClienteException, ReserveException {
+            PatrimonyException, ClientException, ReserveException {
         super(parent, modal);
         this.instanceProf = ReserveEquipamentProfessorController.getInstance();
 
@@ -41,7 +41,7 @@ public abstract class ReservaEquipamentoView extends javax.swing.JDialog {
             }
             this.prof = professor.firstElement();
             this.professorTextArea.setText(professor.firstElement().toString());
-        } catch (ClienteException ex) {
+        } catch (ClientException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);

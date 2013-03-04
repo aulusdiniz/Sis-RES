@@ -54,7 +54,7 @@ public class US08_ExcluirSala {
         index = RoomDAO.getInstance().buscarTodos().size() - 1;
 
         window.button("Room").click();
-        dialog = window.dialog("SalaView");
+        dialog = window.dialog("RoomView");
 
     }
 
