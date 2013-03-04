@@ -6,10 +6,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import test.control.ReserveRoomStudentControllerTest;
 import test.model.ResSalaAlunoTest;
-import test.persistence.ResSalaAlunoDAOTest;
+import test.persistence.ReserveRoomStudentDAOTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ResSalaAlunoTest.class, ResSalaAlunoDAOTest.class, ReserveRoomStudentControllerTest.class})
+@SuiteClasses({ResSalaAlunoTest.class, ReserveRoomStudentDAOTest.class, ReserveRoomStudentControllerTest.class})
 public class ReservaSalaAlunoSuite {
 
 }

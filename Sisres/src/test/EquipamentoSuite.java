@@ -6,11 +6,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import test.control.EquipamentControllerTest;
 import test.model.EquipamentoTest;
-import test.persistence.EquipamentoDAOTest;
+import test.persistence.EquipamentDAOTest;
 
 
 @RunWith(Suite.class)
-@SuiteClasses({EquipamentoTest.class, EquipamentoDAOTest.class, EquipamentControllerTest.class })
+@SuiteClasses({EquipamentoTest.class, EquipamentDAOTest.class, EquipamentControllerTest.class })
 public class EquipamentoSuite {
 
 }

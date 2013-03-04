@@ -23,7 +23,7 @@ import persistence.AlunoDAO;
 import persistence.ProfessorDAO;
 import persistence.ReserveStudentRoomDAO;
 import persistence.ResSalaProfessorDAO;
-import persistence.SalaDAO;
+import persistence.RoomDAO;
 import view.Main2;
 import view.mainViews.AlunoView;
 import exception.ClienteException;
@@ -90,7 +90,7 @@ public class US01_ReservarSala {
         window.show(new Dimension(900, 500)); // shows the frame to test
 
         room = new Room("code", "Room para testes de aceitacao", "123");
-        SalaDAO.getInstance().incluir(room);
+        RoomDAO.getInstance().incluir(room);
 
         prof = new Professor("Professor Teste", "658.535.144-40", "110038096", "9211-2144", "teste incluir repetido");
         ProfessorDAO.getInstance().include(prof);
@@ -100,7 +100,7 @@ public class US01_ReservarSala {
 
         dataAtual();
 
-        index = SalaDAO.getInstance().buscarTodos().size() - 1;
+        index = RoomDAO.getInstance().buscarTodos().size() - 1;
         indexReserva = ResSalaProfessorDAO.getInstance().buscarPorData(data).size() - 1;
 
         window.button("Room").click();
@@ -113,7 +113,7 @@ public class US01_ReservarSala {
         if (reservaAluno != null)
             ReserveStudentRoomDAO.getInstance().delete(reservaAluno);
         if (room != null)
-            SalaDAO.getInstance().excluir(room);
+            RoomDAO.getInstance().excluir(room);
         if (aluno != null)
             AlunoDAO.getInstance().delete(aluno);
         if (prof != null)

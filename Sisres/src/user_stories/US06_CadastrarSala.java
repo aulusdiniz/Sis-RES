@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import persistence.SalaDAO;
+import persistence.RoomDAO;
 import view.Main2;
 import exception.PatrimonyException;
 
@@ -58,7 +58,7 @@ public class US06_CadastrarSala {
 
     @After public void tearDown() throws SQLException, PatrimonyException {
         if (room != null)
-            SalaDAO.getInstance().excluir(room);
+            RoomDAO.getInstance().excluir(room);
         window.cleanUp();
     }
 
@@ -90,14 +90,14 @@ public class US06_CadastrarSala {
         sleep();
         cadastro.optionPane().okButton().click();
 
-        index = SalaDAO.getInstance().buscarTodos().size() - 1;
-        room = SalaDAO.getInstance().buscarTodos().get(index);
+        index = RoomDAO.getInstance().buscarTodos().size() - 1;
+        room = RoomDAO.getInstance().buscarTodos().get(index);
     }
 
     @Test public void testCenario2() throws SQLException, PatrimonyException {
 
         room = new Room("code","Room para testes de aceitacao","123");
-        SalaDAO.getInstance().incluir(room);
+        RoomDAO.getInstance().incluir(room);
 
         dialog.button("Cadastrar").click();
         DialogFixture cadastro = dialog.dialog("CadastroSala");

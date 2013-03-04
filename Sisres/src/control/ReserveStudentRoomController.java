@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import model.Student;
-import model.ReserveStudentRoom;
+import model.ReserveRoomStudent;
 import model.Room;
 import persistence.ReserveStudentRoomDAO;
 import exception.ClientException;
@@ -13,7 +13,7 @@ import exception.ReserveException;
 
 public class ReserveStudentRoomController {
 
-	private Vector<ReserveStudentRoom> reserveStudentRoomVector = new Vector<ReserveStudentRoom>();
+	private Vector<ReserveRoomStudent> reserveStudentRoomVector = new Vector<ReserveRoomStudent>();
 	
 	private static ReserveStudentRoomController instance;
 
@@ -28,18 +28,18 @@ public class ReserveStudentRoomController {
 	}
 
 
-	public Vector<ReserveStudentRoom> getReserveHour(String hour) throws SQLException, PatrimonyException, ClientException, ReserveException{
+	public Vector<ReserveRoomStudent> getReserveHour(String hour) throws SQLException, PatrimonyException, ClientException, ReserveException{
 		this.reserveStudentRoomVector = ReserveStudentRoomDAO.getInstance().findByHour(hour);
 		return this.reserveStudentRoomVector; 
 		
 	}
 	
-	public Vector<ReserveStudentRoom> getReservasMes(String data) throws SQLException, PatrimonyException, ClientException, ReserveException{
+	public Vector<ReserveRoomStudent> getReservasMes(String data) throws SQLException, PatrimonyException, ClientException, ReserveException{
 		this.reserveStudentRoomVector = ReserveStudentRoomDAO.getInstance().findByDate(data);
 		return this.reserveStudentRoomVector;
 	}
 	
-	public Vector<ReserveStudentRoom> getResAlunoSala_vet() throws SQLException, PatrimonyException, ClientException, ReserveException {
+	public Vector<ReserveRoomStudent> getResAlunoSala_vet() throws SQLException, PatrimonyException, ClientException, ReserveException {
 		this.reserveStudentRoomVector = ReserveStudentRoomDAO.getInstance().findAll();
 		return this.reserveStudentRoomVector;
 	}
@@ -52,22 +52,22 @@ public class ReserveStudentRoomController {
 		String data, String hour, String finalidade, String cadeiras_reservadas)
 		throws SQLException, ReserveException, ClientException, PatrimonyException {
 
-		ReserveStudentRoom r = new ReserveStudentRoom(data, hour, room, finalidade, cadeiras_reservadas, student);
+		ReserveRoomStudent r = new ReserveRoomStudent(data, hour, room, finalidade, cadeiras_reservadas, student);
 		ReserveStudentRoomDAO.getInstance().include(r);
 		this.reserveStudentRoomVector.add(r);
 	}
 
-	public void alterar(String finalidade, String cadeiras_reservadas, ReserveStudentRoom reserveStudentRoom)
+	public void alterar(String finalidade, String cadeiras_reservadas, ReserveRoomStudent reserveRoomStudent)
 		throws SQLException, ReserveException, ClientException, PatrimonyException {
 
-		ReserveStudentRoom oldReserveStudentRoom = new ReserveStudentRoom(reserveStudentRoom.getDate(), reserveStudentRoom.getHour(), reserveStudentRoom.getRoom(),
-			reserveStudentRoom.getFinality(), reserveStudentRoom.getReservedChairs(), reserveStudentRoom.getStudent());
-		reserveStudentRoom.setFinality(finalidade);
-		reserveStudentRoom.setReservedChairs(cadeiras_reservadas);
-		ReserveStudentRoomDAO.getInstance().alterate(oldReserveStudentRoom, reserveStudentRoom);
+		ReserveRoomStudent oldReserveStudentRoom = new ReserveRoomStudent(reserveRoomStudent.getDate(), reserveRoomStudent.getHour(), reserveRoomStudent.getRoom(),
+			reserveRoomStudent.getFinality(), reserveRoomStudent.getReservedChairs(), reserveRoomStudent.getStudent());
+		reserveRoomStudent.setFinality(finalidade);
+		reserveRoomStudent.setReservedChairs(cadeiras_reservadas);
+		ReserveStudentRoomDAO.getInstance().alterate(oldReserveStudentRoom, reserveRoomStudent);
 	}
 
-	public void excluir(ReserveStudentRoom r) throws SQLException, ReserveException {
+	public void excluir(ReserveRoomStudent r) throws SQLException, ReserveException {
 		ReserveStudentRoomDAO.getInstance().delete(r);
 		this.reserveStudentRoomVector.remove(r);
 	}

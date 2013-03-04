@@ -12,7 +12,7 @@ import exception.PatrimonyException;
 import exception.ReserveException;
 
 import model.Student;
-import model.ReserveStudentRoom;
+import model.ReserveRoomStudent;
 import model.Room;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -54,16 +54,16 @@ public class ReserveStudentRoomDAO extends DAO{
 					"room.descricao = \"" + room.getDescription() +  "\" and " +
 					"room.capacidade = " + room.getCapacity();
 		}
-		private String findReserveByRoomAndStudent(ReserveStudentRoom reserveStudentRoom){
+		private String findReserveByRoomAndStudent(ReserveRoomStudent reserveRoomStudent){
 			return " WHERE " +
-			"id_aluno = ( " + findStudentById(reserveStudentRoom.getStudent()) + " ) and " +
-			"id_sala = ( " + findRoomById(reserveStudentRoom.getRoom()) + " ) and " +
-			"finalidade = \"" + reserveStudentRoom.getFinality() + "\" and " +
-			"hora = \"" + reserveStudentRoom.getHour() + "\" and " +
-			"data = \"" + reserveStudentRoom.getDate() + "\" and " +
-			"cadeiras_reservadas = " + reserveStudentRoom.getReservedChairs();
+			"id_aluno = ( " + findStudentById(reserveRoomStudent.getStudent()) + " ) and " +
+			"id_sala = ( " + findRoomById(reserveRoomStudent.getRoom()) + " ) and " +
+			"finalidade = \"" + reserveRoomStudent.getFinality() + "\" and " +
+			"hora = \"" + reserveRoomStudent.getHour() + "\" and " +
+			"data = \"" + reserveRoomStudent.getDate() + "\" and " +
+			"cadeiras_reservadas = " + reserveRoomStudent.getReservedChairs();
 		}
-		private String findValuesOfReserve(ReserveStudentRoom r){
+		private String findValuesOfReserve(ReserveRoomStudent r){
 			return "( " + findStudentById(r.getStudent()) + " ), " +
 			"( " + findRoomById(r.getRoom()) + " ), " +
 			"\"" + r.getFinality() + "\", " +
@@ -71,7 +71,7 @@ public class ReserveStudentRoomDAO extends DAO{
 			"\"" + r.getDate() + "\", " +
 			r.getReservedChairs();
 		}
-		private String findAtributesvalueByRoomAndStudent(ReserveStudentRoom r){
+		private String findAtributesvalueByRoomAndStudent(ReserveRoomStudent r){
 			return "id_aluno = ( " + findStudentById(r.getStudent()) + " ), " +
 			"id_sala = ( " + findRoomById(r.getRoom()) + " ), " +
 			"finalidade = \"" + r.getFinality() + "\", " +
@@ -79,23 +79,23 @@ public class ReserveStudentRoomDAO extends DAO{
 			"data = \"" + r.getDate() + "\", " +
 			"cadeiras_reservadas = " + r.getReservedChairs();
 		}
-		private String insert(ReserveStudentRoom r){
+		private String insert(ReserveRoomStudent r){
 			return "INSERT INTO " +
 					"reserva_sala_aluno (id_aluno, id_sala, finalidade, hora, data, cadeiras_reservadas) " +
 					"VALUES ( " + findValuesOfReserve(r) + " );";
 		}
-		private String update(ReserveStudentRoom r, ReserveStudentRoom r2){
+		private String update(ReserveRoomStudent r, ReserveRoomStudent r2){
 			return "UPDATE reserva_sala_aluno SET " + 
 					this.findAtributesvalueByRoomAndStudent(r2) +
 					this.findReserveByRoomAndStudent(r) + " ;";
 		}
-		private String deleteFrom(ReserveStudentRoom r){
+		private String deleteFrom(ReserveRoomStudent r){
 			return "DELETE FROM reserva_sala_aluno " + this.findReserveByRoomAndStudent(r) + " ;";
 		}
 
 		
 		
-	public void include(ReserveStudentRoom r) throws ReserveException, SQLException, ClientException, PatrimonyException {
+	public void include(ReserveRoomStudent r) throws ReserveException, SQLException, ClientException, PatrimonyException {
 		if(r == null)
 			throw new ReserveException(NULL);
 		else if(!this.studentInDB(r.getStudent()))
@@ -121,7 +121,7 @@ public class ReserveStudentRoomDAO extends DAO{
 			super.executeQuery(this.insert(r));
 	}
 	
-	public void alterate(ReserveStudentRoom r, ReserveStudentRoom r_new) throws ReserveException, SQLException, ClientException, PatrimonyException{
+	public void alterate(ReserveRoomStudent r, ReserveRoomStudent r_new) throws ReserveException, SQLException, ClientException, PatrimonyException{
 		if(r == null)
 			throw new ReserveException(NULL);
 		else if(r_new == null)
@@ -154,7 +154,7 @@ public class ReserveStudentRoomDAO extends DAO{
 			
 	}
 	
-	public void delete(ReserveStudentRoom r) throws ReserveException, SQLException {
+	public void delete(ReserveRoomStudent r) throws ReserveException, SQLException {
 		if(r == null)
 			throw new ReserveException(NULL);
 		else if(!this.reserveInDB(r))
@@ -163,19 +163,19 @@ public class ReserveStudentRoomDAO extends DAO{
 			super.executeQuery(this.deleteFrom(r));
 	}
 	
-	public Vector<ReserveStudentRoom> findAll() throws SQLException, ClientException, PatrimonyException, ReserveException{
+	public Vector<ReserveRoomStudent> findAll() throws SQLException, ClientException, PatrimonyException, ReserveException{
 		return super.find("SELECT * FROM reserva_sala_aluno " +
 				"INNER JOIN room ON room.id_sala = reserva_sala_aluno.id_sala " +
 				"INNER JOIN student ON student.id_aluno = reserva_sala_aluno.id_aluno;");
 	}
-	public Vector<ReserveStudentRoom> findByDate(String date) throws SQLException, ClientException, PatrimonyException, ReserveException{
+	public Vector<ReserveRoomStudent> findByDate(String date) throws SQLException, ClientException, PatrimonyException, ReserveException{
 		date = this.padronizeDate(date);
 		return super.find("SELECT * FROM reserva_sala_aluno " +
 				"INNER JOIN room ON room.id_sala = reserva_sala_aluno.id_sala " +
 				"INNER JOIN student ON student.id_aluno = reserva_sala_aluno.id_aluno " +
 				"WHERE data = \""+ date + "\";");
 	}
-	public Vector<ReserveStudentRoom> findByHour(String hour) 
+	public Vector<ReserveRoomStudent> findByHour(String hour) 
 			throws SQLException, ClientException, PatrimonyException, ReserveException{
 		hour = this.padronizeHour(hour);
 		return super.find("SELECT * FROM reserva_sala_aluno " +
@@ -189,11 +189,11 @@ public class ReserveStudentRoomDAO extends DAO{
 			throws SQLException, PatrimonyException, ClientException, ReserveException{
 		data = this.padronizeDate(data);
 		hora = this.padronizeHour(hora);
-		Vector<ReserveStudentRoom> vet = this.findAll();
-		Iterator<ReserveStudentRoom> iterator =  vet.iterator();
+		Vector<ReserveRoomStudent> vet = this.findAll();
+		Iterator<ReserveRoomStudent> iterator =  vet.iterator();
 		int total = Integer.parseInt(room.getCapacity());
 		while(iterator.hasNext()){
-			ReserveStudentRoom r = iterator.next();
+			ReserveRoomStudent r = iterator.next();
 			if(r.getRoom().equals(room) && r.getDate().equals(data) && r.getHour().equals(hora))
 				total -= Integer.parseInt(r.getReservedChairs());
 		}
@@ -215,7 +215,7 @@ public class ReserveStudentRoomDAO extends DAO{
 		
 		Room s = new Room(rs.getString("codigo"), rs.getString("descricao"), rs.getString("capacidade"));
 		
-		ReserveStudentRoom r = new ReserveStudentRoom(rs.getString("data"),rs.getString("hora"),
+		ReserveRoomStudent r = new ReserveRoomStudent(rs.getString("data"),rs.getString("hora"),
 				s ,rs.getString("finalidade"),rs.getString("cadeiras_reservadas"), student);
 		
 		return r;
@@ -259,7 +259,7 @@ public class ReserveStudentRoomDAO extends DAO{
 				"room.capacidade = " + room.getCapacity() +" );");
 	}
 	
-	private boolean reserveInDB(ReserveStudentRoom r) throws SQLException {
+	private boolean reserveInDB(ReserveRoomStudent r) throws SQLException {
 		return super.inDBGeneric("SELECT * FROM reserva_sala_aluno WHERE " +
 					"id_aluno = (SELECT id_aluno FROM student WHERE " +
 							"student.nome = \"" + r.getStudent().getName() + "\" and " +

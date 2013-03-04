@@ -10,7 +10,7 @@ import java.util.Vector;
 
 import exception.PatrimonyException;
 
-public class SalaDAO {
+public class RoomDAO {
 
 	//Mensagens
 		private static final String SALA_JA_EXISTENTE = "Room ja cadastrada.";
@@ -20,18 +20,18 @@ public class SalaDAO {
 		private static final String CODIGO_JA_EXISTENTE = "Room com o mesmo codigo ja cadastrada.";
 	
 	//Singleton
-		private static SalaDAO instance;
-		private SalaDAO(){
+		private static RoomDAO instance;
+		private RoomDAO(){
 		}
-		public static SalaDAO getInstance(){
+		public static RoomDAO getInstance(){
 			if(instance == null)
-				instance = new SalaDAO();
+				instance = new RoomDAO();
 			return instance;
 		}
 	//
 
 		
-	public void incluir(Room room) throws SQLException, PatrimonyException {	
+	public void include(Room room) throws SQLException, PatrimonyException {	
 		if(room == null)
 			throw new PatrimonyException(SALA_NULA);
 		else if(this.inDBCodigo(room.getCode()))

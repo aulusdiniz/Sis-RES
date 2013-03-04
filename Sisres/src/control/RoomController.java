@@ -3,7 +3,7 @@ package control;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import persistence.SalaDAO;
+import persistence.RoomDAO;
 import exception.PatrimonyException;
 import model.Room;
 
@@ -23,13 +23,13 @@ public class RoomController {
 	//
 		
 	public Vector<Room> getSalas_vet() throws SQLException, PatrimonyException{
-		this.salas_vet = SalaDAO.getInstance().buscarTodos();
+		this.salas_vet = RoomDAO.getInstance().buscarTodos();
 		return this.salas_vet;
 	}
 
 	public void inserir(String codigo, String descricao, String capacidade) throws PatrimonyException, SQLException {
 		Room room = new Room(codigo, descricao, capacidade);
-		SalaDAO.getInstance().incluir(room);
+		RoomDAO.getInstance().incluir(room);
 		this.salas_vet.add(room);
 	}
 
@@ -39,11 +39,11 @@ public class RoomController {
 		room.setCode(codigo);
 		room.setDescription(descricao);
 		room.setCapacity(capacidade);
-		SalaDAO.getInstance().alterar(old_sala, room);
+		RoomDAO.getInstance().alterar(old_sala, room);
 	}
 
 	public void excluir(Room room) throws SQLException, PatrimonyException {
-		SalaDAO.getInstance().excluir(room);
+		RoomDAO.getInstance().excluir(room);
 		this.salas_vet.remove(room);
 	}
 

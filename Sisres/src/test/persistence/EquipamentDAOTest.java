@@ -21,7 +21,7 @@ import persistence.EquipamentDAO;
 import exception.PatrimonyException;
 
 
-public class EquipamentoDAOTest {
+public class EquipamentDAOTest {
 	static EquipamentDAO instance;
 	Equipament antigo, novo;
 	Vector <Equipament> todos;

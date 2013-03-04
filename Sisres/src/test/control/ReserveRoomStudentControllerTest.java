@@ -25,7 +25,7 @@ import exception.ReserveException;
 
 import persistence.AlunoDAO;
 import persistence.FactoryConnection;
-import persistence.SalaDAO;
+import persistence.RoomDAO;
 
 public class ReserveRoomStudentControllerTest {
 	private static Room sala1;
@@ -39,13 +39,13 @@ public class ReserveRoomStudentControllerTest {
 		aluno1 = new Aluno("testInstance", "501.341.852-69", "456678", "", "");
 		
 		AlunoDAO.getInstance().include(aluno1);
-		SalaDAO.getInstance().incluir(sala1);
+		RoomDAO.getInstance().incluir(sala1);
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		AlunoDAO.getInstance().delete(aluno1);
-		SalaDAO.getInstance().excluir(sala1);
+		RoomDAO.getInstance().excluir(sala1);
 	}
 
 	
