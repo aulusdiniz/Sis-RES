@@ -16,61 +16,61 @@ public abstract class DAO {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected Vector find(String query) throws SQLException, ClientException, 
 													PatrimonyException, ReserveException{
-		Vector vet = new Vector();
+		Vector vector = new Vector();
 		
-		Connection con =  FactoryConnection.getInstance().getConnection();
+		Connection connection =  FactoryConnection.getInstance().getConnection();
 		
-		PreparedStatement pst = con.prepareStatement(query);
-		ResultSet rs = pst.executeQuery();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		ResultSet resultSet= prepareStatement.executeQuery();
 		
-		while(rs.next())
-			vet.add(this.fetch(rs));
+		while(resultSet.next()) {
+			vector.add(this.fetch(resultSet));
+		}
 		
-		pst.close();
-		rs.close();
-		con.close();
-		return vet;
+		prepareStatement.close();
+		resultSet.close();
+		connection.close();
+		return vector;
 	}
 	
 	protected boolean inDBGeneric(String query) throws SQLException{
-		Connection con = FactoryConnection.getInstance().getConnection();
-		PreparedStatement pst = con.prepareStatement(query);
-		ResultSet rs = pst.executeQuery();
+		Connection connection = FactoryConnection.getInstance().getConnection();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		ResultSet resultSet = prepareStatement.executeQuery();
 		
-		if(!rs.next())
-		{
-			rs.close();
-			pst.close();
-			con.close();
+		if(!resultSet.next()) {
+			resultSet.close();
+			prepareStatement.close();
+			connection.close();
 			return false;
 		}
 		else {
-			rs.close();
-			pst.close();
-			con.close();
+			resultSet.close();
+			prepareStatement.close();
+			connection.close();
 			return true;
 		}
 	}
 
-	protected abstract Object fetch(ResultSet rs) throws SQLException, ClientException,
+	protected abstract Object fetch(ResultSet resultSet) throws SQLException, ClientException,
 														PatrimonyException, ReserveException;
 	
 	
-	protected void executeQuery(String msg) throws SQLException{
-		Connection con =  FactoryConnection.getInstance().getConnection();
-		PreparedStatement pst = con.prepareStatement(msg);
-		pst.executeUpdate();		
-		pst.close();
-		con.close();
+	protected void executeQuery(String query) throws SQLException{
+		Connection connection =  FactoryConnection.getInstance().getConnection();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		prepareStatement.executeUpdate();		
+		prepareStatement.close();
+		connection.close();
 	}
 	
-	protected void updateQuery(String msg) throws SQLException{
-		Connection con =  FactoryConnection.getInstance().getConnection();
-		con.setAutoCommit(false);
-		PreparedStatement pst = con.prepareStatement(msg);
-		pst.executeUpdate();
-		con.commit();
-		pst.close();
-		con.close();
+	protected void updateQuery(String query) throws SQLException{
+		Connection connection =  FactoryConnection.getInstance().getConnection();
+		connection.setAutoCommit(false);
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		prepareStatement.executeUpdate();
+		connection.commit();
+		prepareStatement.close();
+		connection.close();
 	}
 }
