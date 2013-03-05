@@ -8,89 +8,69 @@ import java.util.Vector;
 
 import exception.ClientException;
 import exception.PatrimonyException;
-import exception.ReservaException;
+import exception.ReserveException;
 
 public abstract class DAO {
-	//Esta classe nao sera testada diretamente.
 	
 	
-	/**
-	 * O vetor obtido deste metodo deve ser convertido pra o vetor
-	 * do tipo que se vai utilizar, se necessario.
-	 * */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected Vector buscar(String query) throws SQLException, ClientException, 
-													PatrimonyException, ReservaException{
-		Vector vet = new Vector();
+	protected Vector find(String query) throws SQLException, ClientException, 
+													PatrimonyException, ReserveException{
+		Vector vector = new Vector();
 		
-		Connection con =  FactoryConnection.getInstance().getConnection();
+		Connection connection =  FactoryConnection.getInstance().getConnection();
 		
-		PreparedStatement pst = con.prepareStatement(query);
-		ResultSet rs = pst.executeQuery();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		ResultSet resultSet= prepareStatement.executeQuery();
 		
-		while(rs.next())
-			vet.add(this.fetch(rs));
+		while(resultSet.next()) {
+			vector.add(this.fetch(resultSet));
+		}
 		
-		pst.close();
-		rs.close();
-		con.close();
-		return vet;
+		prepareStatement.close();
+		resultSet.close();
+		connection.close();
+		return vector;
 	}
 	
-	/**
-	 * Continua funcionando como antes, checa se o resgistro esta no banco.
-	 * */
 	protected boolean inDBGeneric(String query) throws SQLException{
-		Connection con = FactoryConnection.getInstance().getConnection();
-		PreparedStatement pst = con.prepareStatement(query);
-		ResultSet rs = pst.executeQuery();
+		Connection connection = FactoryConnection.getInstance().getConnection();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		ResultSet resultSet = prepareStatement.executeQuery();
 		
-		if(!rs.next())
-		{
-			rs.close();
-			pst.close();
-			con.close();
+		if(!resultSet.next()) {
+			resultSet.close();
+			prepareStatement.close();
+			connection.close();
 			return false;
 		}
 		else {
-			rs.close();
-			pst.close();
-			con.close();
+			resultSet.close();
+			prepareStatement.close();
+			connection.close();
 			return true;
 		}
 	}
 
-	/**
-	 * Funcao utilizada no buscar, por isso precisa ser implementada
-	 * Ja foi implementada nas outras classes DAO. A implementacao eh
-	 * semelhante.
-	 * */
-	protected abstract Object fetch(ResultSet rs) throws SQLException, ClientException,
-														PatrimonyException, ReservaException;
+	protected abstract Object fetch(ResultSet resultSet) throws SQLException, ClientException,
+														PatrimonyException, ReserveException;
 	
 	
-	/**
-	 * Este metodo eh utilizado para Incluir e Excluir algum registro do
-	 * banco, dependendo da query.
-	 * */
-	protected void executeQuery(String msg) throws SQLException{
-		Connection con =  FactoryConnection.getInstance().getConnection();
-		PreparedStatement pst = con.prepareStatement(msg);
-		pst.executeUpdate();		
-		pst.close();
-		con.close();
+	protected void executeQuery(String query) throws SQLException{
+		Connection connection =  FactoryConnection.getInstance().getConnection();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		prepareStatement.executeUpdate();		
+		prepareStatement.close();
+		connection.close();
 	}
 	
-	/**
-	 * Este metodo eh utilizado para Alterar alguma coisa no Banco
-	 * */
-	protected void updateQuery(String msg) throws SQLException{
-		Connection con =  FactoryConnection.getInstance().getConnection();
-		con.setAutoCommit(false);
-		PreparedStatement pst = con.prepareStatement(msg);
-		pst.executeUpdate();
-		con.commit();
-		pst.close();
-		con.close();
+	protected void updateQuery(String query) throws SQLException{
+		Connection connection =  FactoryConnection.getInstance().getConnection();
+		connection.setAutoCommit(false);
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		prepareStatement.executeUpdate();
+		connection.commit();
+		prepareStatement.close();
+		connection.close();
 	}
 }

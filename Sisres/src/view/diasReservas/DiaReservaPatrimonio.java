@@ -5,14 +5,18 @@ package view.diasReservas;
  * @author Parley
  */
 public abstract class DiaReservaPatrimonio extends javax.swing.JDialog {
-    public DiaReservaPatrimonio(java.awt.Frame parent, boolean modal) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2390797356944617264L;
+	public DiaReservaPatrimonio(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
     protected abstract void visualizarAction(String data);
 
-    @SuppressWarnings("unchecked")// <editor-fold defaultstate="collapsed"
+    @SuppressWarnings("unchecked")// <editor-fold default state="collapsed"
                                   // desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

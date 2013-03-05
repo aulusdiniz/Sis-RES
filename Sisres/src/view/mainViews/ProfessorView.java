@@ -9,17 +9,17 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import view.alteracoes.AlterarProfessor;
-import view.cadastros.CadastroCliente;
+import view.alteracoes.AlterateProfessor;
+import view.cadastros.CreateClient;
 import view.cadastros.CadastroProfessor;
-import control.ManterProfessor;
-import exception.ClienteException;
+import control.ProfessorController;
+import exception.ClientException;
 
 /**
  * 
  * @author Parley
  */
-public class ProfessorView extends ClienteView {
+public class ProfessorView extends ClientView {
 
     public ProfessorView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -28,9 +28,9 @@ public class ProfessorView extends ClienteView {
 
     public Iterator getIterator() {
         try {
-            return ManterProfessor.getInstance().getProfessores_vet().iterator();
+            return ProfessorController.getInstance().getProfessorVector().iterator();
 
-        } catch (ClienteException ex) {
+        } catch (ClientException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
@@ -40,7 +40,7 @@ public class ProfessorView extends ClienteView {
 
     @Override public void cadastrarAction() {
 
-        CadastroCliente cadastrar = new CadastroProfessor(new javax.swing.JFrame(), true);
+        CreateClient cadastrar = new CadastroProfessor(new javax.swing.JFrame(), true);
         cadastrar.setResizable(false);
         cadastrar.setVisible(true);
         tabelaCliente.setModel(fillTable());
@@ -49,7 +49,7 @@ public class ProfessorView extends ClienteView {
 
     @Override public void alterarAction(int index) {
 
-        AlterarProfessor alterar = new AlterarProfessor(new javax.swing.JFrame(), true, index);
+        AlterateProfessor alterar = new AlterateProfessor(new javax.swing.JFrame(), true, index);
         alterar.setResizable(false);
         alterar.setVisible(true);
         this.tabelaCliente.setModel(fillTable());
@@ -64,16 +64,16 @@ public class ProfessorView extends ClienteView {
             }
 
             int confirm = JOptionPane.showConfirmDialog(this, "Deseja mesmo excluir Professor: "
-                    + ManterProfessor.getInstance().getProfessores_vet().get(index).getNome() + "?", "Excluir",
+                    + ProfessorController.getInstance().getProfessorVector().get(index).getName() + "?", "Excluir",
                     JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                ManterProfessor.getInstance().delete(ManterProfessor.getInstance().getProfessores_vet().get(index));
+                ProfessorController.getInstance().delete(ProfessorController.getInstance().getProfessorVector().get(index));
                 JOptionPane.showMessageDialog(this, "Professor excluido com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE,
                         null);
             }
             this.tabelaCliente.setModel(fillTable());
 
-        } catch (ClienteException ex) {
+        } catch (ClientException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);

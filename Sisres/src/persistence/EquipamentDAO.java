@@ -21,7 +21,7 @@ public class EquipamentDAO {
     private static EquipamentDAO instance;
 
     private EquipamentDAO() {
-    	//nothing
+        //nothing
     }
 
     public static EquipamentDAO getInstance() {
@@ -48,33 +48,40 @@ public class EquipamentDAO {
         		}
     }
 
-    public void alterate(Equipament equipament_old, Equipament equipament_new) throws SQLException, PatrimonyException {
-        if (equipament_old == null) {
+    public void alterate(Equipament equipamentOld, Equipament equipamentNew) throws SQLException, PatrimonyException {
+        if (equipamentOld == null) {
             throw new PatrimonyException(EQUIPAMENT_NULL);
         }
-        if (equipament_new == null) {
+        else{
+        	//nothing
+        }
+        
+        if (equipamentNew == null) {
             throw new PatrimonyException(EQUIPAMENT_NULL);
+        }
+        else{
+        	//nothing
         }
 
         Connection connection = FactoryConnection.getInstance().getConnection();
         PreparedStatement prepare_statement;
 
-        if (!this.inDB(equipament_old)) { 
+        if (!this.inDB(equipamentOld)) { 
             throw new PatrimonyException(EQUIPAMENT_NOT_EXISTING);
         }
         else
-        	if (this.inOtherDB(equipament_old)) {
+        	if (this.inOtherDB(equipamentOld)) {
         		throw new PatrimonyException(EQUIPAMENT_RESERVED);
         	}
         	else
-        		if (!equipament_new.getCode().equals(equipament_old.getCode()) && this.inDBCode(equipament_new.getCode())) {
+        		if (!equipamentNew.getCode().equals(equipamentOld.getCode()) && this.inDBCode(equipamentNew.getCode())) {
         			throw new PatrimonyException(CODE_EXISTING);
         		}
         		else
-        			if (!this.inDB(equipament_new)) {
-        				String msg = "UPDATE equipamento SET " + "codigo = \"" + equipament_new.getCode() + "\", " + "descricao = \""
-        						+ equipament_new.getDescription() + "\"" + " WHERE " + "equipamento.codigo = \"" + equipament_old.getCode()
-        						+ "\" and " + "equipamento.descricao = \"" + equipament_old.getDescription() + "\";";
+        			if (!this.inDB(equipamentNew)) {
+        				String msg = "UPDATE equipamento SET " + "codigo = \"" + equipamentNew.getCode() + "\", " + "descricao = \""
+        						+ equipamentNew.getDescription() + "\"" + " WHERE " + "equipamento.codigo = \"" + equipamentOld.getCode()
+        						+ "\" and " + "equipamento.descricao = \"" + equipamentOld.getDescription() + "\";";
 
             connection.setAutoCommit(false);
             prepare_statement = connection.prepareStatement(msg);
@@ -124,38 +131,38 @@ public class EquipamentDAO {
 
     private Vector<Equipament> search(String query) throws SQLException, PatrimonyException {
         
-    	Vector<Equipament> vector_equipament = new Vector<Equipament>();
+    	Vector<Equipament> vectorEquipament = new Vector<Equipament>();
         Connection connection = FactoryConnection.getInstance().getConnection();
 
-        PreparedStatement prepare_statement = connection.prepareStatement(query);
-        ResultSet result_set = prepare_statement.executeQuery();
+        PreparedStatement prepareStatement = connection.prepareStatement(query);
+        ResultSet resultSet = prepareStatement.executeQuery();
 
-        while (result_set.next()) {
-            vector_equipament.add(this.fetchEquipament(result_set));
+        while (resultSet.next()) {
+            vectorEquipament.add(this.fetchEquipament(resultSet));
         }
 
-        prepare_statement.close();
-        result_set.close();
+        prepareStatement.close();
+        resultSet.close();
         connection.close();
         
-        return vector_equipament;
+        return vectorEquipament;
     }
 
     private boolean inDBGeneric(String query) throws SQLException {
         Connection connection = FactoryConnection.getInstance().getConnection();
-        PreparedStatement prepare_statement = connection.prepareStatement(query);
-        ResultSet result_set = prepare_statement.executeQuery();
+        PreparedStatement prepareStatement = connection.prepareStatement(query);
+        ResultSet resultSet = prepareStatement.executeQuery();
 
-        if (!result_set.next()) {
-            result_set.close();
-            prepare_statement.close();
+        if (!resultSet.next()) {
+            resultSet.close();
+            prepareStatement.close();
             connection.close();
             
             return false;
         }
         else {
-            result_set.close();
-            prepare_statement.close();
+            resultSet.close();
+            prepareStatement.close();
             connection.close();
             
             return true;
@@ -177,15 +184,15 @@ public class EquipamentDAO {
                 + "\" and " + "equipamento.descricao = \"" + equipament.getDescription() + "\");");
     }
 
-    private Equipament fetchEquipament(ResultSet result_set) throws PatrimonyException, SQLException {
-        return new Equipament(result_set.getString("codigo"), result_set.getString("descricao"));
+    private Equipament fetchEquipament(ResultSet resultSet) throws PatrimonyException, SQLException {
+        return new Equipament(resultSet.getString("codigo"), resultSet.getString("descricao"));
     }
 
     private void updateQuery(String msg) throws SQLException {
         Connection connection = FactoryConnection.getInstance().getConnection();
-        PreparedStatement prepare_statement = connection.prepareStatement(msg);
-        prepare_statement.executeUpdate();
-        prepare_statement.close();
+        PreparedStatement prepareStatement = connection.prepareStatement(msg);
+        prepareStatement.executeUpdate();
+        prepareStatement.close();
         connection.close();
     }
 }

@@ -4,7 +4,6 @@ import exception.ClientException;
 
 public class Student extends Client {
 	
-	//Constantes para mensagens de erro e alertas.
 	private final String REGISTRATION_BLANK = "Matricula em Branco.";
 	private final String REGISTRATION_NULL = "Matricula esta Nula.";
 		
@@ -24,7 +23,7 @@ public class Student extends Client {
 				throw new ClientException(REGISTRATION_BLANK);
 			}
 		}
-		super.registration = registration;//
+		super.registration = registration;
 	}
 }
 

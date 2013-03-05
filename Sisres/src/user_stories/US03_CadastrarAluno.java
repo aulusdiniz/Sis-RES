@@ -55,7 +55,7 @@ public class US03_CadastrarAluno {
 		window = new FrameFixture(robot, new Main2());
 		window.show(new Dimension(900, 500)); // shows the frame to test
 		window.button("Aluno").click();
-		dialog = window.dialog("AlunoView");
+		dialog = window.dialog("StudentView");
 	}
 	
 	@After

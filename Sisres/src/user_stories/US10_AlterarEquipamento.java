@@ -67,7 +67,7 @@ public class US10_AlterarEquipamento {
     index = EquipamentDAO.getInstance().searchAllEquipaments().size() - 1;
 
     window.button("Equipamento").click();
-    dialog = window.dialog("EquipamentoView");
+    dialog = window.dialog("EquipamentView");
 
 }
 
@@ -89,7 +89,7 @@ public void sleep() {
 @Test public void testCancelar() {
     dialog.table("tabelaPatrimonio").selectRows(index);
     dialog.button("Alterar").click();
-    DialogFixture cadastro = dialog.dialog("AlterarEquipamento");
+    DialogFixture cadastro = dialog.dialog("AlterateEquipament");
     cadastro.button("Cancelar").click();
 }
 
@@ -98,7 +98,7 @@ public void sleep() {
     dialog.table("tabelaPatrimonio").selectRows(index);
 
     dialog.button("Alterar").click();
-    DialogFixture cadastro = dialog.dialog("AlterarEquipamento");
+    DialogFixture cadastro = dialog.dialog("AlterateEquipament");
 
     cadastro.textBox("Codigo").setText("123");
 
@@ -125,7 +125,7 @@ public void sleep() {
 
     dialog.table("tabelaPatrimonio").selectRows(index);
     dialog.button("Alterar").click();
-    DialogFixture cadastro = dialog.dialog("AlterarEquipamento");
+    DialogFixture cadastro = dialog.dialog("AlterateEquipament");
 
     
     cadastro.textBox("Codigo").setText("");
@@ -142,7 +142,7 @@ public void sleep() {
 
     dialog.table("tabelaPatrimonio").selectRows(index);
     dialog.button("Alterar").click();
-    DialogFixture cadastro = dialog.dialog("AlterarEquipamento");
+    DialogFixture cadastro = dialog.dialog("AlterateEquipament");
 
     
     cadastro.textBox("Codigo").setText("code");
