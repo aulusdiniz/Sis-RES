@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import model.Patrimonio;
+import model.Patrimony;
 import model.ReserveStudentRoom;
 import model.ReserveRoomProfessor;
 import model.Room;
@@ -80,7 +80,7 @@ public class HorariosReservaSala extends HorariosReservaPatrimonio {
 
     }
 
-    @Override protected DefaultTableModel fillTable(Patrimonio sala) {
+    @Override protected DefaultTableModel fillTable(Patrimony sala) {
         this.room = (Room) sala;
         DefaultTableModel table = new DefaultTableModel();
         instanceAluno = ReserveStudentRoomController.getInstance();

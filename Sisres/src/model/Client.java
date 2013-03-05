@@ -3,11 +3,6 @@ package model;
 import exception.ClientException;
 
 
-/*Para fazer uma melhor validacoa e captura do dados
- * se pega todos os dados como string.
- * 
- * 
- */
 public abstract class Client {
 	
 	private String name;

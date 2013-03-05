@@ -19,7 +19,7 @@ public class ProfessorDAO {
 		
 		private static ProfessorDAO instance;
 		private ProfessorDAO(){
-			//nothing
+			//nothing here
 		}
 		
 		public static ProfessorDAO getInstance(){

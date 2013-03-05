@@ -6,8 +6,7 @@ public class ReserveRoomProfessor extends ReserveRoom{
 
 	private Professor professor;
 	
-	//Mensagens
-		private final String PROFESSOR_NULO = "O professor esta nulo.";
+		private final String PROFESSOR_NULL = "O professor esta nulo.";
 	
 	public ReserveRoomProfessor(String data, String hora, Room room,
 			String finalidade, Professor professor) throws ReserveException {
@@ -21,7 +20,7 @@ public class ReserveRoomProfessor extends ReserveRoom{
 
 	public void setProfessor(Professor professor) throws ReserveException {
 		if(professor == null)
-			throw new ReserveException(PROFESSOR_NULO);
+			throw new ReserveException(PROFESSOR_NULL);
 		this.professor = professor;
 	}
 

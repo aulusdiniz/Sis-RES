@@ -12,7 +12,7 @@ public class ProfessorController {
 	
 	private static ProfessorController instance;
 	private ProfessorController() {
-		//nothing
+		//nothing here
 	}
 	
 	public static ProfessorController getInstance() {

@@ -14,9 +14,9 @@ public class ReserveStudentRoom extends ReserveRoom{
 		private final String CHAIRS_OVER_LIMIT = "A room nao possui este numero de cadeiras para reservar.";
 		private final String CHAIRS_PATTERN = "^[\\d]+$";
 
-	public ReserveStudentRoom(String data, String hora, Room room,
-			String finalidade, String reservedChairs, Student student) throws ReserveException {
-		super(data, hora, room, finalidade);
+	public ReserveStudentRoom(String date, String hour, Room room,
+			String finality, String reservedChairs, Student student) throws ReserveException {
+		super(date, hour, room, finality);
 		this.setStudent(student);
 		this.setReservedChairs(reservedChairs);
 	}
@@ -62,7 +62,7 @@ public class ReserveStudentRoom extends ReserveRoom{
 
 	@Override
 	public String toString() {
-		return "student: " + this.getStudent().toString()
+		return "Aluno: " + this.getStudent().toString()
 			+ "\nCadeiras Reservadas: " + this.getReservedChairs() 
 			+ super.toString();
 	}

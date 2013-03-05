@@ -15,7 +15,6 @@ import exception.ReserveException;
 public class ReserveRoomProfessorController {
 	private Vector<ReserveRoomProfessor> reserveRoomProfessorVector = new Vector<ReserveRoomProfessor>();
 	
-	//Singleton
 		private static ReserveRoomProfessorController instance;
 		private ReserveRoomProfessorController() {
 		}
@@ -24,7 +23,6 @@ public class ReserveRoomProfessorController {
 			instance = new ReserveRoomProfessorController();
 		return instance;
 	}
-	//
 		
 		public Vector<ReserveRoomProfessor> findByDate(String data) throws SQLException, ClientException, PatrimonyException, ReserveException{
 			this.reserveRoomProfessorVector =  ReserveProfessorRoomDAO.getInstance().findByDate(data);

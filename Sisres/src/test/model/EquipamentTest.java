@@ -11,7 +11,7 @@ import org.junit.Test;
 import exception.PatrimonyException;
 
 /**
- * Testa Patrimonio, de modo indireto por causa da Heranca de Equipamento
+ * Testa Patrimony, de modo indireto por causa da Heranca de Equipamento
  * */
 
 public class EquipamentTest {
