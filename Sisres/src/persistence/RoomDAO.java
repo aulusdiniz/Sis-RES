@@ -34,7 +34,7 @@ public class RoomDAO {
 	public void include(Room room) throws SQLException, PatrimonyException {	
 		if(room == null)
 			throw new PatrimonyException(SALA_NULA);
-		else if(this.inDBCodigo(room.getCode()))
+		else if(this.inDBCode(room.getCode()))
 			throw new PatrimonyException(CODIGO_JA_EXISTENTE);
 		this.updateQuery("INSERT INTO " +
 					"room (codigo, descricao, capacidade) VALUES (" +
@@ -43,7 +43,7 @@ public class RoomDAO {
 					room.getCapacity() + ");");
 	}
 
-	public void alterar(Room old_sala, Room new_sala) throws SQLException, PatrimonyException {
+	public void alterate(Room old_sala, Room new_sala) throws SQLException, PatrimonyException {
 		if(new_sala == null)
 			throw new PatrimonyException(SALA_NULA);
 		if(old_sala == null)
@@ -56,7 +56,7 @@ public class RoomDAO {
 			throw new PatrimonyException(SALA_NAO_EXISTENTE);
 		else if(this.inOtherDB(old_sala))
 			throw new PatrimonyException(SALA_EM_USO);
-		else if(!old_sala.getCode().equals(new_sala.getCode()) && this.inDBCodigo(new_sala.getCode()))
+		else if(!old_sala.getCode().equals(new_sala.getCode()) && this.inDBCode(new_sala.getCode()))
 			throw new PatrimonyException(CODIGO_JA_EXISTENTE);
 		if(!this.inDB(new_sala)){
 			String msg = "UPDATE room SET " +				
@@ -79,7 +79,7 @@ public class RoomDAO {
 		con.close();
 	}
 
-	public void excluir(Room room) throws SQLException, PatrimonyException {
+	public void delete(Room room) throws SQLException, PatrimonyException {
 		if(room == null)
 			throw new PatrimonyException(SALA_NULA);
 		else if(this.inOtherDB(room))
@@ -97,25 +97,25 @@ public class RoomDAO {
 
 	
 	
-	public Vector<Room> buscarTodos() throws SQLException, PatrimonyException {
-		return this.buscar("SELECT * FROM room;");
+	public Vector<Room> findAll() throws SQLException, PatrimonyException {
+		return this.find("SELECT * FROM room;");
 	}
-	public Vector<Room> buscarPorCodigo(String valor) throws SQLException, PatrimonyException {
-		return this.buscar("SELECT * FROM room WHERE codigo = " + "\"" + valor + "\";");
+	public Vector<Room> findPorCode(String valor) throws SQLException, PatrimonyException {
+		return this.find("SELECT * FROM room WHERE codigo = " + "\"" + valor + "\";");
 	}
-	public Vector<Room> buscarPorDescricao(String valor) throws SQLException, PatrimonyException {
-		return this.buscar("SELECT * FROM room WHERE descricao = " + "\"" + valor + "\";");
+	public Vector<Room> findPorDescricao(String valor) throws SQLException, PatrimonyException {
+		return this.find("SELECT * FROM room WHERE descricao = " + "\"" + valor + "\";");
 	}
-	public Vector<Room> buscarPorCapacidade(String valor) throws SQLException, PatrimonyException {
-		return this.buscar("SELECT * FROM room WHERE capacidade = " + valor + ";");
+	public Vector<Room> findPorCapacidade(String valor) throws SQLException, PatrimonyException {
+		return this.find("SELECT * FROM room WHERE capacidade = " + valor + ";");
 	}
 	
 	
 	/**
-	 * Metodos Privados
+	 * Private Methods
 	 * */
 	
-	private Vector<Room> buscar(String query) throws SQLException, PatrimonyException {
+	private Vector<Room> find(String query) throws SQLException, PatrimonyException {
 		Vector<Room> vet = new Vector<Room>();
 		
 		Connection con =  FactoryConnection.getInstance().getConnection();
@@ -124,7 +124,7 @@ public class RoomDAO {
 		ResultSet rs = pst.executeQuery();
 		
 		while(rs.next())
-			vet.add(this.fetchSala(rs));
+			vet.add(this.fetchRoom(rs));
 		
 		pst.close();
 		rs.close();
@@ -159,7 +159,7 @@ public class RoomDAO {
 				"room.capacidade = " + room.getCapacity() +
 				";");
 	}
-	private boolean inDBCodigo(String codigo) throws SQLException{
+	private boolean inDBCode(String codigo) throws SQLException{
 		return this.inDBGeneric("SELECT * FROM room WHERE " +
 				"room.codigo = \"" + codigo + "\";");
 	}
@@ -184,7 +184,7 @@ public class RoomDAO {
 	}
 	
 	
-	private Room fetchSala(ResultSet rs) throws PatrimonyException, SQLException{
+	private Room fetchRoom(ResultSet rs) throws PatrimonyException, SQLException{
 		return new Room(rs.getString("codigo"), rs.getString("descricao"), rs.getString("capacidade"));
 	}
 	

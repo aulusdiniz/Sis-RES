@@ -21,7 +21,12 @@ import exception.ClientException;
  */
 public class StudentView extends ClientView {
 
-    public StudentView(java.awt.Frame parent, boolean modal) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3919620832634053750L;
+
+	public StudentView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.setName("StudentView");
     }

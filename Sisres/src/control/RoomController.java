@@ -9,9 +9,8 @@ import model.Room;
 
 public class RoomController {
 
-	private Vector<Room> salas_vet = new Vector<Room>();
+	private Vector<Room> roomVector = new Vector<Room>();
 	
-	//Singleton
 		private static RoomController instance;
 		private RoomController() {
 		}
@@ -20,31 +19,29 @@ public class RoomController {
 			instance = new RoomController();
 		return instance;
 	}
-	//
 		
-	public Vector<Room> getSalas_vet() throws SQLException, PatrimonyException{
-		this.salas_vet = RoomDAO.getInstance().buscarTodos();
-		return this.salas_vet;
+	public Vector<Room> getRoomVector() throws SQLException, PatrimonyException{
+		this.roomVector = RoomDAO.getInstance().findAll();
+		return this.roomVector;
 	}
 
-	public void inserir(String codigo, String descricao, String capacidade) throws PatrimonyException, SQLException {
+	public void insert(String codigo, String descricao, String capacidade) throws PatrimonyException, SQLException {
 		Room room = new Room(codigo, descricao, capacidade);
 		RoomDAO.getInstance().include(room);
-		this.salas_vet.add(room);
+		this.roomVector.add(room);
 	}
 
-	public void alterar(String codigo, String descricao, String capacidade, Room room) throws PatrimonyException, SQLException {
+	public void alterate(String codigo, String descricao, String capacidade, Room room) throws PatrimonyException, SQLException {
 		Room old_sala = new Room(room.getCode(), room.getDescription(),
 								room.getCapacity());
 		room.setCode(codigo);
 		room.setDescription(descricao);
 		room.setCapacity(capacidade);
-		RoomDAO.getInstance().alterar(old_sala, room);
+		RoomDAO.getInstance().alterate(old_sala, room);
 	}
 
-	public void excluir(Room room) throws SQLException, PatrimonyException {
-		RoomDAO.getInstance().excluir(room);
-		this.salas_vet.remove(room);
+	public void delete(Room room) throws SQLException, PatrimonyException {
+		RoomDAO.getInstance().delete(room);
+		this.roomVector.remove(room);
 	}
-
 }

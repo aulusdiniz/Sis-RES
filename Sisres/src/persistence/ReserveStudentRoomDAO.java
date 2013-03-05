@@ -71,7 +71,7 @@ public class ReserveStudentRoomDAO extends DAO{
 			"\"" + r.getDate() + "\", " +
 			r.getReservedChairs();
 		}
-		private String findAtributesvalueByRoomAndStudent(ReserveStudentRoom r){
+		private String findAtributesValueByRoomAndStudent(ReserveStudentRoom r){
 			return "id_aluno = ( " + findStudentById(r.getStudent()) + " ), " +
 			"id_sala = ( " + findRoomById(r.getRoom()) + " ), " +
 			"finalidade = \"" + r.getFinality() + "\", " +
@@ -86,7 +86,7 @@ public class ReserveStudentRoomDAO extends DAO{
 		}
 		private String update(ReserveStudentRoom r, ReserveStudentRoom r2){
 			return "UPDATE reserva_sala_aluno SET " + 
-					this.findAtributesvalueByRoomAndStudent(r2) +
+					this.findAtributesValueByRoomAndStudent(r2) +
 					this.findReserveByRoomAndStudent(r) + " ;";
 		}
 		private String deleteFrom(ReserveStudentRoom r){
