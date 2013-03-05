@@ -58,7 +58,7 @@ public class US06_CadastrarSala {
 
     @After public void tearDown() throws SQLException, PatrimonyException {
         if (room != null)
-            RoomDAO.getInstance().excluir(room);
+            RoomDAO.getInstance().delete(room);
         window.cleanUp();
     }
 
@@ -90,14 +90,14 @@ public class US06_CadastrarSala {
         sleep();
         cadastro.optionPane().okButton().click();
 
-        index = RoomDAO.getInstance().buscarTodos().size() - 1;
-        room = RoomDAO.getInstance().buscarTodos().get(index);
+        index = RoomDAO.getInstance().findAll().size() - 1;
+        room = RoomDAO.getInstance().findAll().get(index);
     }
 
     @Test public void testCenario2() throws SQLException, PatrimonyException {
 
         room = new Room("code","Room para testes de aceitacao","123");
-        RoomDAO.getInstance().incluir(room);
+        RoomDAO.getInstance().include(room);
 
         dialog.button("Cadastrar").click();
         DialogFixture cadastro = dialog.dialog("CadastroSala");

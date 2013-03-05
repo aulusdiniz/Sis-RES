@@ -34,9 +34,9 @@ public class AlterarSala extends CadastroPatrimonio {
 
         try {
 
-            this.codigoTxtField.setText(RoomController.getInstance().getSalas_vet().get(index).getCode());
-            this.capacidadeTxtField.setText(RoomController.getInstance().getSalas_vet().get(index).getCapacity());
-            this.descricaoTextArea.setText(RoomController.getInstance().getSalas_vet().get(index).getDescription());
+            this.codigoTxtField.setText(RoomController.getInstance().getRoomVector().get(index).getCode());
+            this.capacidadeTxtField.setText(RoomController.getInstance().getRoomVector().get(index).getCapacity());
+            this.descricaoTextArea.setText(RoomController.getInstance().getRoomVector().get(index).getDescription());
             this.index2 = index;
 
         } catch (PatrimonyException ex) {
@@ -52,8 +52,8 @@ public class AlterarSala extends CadastroPatrimonio {
     @Override protected void cadastroAction() {
         try {
 
-            RoomController.getInstance().alterar(codigoTxtField.getText(), descricaoTextArea.getText(), capacidadeTxtField.getText(),
-                    RoomController.getInstance().getSalas_vet().get(index2));
+            RoomController.getInstance().alterate(codigoTxtField.getText(), descricaoTextArea.getText(), capacidadeTxtField.getText(),
+                    RoomController.getInstance().getRoomVector().get(index2));
 
             JOptionPane.showMessageDialog(this, "Room Alterada com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE, null);
             this.setVisible(false);

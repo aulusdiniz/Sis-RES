@@ -330,7 +330,7 @@ public class RoomDAOTest {
 				"\"" + s.getDescription() + "\", " +
 				s.getCapacity() + ");");
 		
-		Vector<Room> vet = RoomDAO.getInstance().buscarPorCodigo("CodigoInc");
+		Vector<Room> vet = RoomDAO.getInstance().findByCode("CodigoInc");
 		
 		this.executaNoBanco("DELETE FROM room WHERE " +
 				"room.codigo = \"" + s.getCode() + "\" and " +
@@ -349,7 +349,7 @@ public class RoomDAOTest {
 				"\"" + s.getDescription() + "\", " +
 				s.getCapacity() + ");");
 		
-		Vector<Room> vet = RoomDAO.getInstance().buscarPorDescricao("Descricao Da Room Inclusao");
+		Vector<Room> vet = RoomDAO.getInstance().findByDescription("Descricao Da Room Inclusao");
 		
 		this.executaNoBanco("DELETE FROM room WHERE " +
 				"room.codigo = \"" + s.getCode() + "\" and " +
@@ -368,7 +368,7 @@ public class RoomDAOTest {
 				"\"" + s.getDescription() + "\", " +
 				s.getCapacity() + ");");
 		
-		Vector<Room> vet = RoomDAO.getInstance().buscarPorCapacidade("123");
+		Vector<Room> vet = RoomDAO.getInstance().findByCapacity("123");
 		
 		this.executaNoBanco("DELETE FROM room WHERE " +
 				"room.codigo = \"" + s.getCode() + "\" and " +
@@ -379,12 +379,12 @@ public class RoomDAOTest {
 	}
 
 	
-	private void executaNoBanco(String msg) throws SQLException{
-		Connection con =  FactoryConnection.getInstance().getConnection();
-		PreparedStatement pst = con.prepareStatement(msg);
-		pst.executeUpdate();
-		pst.close();
-		con.close();
+	private void executaNoBanco(String message) throws SQLException{
+		Connection connection =  FactoryConnection.getInstance().getConnection();
+		PreparedStatement prepareStatement = connection.prepareStatement(message);
+		prepareStatement.executeUpdate();
+		prepareStatement.close();
+		connection.close();
 	}
 	private boolean estaNoBanco(String query) throws SQLException{
 		Connection con = FactoryConnection.getInstance().getConnection();

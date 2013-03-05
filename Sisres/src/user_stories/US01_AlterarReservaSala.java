@@ -67,8 +67,8 @@ public class US01_AlterarReservaSala {
 
         dataAtual();
                 
-        index = RoomDAO.getInstance().buscarTodos().size() - 1;
-        indexReserva = ReserveProfessorRoomDAO.getInstance().buscarPorData(data).size() - 1;
+        index = RoomDAO.getInstance().findAll().size() - 1;
+        indexReserva = ReserveProfessorRoomDAO.getInstance().findByDate(data).size() - 1;
 
         StudentDAO.getInstance().include(aluno);
 
@@ -81,11 +81,11 @@ public class US01_AlterarReservaSala {
 
     @After public void tearDown() throws SQLException, PatrimonyException, ClientException, ReserveException {
         if (reservaProf != null)
-            ReserveProfessorRoomDAO.getInstance().excluir(reservaProf);
+            ReserveProfessorRoomDAO.getInstance().delete(reservaProf);
         if (reservaStudent != null)
             ReserveStudentRoomDAO.getInstance().delete(reservaStudent);
         if (room != null)
-            RoomDAO.getInstance().excluir(room);
+            RoomDAO.getInstance().delete(room);
         if (aluno != null)
             StudentDAO.getInstance().delete(aluno);
         if (prof != null)
