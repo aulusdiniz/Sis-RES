@@ -111,7 +111,7 @@ public class RoomDAOTest {
 				"\"" + s.getDescription() + "\", " +
 				s.getCapacity() + ");");
 		
-		RoomDAO.getInstance().alterar(s, s2);
+		RoomDAO.getInstance().alterate(s, s2);
 		
 		rs = this.estaNoBanco("SELECT * FROM room WHERE " +
 				"room.codigo = \"" + s.getCode() + "\" and " +
@@ -142,12 +142,12 @@ public class RoomDAOTest {
 	@Test (expected= PatrimonyException.class)
 	public void testAletarPrimeiroNulo() throws PatrimonyException, SQLException {
 		Room s = new Room("CodigoInc", "Descricao Da Room Inclusao", "123");
-		RoomDAO.getInstance().alterar(null, s);
+		RoomDAO.getInstance().alterate(null, s);
 	}
 	@Test (expected= PatrimonyException.class)
 	public void testAletarSegundoNulo() throws PatrimonyException, SQLException {
 		Room s = new Room("CodigoInc", "Descricao Da Room Inclusao", "123");
-		RoomDAO.getInstance().alterar(s, null);
+		RoomDAO.getInstance().alterate(s, null);
 	}
 	@Test (expected= PatrimonyException.class)
 	public void testAletarNaoExistente() throws PatrimonyException, SQLException {
@@ -156,7 +156,7 @@ public class RoomDAOTest {
 		boolean rs2 = true;
 		
 		try{
-			RoomDAO.getInstance().alterar(s, s2);
+			RoomDAO.getInstance().alterate(s, s2);
 		} finally {		
 		
 		rs2 = this.estaNoBanco("SELECT * FROM room WHERE " +
@@ -195,7 +195,7 @@ public class RoomDAOTest {
 				s2.getCapacity() + ");");
 		
 		try{
-			RoomDAO.getInstance().alterar(s, s2);
+			RoomDAO.getInstance().alterate(s, s2);
 		} finally {
 		
 		rs = this.estaNoBanco("SELECT * FROM room WHERE " +
@@ -248,7 +248,7 @@ public class RoomDAOTest {
 				s.getCapacity() + ");");
 		
 		try{
-			RoomDAO.getInstance().alterar(s, s2);
+			RoomDAO.getInstance().alterate(s, s2);
 		} finally {
 		
 		rs = this.estaNoBanco("SELECT * FROM room WHERE " +
@@ -289,7 +289,7 @@ public class RoomDAOTest {
 				"\"" + s.getDescription() + "\", " +
 				s.getCapacity() + ");");
 		
-		RoomDAO.getInstance().excluir(s);
+		RoomDAO.getInstance().delete(s);
 		
 		rs = this.estaNoBanco("SELECT * FROM room WHERE " +
 				"room.codigo = \"" + s.getCode() + "\" and " +
@@ -307,7 +307,7 @@ public class RoomDAOTest {
 	}
 	@Test (expected= PatrimonyException.class)
 	public void testExcluirNulo() throws PatrimonyException, SQLException {
-		RoomDAO.getInstance().excluir(null);
+		RoomDAO.getInstance().delete(null);
 	}
 	@Ignore // (expected= PatrimonioException.class)
 	public void testExcluirEnvolvidoEmReserva() throws PatrimonyException, SQLException {
@@ -316,7 +316,7 @@ public class RoomDAOTest {
 	@Test (expected= PatrimonyException.class)
 	public void testExcluirNaoExistente() throws PatrimonyException, SQLException {
 		Room s = new Room("CodigoInc", "Descricao Da Room Inclusao", "123");
-		RoomDAO.getInstance().excluir(s);
+		RoomDAO.getInstance().delete(s);
 	}
 	
 	
