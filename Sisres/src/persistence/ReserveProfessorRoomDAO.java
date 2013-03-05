@@ -16,14 +16,14 @@ import exception.ReserveException;
 
 public class ReserveProfessorRoomDAO extends DAO{
 
-	private final String NULA = "Termo nulo.";
-	private final String SALA_INDISPONIVEL = "A Room esta reservada no mesmo dia e horario.";
-	private final String PROFESSOR_INEXISTENTE = "Professor inexistente.";
-	private final String SALA_INEXISTENTE = "Room inexistente";
-	private final String RESERVA_INEXISTENTE = "Reserva inexistente";
-	private final String RESERVA_EXISTENTE = "A reserva ja existe.";
-	private final String DATA_JA_PASSOU = "A data escolhida ja passou.";
-	private final String HORA_JA_PASSOU = "A hora escolhida ja passou.";
+	private final String NULL = "Termo nulo.";
+	private final String ROOM_UNAVAILABLE = "A Room esta reservada no mesmo dia e horario.";
+	private final String PROFESSOR_NOT_EXISTING = "Professor inexistente.";
+	private final String ROOM_NOT_EXISTING = "Room inexistente";
+	private final String RESERVE_NOT_EXISTING = "Reserva inexistente";
+	private final String RESERVE_EXISTING = "A reserva ja existe.";
+	private final String DATE_IN_PAST = "A data escolhida ja passou.";
+	private final String HOUR_IN_PAST = "A hora escolhida ja passou.";
 	
 	
 		private static ReserveProfessorRoomDAO instance;
@@ -96,23 +96,23 @@ public class ReserveProfessorRoomDAO extends DAO{
 			
 	public void include(ReserveRoomProfessor r) throws ReserveException, SQLException {
 		if(r == null)
-			throw new ReserveException(NULA);
+			throw new ReserveException(NULL);
 		else if(!this.professorInDB(r.getProfessor()))
-			throw new ReserveException(PROFESSOR_INEXISTENTE);
+			throw new ReserveException(PROFESSOR_NOT_EXISTING);
 		else if(!this.roomInDB(r.getRoom()))
-			throw new ReserveException(SALA_INEXISTENTE);
+			throw new ReserveException(ROOM_NOT_EXISTING);
 		else if(this.roomInReserveDB(r.getRoom(), r.getDate(), r.getHour()))
-			throw new ReserveException(SALA_INDISPONIVEL);
+			throw new ReserveException(ROOM_UNAVAILABLE);
 		else if(this.reserveInDB(r))
-			throw new ReserveException(RESERVA_EXISTENTE);
+			throw new ReserveException(RESERVE_EXISTING);
 		else if(this.studentInReserveDB(r.getDate(), r.getHour()))
 				super.executeQuery(this.deleteFromStudent(r));
 		if(this.dataPassou(r.getDate()))
-			throw new ReserveException(DATA_JA_PASSOU);
+			throw new ReserveException(DATE_IN_PAST);
 		if(this.dataIgual(r.getDate()))
 		{
 			if(this.horaPassou(r.getHour()))
-				throw new ReserveException(HORA_JA_PASSOU);
+				throw new ReserveException(HOUR_IN_PAST);
 			else
 				super.executeQuery(this.insert(r));
 		}
@@ -122,35 +122,35 @@ public class ReserveProfessorRoomDAO extends DAO{
 	
 	public void alterate(ReserveRoomProfessor r, ReserveRoomProfessor r_new) throws ReserveException, SQLException {
 		if(r == null)
-			throw new ReserveException(NULA);
+			throw new ReserveException(NULL);
 		else if(r_new == null)
-			throw new ReserveException(NULA);
+			throw new ReserveException(NULL);
 		
 		else if(!this.reserveInDB(r))
-			throw new ReserveException(RESERVA_INEXISTENTE);
+			throw new ReserveException(RESERVE_NOT_EXISTING);
 		else if(this.reserveInDB(r_new))
-			throw new ReserveException(RESERVA_EXISTENTE);
+			throw new ReserveException(RESERVE_EXISTING);
 		else if(!this.professorInDB(r_new.getProfessor()))
-			throw new ReserveException(PROFESSOR_INEXISTENTE);
+			throw new ReserveException(PROFESSOR_NOT_EXISTING);
 		else if(!this.roomInDB(r_new.getRoom()))
-			throw new ReserveException(SALA_INEXISTENTE);
+			throw new ReserveException(ROOM_NOT_EXISTING);
 		else if(!r.getDate().equals(r_new.getDate()) || !r.getHour().equals(r_new.getHour())) {
 			 if(this.roomInReserveDB(r_new.getRoom(), r_new.getDate(), r_new.getHour()))
-				throw new ReserveException(SALA_INDISPONIVEL);
+				throw new ReserveException(ROOM_UNAVAILABLE);
 		}		
 		if(this.dataPassou(r_new.getDate()))
-			throw new ReserveException(DATA_JA_PASSOU);
+			throw new ReserveException(DATE_IN_PAST);
 		if(this.horaPassou(r_new.getHour()) && this.dataIgual(r_new.getDate()))
-			throw new ReserveException(HORA_JA_PASSOU);
+			throw new ReserveException(HOUR_IN_PAST);
 		else
 			super.updateQuery(this.update(r, r_new));
 	}
 	
 	public void delete(ReserveRoomProfessor r) throws ReserveException, SQLException {
 		if(r == null)
-			throw new ReserveException(NULA);
+			throw new ReserveException(NULL);
 		else if(!this.reserveInDB(r))
-			throw new ReserveException(RESERVA_INEXISTENTE);
+			throw new ReserveException(RESERVE_NOT_EXISTING);
 		else{
 			super.executeQuery(this.deleteFromProfessor(r));
 		}

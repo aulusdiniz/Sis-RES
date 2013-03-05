@@ -152,7 +152,7 @@ public class StudentDAO {
 	}
 	
 	/**
-	 * Métodos Privados
+	 * Private Methods
 	 * */
 	
 	private Vector<Student> search(String query) throws SQLException, ClientException {
