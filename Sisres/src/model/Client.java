@@ -22,8 +22,8 @@ public abstract class Client {
 	private final String EMAIL_NULL = "E-mail esta Nulo.";
 	
 	
-	public Client(String name, String cpf, String registration, String phone, 
-			String email) throws ClientException{
+	public Client(String name, String cpf, String registration, 
+			      String phone, String email) throws ClientException{
 		this.setName(name);
 		this.setCpf(cpf);
         this.setRegistration(registration);

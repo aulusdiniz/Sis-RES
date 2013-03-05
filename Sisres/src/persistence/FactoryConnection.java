@@ -20,7 +20,9 @@ public class FactoryConnection {
 		if(instance == null) {
 			instance = new FactoryConnection();
 		}
-		
+		else{
+			//nothing here
+		}
 		return instance;
 	}
 		

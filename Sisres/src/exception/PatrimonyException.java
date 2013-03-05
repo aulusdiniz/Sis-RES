@@ -7,8 +7,8 @@ public class PatrimonyException extends Exception {
 		super();
 	}
 
-	public PatrimonyException(String msg) {
-		super(msg);
+	public PatrimonyException(String message) {
+		super(message);
 	}
 
 }

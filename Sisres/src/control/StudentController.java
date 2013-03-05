@@ -9,51 +9,61 @@ import model.Student;
 
 public class StudentController {
 	
-	private Vector<Student> students_vet = new Vector<Student>();
+	private Vector<Student> studentVector = new Vector<Student>();
 	
-		//Singleton
+
 		private static StudentController instance;
 		private StudentController() {
-			//nothing
+			//nothing here
 		}
 		public static StudentController getInstance() {
 		if(instance == null) {
 			instance = new StudentController();
+		}
+		else{
+			//Nothing here
 		}
 		return instance;
 	}
 
 	
 	public Vector<Student> searchName(String value) throws SQLException, ClientException {
+		
 		return StudentDAO.getInstance().searchName(value);
 	}
 	
 	public Vector<Student> searchCpf(String value) throws SQLException, ClientException {
+		
 		return StudentDAO.getInstance().searchCpf(value);
 	}
 	
 	public Vector<Student> searchRegistration(String value) throws SQLException, ClientException {
+		
 		return StudentDAO.getInstance().searchRegistration(value);
 	}
 	
 	public Vector<Student> searchEmail(String value) throws SQLException, ClientException {
+		
 		return StudentDAO.getInstance().searchEmail(value);
 	}
 	
 	public Vector<Student> searchPhone(String value) throws SQLException, ClientException {
+		
 		return StudentDAO.getInstance().searchPhone(value);
 	}
 			
 	public Vector<Student> getStudentVector() throws SQLException, ClientException{
-		this.students_vet = StudentDAO.getInstance().searchAllStudents();
-		return this.students_vet;
+		
+		this.studentVector = StudentDAO.getInstance().searchAllStudents();
+		return this.studentVector;
 	}
 	
 	public void insert(String name, String cpf, String registration, 
-			String phone, String email) throws ClientException, SQLException {
+					   String phone, String email) throws ClientException, SQLException {
+		
 		Student student = new Student(name, cpf, registration, phone, email);
 		StudentDAO.getInstance().include(student);
-		this.students_vet.add(student);
+		this.studentVector.add(student);
 	}
 
 	public void alterate(String name, String cpf, String registration,
@@ -71,8 +81,9 @@ public class StudentController {
 	}
 
 	public void delete(Student student) throws SQLException, ClientException {
+		
 		StudentDAO.getInstance().delete(student);
-		this.students_vet.remove(student);
+		this.studentVector.remove(student);
 	}
 
 }

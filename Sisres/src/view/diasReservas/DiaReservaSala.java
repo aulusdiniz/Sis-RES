@@ -24,7 +24,7 @@ public class DiaReservaSala extends DiaReservaPatrimonio {
 
     public DiaReservaSala(Frame parent, boolean modal, int indexSala) throws SQLException, PatrimonyException {
         super(parent, modal);
-        room = RoomController.getInstance().getSalas_vet().get(indexSala);
+        room = RoomController.getInstance().getRoomVector().get(indexSala);
         this.setName("DiaReservaSala");
     }
 

@@ -15,11 +15,9 @@ public abstract class DAO {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected Vector find(String query) throws SQLException, ClientException, 
-													PatrimonyException, ReserveException{
+											   PatrimonyException, ReserveException{
 		Vector vector = new Vector();
-		
 		Connection connection =  FactoryConnection.getInstance().getConnection();
-		
 		PreparedStatement prepareStatement = connection.prepareStatement(query);
 		ResultSet resultSet= prepareStatement.executeQuery();
 		
@@ -53,8 +51,7 @@ public abstract class DAO {
 	}
 
 	protected abstract Object fetch(ResultSet resultSet) throws SQLException, ClientException,
-														PatrimonyException, ReserveException;
-	
+														        PatrimonyException, ReserveException;
 	
 	protected void executeQuery(String query) throws SQLException{
 		Connection connection =  FactoryConnection.getInstance().getConnection();

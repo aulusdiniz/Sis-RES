@@ -19,6 +19,9 @@ public class ProfessorController {
 		if(instance == null) {
 			instance = new ProfessorController();
 		}
+		else{
+			//Nothing here
+		}
 	return instance;
 	} 
 	
@@ -48,14 +51,14 @@ public class ProfessorController {
 	}
 	
 	public void insert(String name, String cpf, String registration, String phone,
-			String email) throws ClientException, SQLException {
+					   String email) throws ClientException, SQLException {
 		Professor professor = new Professor(name, cpf, registration, phone, email);
 		ProfessorDAO.getInstance().include(professor);
 		this.professorVector.add(professor);
 	}
 
 	public void alterate(String name, String cpf, String registration, String phone,
-			String email, Professor professor) throws ClientException, SQLException {
+			             String email, Professor professor) throws ClientException, SQLException {
 		Professor professor_old = new Professor( professor.getName(), professor.getCpf(), 
 				professor.getRegistration(), professor.getPhone(), professor.getEmail());
 		professor.setName(name);

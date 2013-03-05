@@ -51,7 +51,7 @@ public class RoomView extends PatrimonioView {
         try {
             DefaultTableModel table = new DefaultTableModel();
 
-            Iterator<Room> i = RoomController.getInstance().getSalas_vet().iterator();
+            Iterator<Room> i = RoomController.getInstance().getRoomVector().iterator();
 
             table.addColumn("Codigo");
             table.addColumn("Nome");
@@ -91,11 +91,11 @@ public class RoomView extends PatrimonioView {
         try {
             int confirm = JOptionPane
                     .showConfirmDialog(this, "Deseja mesmo excluir Room: "
-                            + RoomController.getInstance().getSalas_vet().get(index).getDescription() + "?", "Excluir",
+                            + RoomController.getInstance().getRoomVector().get(index).getDescription() + "?", "Excluir",
                             JOptionPane.YES_NO_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                RoomController.getInstance().excluir(RoomController.getInstance().getSalas_vet().get(index));
+                RoomController.getInstance().delete(RoomController.getInstance().getRoomVector().get(index));
                 JOptionPane.showMessageDialog(this, "Room excluida com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE, null);
             }
             this.tabelaPatrimonio.setModel(fillTable());

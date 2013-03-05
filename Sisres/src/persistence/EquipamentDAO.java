@@ -21,14 +21,16 @@ public class EquipamentDAO {
     private static EquipamentDAO instance;
 
     private EquipamentDAO() {
-        //nothing
+        //nothing here
     }
 
     public static EquipamentDAO getInstance() {
         if (instance == null) {
             instance = new EquipamentDAO();
         }
-        
+        else{
+        	//Nothing here
+        }
         return instance;
     }
 
@@ -46,6 +48,9 @@ public class EquipamentDAO {
         			this.updateQuery("INSERT INTO " + "equipamento (codigo, descricao) VALUES (" +
         			"\"" + equipament.getCode() + "\", " + "\"" + equipament.getDescription() + "\");");
         		}
+        		else{
+        			//nothing here
+        		}
     }
 
     public void alterate(Equipament equipamentOld, Equipament equipamentNew) throws SQLException, PatrimonyException {
@@ -53,14 +58,14 @@ public class EquipamentDAO {
             throw new PatrimonyException(EQUIPAMENT_NULL);
         }
         else{
-        	//nothing
+        	//nothing here
         }
         
         if (equipamentNew == null) {
             throw new PatrimonyException(EQUIPAMENT_NULL);
         }
         else{
-        	//nothing
+        	//nothing here
         }
 
         Connection connection = FactoryConnection.getInstance().getConnection();
@@ -82,14 +87,11 @@ public class EquipamentDAO {
         				String msg = "UPDATE equipamento SET " + "codigo = \"" + equipamentNew.getCode() + "\", " + "descricao = \""
         						+ equipamentNew.getDescription() + "\"" + " WHERE " + "equipamento.codigo = \"" + equipamentOld.getCode()
         						+ "\" and " + "equipamento.descricao = \"" + equipamentOld.getDescription() + "\";";
-
-            connection.setAutoCommit(false);
-            prepare_statement = connection.prepareStatement(msg);
-            prepare_statement.executeUpdate();
-            connection.commit();
-
-            prepare_statement.close();
-
+			            connection.setAutoCommit(false);
+			            prepare_statement = connection.prepareStatement(msg);
+			            prepare_statement.executeUpdate();
+			            connection.commit();
+			            prepare_statement.close();
         			}
         			else
         				throw new PatrimonyException(EQUIPAMENT_EXISTING);
@@ -100,11 +102,14 @@ public class EquipamentDAO {
         if (equipament == null) {
             throw new PatrimonyException(EQUIPAMENT_NULL);
         }
-        else
+        else{
         	if (this.inOtherDB(equipament)) {
         		throw new PatrimonyException(EQUIPAMENT_RESERVED);
         	}
-        	
+        	else{
+        		//Nothing here
+        	}
+        }
         if (this.inDB(equipament)) {
         		this.updateQuery("DELETE FROM equipamento WHERE " + "equipamento.codigo = \"" + equipament.getCode() + "\" and "
         				+ "equipamento.descricao = \"" + equipament.getDescription() + "\";");
@@ -126,7 +131,7 @@ public class EquipamentDAO {
     }
 
     /**
-     * Metodos Privados
+     * Private Methods
      * */
 
     private Vector<Equipament> search(String query) throws SQLException, PatrimonyException {

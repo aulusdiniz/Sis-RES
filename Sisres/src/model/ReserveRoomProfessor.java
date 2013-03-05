@@ -9,7 +9,8 @@ public class ReserveRoomProfessor extends ReserveRoom{
 		private final String PROFESSOR_NULL = "O professor esta nulo.";
 	
 	public ReserveRoomProfessor(String data, String hora, Room room,
-			String finalidade, Professor professor) throws ReserveException {
+	                     		String finalidade, Professor professor) throws ReserveException {
+		
 		super(data, hora, room, finalidade);
 		this.setProfessor(professor);
 	}
@@ -21,18 +22,21 @@ public class ReserveRoomProfessor extends ReserveRoom{
 	public void setProfessor(Professor professor) throws ReserveException {
 		if(professor == null)
 			throw new ReserveException(PROFESSOR_NULL);
+		else{
+			//Nothing here
+		}
 		this.professor = professor;
 	}
 
-	public boolean equals(ReserveRoomProfessor obj) {
-		return (super.equals(obj) &&
-				this.getProfessor().equals(obj.getProfessor())
-				);
+	public boolean equals(ReserveRoomProfessor reserveRoomProfessor) {
+		return (super.equals(reserveRoomProfessor) &&
+				this.getProfessor().equals(reserveRoomProfessor.getProfessor()));
 	}
 
 	@Override
 	public String toString() {
-		return "ReserveRoomProfessor [professor=" + this.getProfessor().toString() + ", toString()="
+		return "ReserveRoomProfessor [professor=" 
+	            + this.getProfessor().toString() + ", toString()="
 				+ super.toString() + "]";
 	}
 

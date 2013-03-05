@@ -23,6 +23,10 @@ public class StudentDAO {
 		if(instance == null) {
 			instance = new StudentDAO();
 		}
+		else{
+			//nothing here
+		}
+		
 		return instance;
 	}
 	
@@ -54,56 +58,56 @@ public class StudentDAO {
 						throw new ClientException(STUDENT_EXISTING);
 	}
 
-	public void alterate(Student student_old, Student student_new) throws SQLException, ClientException {
-		if(student_old == null) {
+	public void alterate(Student oldStudent, Student newStudent) throws SQLException, ClientException {
+		if(oldStudent == null) {
 			throw new ClientException(STUDENT_NULL);
 		}
 		
-		if(student_new == null) {
+		if(newStudent == null) {
 			throw new ClientException(STUDENT_NULL);
 		}
 		
-		Connection con = FactoryConnection.getInstance().getConnection();
-		PreparedStatement pst;
+		Connection connection = FactoryConnection.getInstance().getConnection();
+		PreparedStatement prepareStatement;
 		
-		if(!this.inDB(student_old)){
+		if(!this.inDB(oldStudent)){
 			throw new ClientException(STUDENT_NOT_EXISTING);
 		}
 		else
-			if(this.inOtherDB(student_old)) {
+			if(this.inOtherDB(oldStudent)) {
 				throw new ClientException(STUDENT_RESERVED);
 			}
 			else 
-				if(!student_old.getCpf().equals(student_new.getCpf()) && this.inDBCpf(student_new.getCpf())) {
+				if(!oldStudent.getCpf().equals(newStudent.getCpf()) && this.inDBCpf(newStudent.getCpf())) {
 					throw new ClientException(CPF_EXISTING);
 				}
 				else 
-					if(!student_old.getRegistration().equals(student_new.getRegistration()) && this.inDBRegistration(student_new.getRegistration())) {
+					if(!oldStudent.getRegistration().equals(newStudent.getRegistration()) && this.inDBRegistration(newStudent.getRegistration())) {
 						throw new ClientException(REGISTRATION_EXISTING);
 					}
 					else 
-						if(!this.inDB(student_new)) {
-							String msg = "UPDATE aluno SET " +
-								"nome = \"" + student_new.getName() + "\", " +
-								"cpf = \"" + student_new.getCpf() + "\", " +
-								"telefone = \"" + student_new.getPhone() + "\", " +
-								"email = \"" + student_new.getEmail() + "\", " +
-								"matricula = \"" + student_new.getRegistration() + "\""+
+						if(!this.inDB(newStudent)) {
+							String message = "UPDATE aluno SET " +
+								"nome = \"" + newStudent.getName() + "\", " +
+								"cpf = \"" + newStudent.getCpf() + "\", " +
+								"telefone = \"" + newStudent.getPhone() + "\", " +
+								"email = \"" + newStudent.getEmail() + "\", " +
+								"matricula = \"" + newStudent.getRegistration() + "\""+
 								" WHERE " +
-								"aluno.nome = \"" + student_old.getName() + "\" and " +
-								"aluno.cpf = \"" + student_old.getCpf() + "\" and " +
-								"aluno.telefone = \"" + student_old.getPhone() + "\" and " +
-								"aluno.email = \"" + student_old.getEmail() + "\" and " +
-								"aluno.matricula = \"" + student_old.getRegistration() + "\";";
-							con.setAutoCommit(false);
-							pst = con.prepareStatement(msg);
-							pst.executeUpdate();
-							con.commit();
+								"aluno.nome = \"" + oldStudent.getName() + "\" and " +
+								"aluno.cpf = \"" + oldStudent.getCpf() + "\" and " +
+								"aluno.telefone = \"" + oldStudent.getPhone() + "\" and " +
+								"aluno.email = \"" + oldStudent.getEmail() + "\" and " +
+								"aluno.matricula = \"" + oldStudent.getRegistration() + "\";";
+							connection.setAutoCommit(false);
+							prepareStatement = connection.prepareStatement(message);
+							prepareStatement.executeUpdate();
+							connection.commit();
 						}
 						else
 							throw new ClientException(STUDENT_EXISTING);
-		pst.close();
-		con.close();
+		prepareStatement.close();
+		connection.close();
 	}
 
 	public void delete(Student student) throws SQLException, ClientException {
@@ -128,26 +132,32 @@ public class StudentDAO {
 	}
 	
 	public Vector<Student> searchAllStudents() throws SQLException, ClientException {
+		
 		return this.search("SELECT * FROM aluno;");
 	}
 	
 	public Vector<Student> searchName(String value) throws SQLException, ClientException {
+		
 		return this.search("SELECT * FROM aluno WHERE nome = " + "\"" + value + "\";");
 	}
 	
 	public Vector<Student> searchCpf(String value) throws SQLException, ClientException {
+		
 		return this.search("SELECT * FROM aluno WHERE cpf = " + "\"" + value + "\";");
 	}
 	
 	public Vector<Student> searchRegistration(String value) throws SQLException, ClientException {
+		
 		return this.search("SELECT * FROM aluno WHERE matricula = " + "\"" + value + "\";");
 	}
 	
 	public Vector<Student> searchEmail(String value) throws SQLException, ClientException {
+		
 		return this.search("SELECT * FROM aluno WHERE email = " + "\"" + value + "\";");
 	}
 	
 	public Vector<Student> searchPhone(String value) throws SQLException, ClientException {
+		
 		return this.search("SELECT * FROM aluno WHERE telefone = " + "\"" + value + "\";");
 	}
 	
@@ -157,40 +167,40 @@ public class StudentDAO {
 	
 	private Vector<Student> search(String query) throws SQLException, ClientException {
 		
-		Vector<Student> vector_student = new Vector<Student>();
+		Vector<Student> studentVector = new Vector<Student>();
 		
 		Connection connection =  FactoryConnection.getInstance().getConnection();
-		PreparedStatement prepare_statement = connection.prepareStatement(query);
-		ResultSet result_set = prepare_statement.executeQuery();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		ResultSet resultSet = prepareStatement.executeQuery();
 		
-		while(result_set.next()) {
-			vector_student.add(this.fetchStudent(result_set));
+		while(resultSet.next()) {
+			studentVector.add(this.fetchStudent(resultSet));
 		}
 		
-		prepare_statement.close();
-		result_set.close();
+		prepareStatement.close();
+		resultSet.close();
 		connection.close();
 		
-		return vector_student;
+		return studentVector;
 	}
 	
 	
 	private boolean inDBGeneric(String query) throws SQLException{
 		
 		Connection connection = FactoryConnection.getInstance().getConnection();
-		PreparedStatement prepare_statement = connection.prepareStatement(query);
-		ResultSet result_set = prepare_statement.executeQuery();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		ResultSet resultSet = prepareStatement.executeQuery();
 		
-		if(!result_set.next()) {
-			result_set.close();
-			prepare_statement.close();
+		if(!resultSet.next()) {
+			resultSet.close();
+			prepareStatement.close();
 			connection.close();
 			
 			return false;
 		}
 		else {
-			result_set.close();
-			prepare_statement.close();
+			resultSet.close();
+			prepareStatement.close();
 			connection.close();
 			
 			return true;
@@ -228,16 +238,16 @@ public class StudentDAO {
 	}
 	
 	
-	private Student fetchStudent(ResultSet result_set) throws ClientException, SQLException{
-		return new Student(result_set.getString("nome"), result_set.getString("cpf"), result_set.getString("matricula"),
-				result_set.getString("telefone"), result_set.getString("email"));
+	private Student fetchStudent(ResultSet resultSet) throws ClientException, SQLException{
+		return new Student(resultSet.getString("nome"), resultSet.getString("cpf"), resultSet.getString("matricula"),
+				resultSet.getString("telefone"), resultSet.getString("email"));
 	}
 	
-	private void updateQuery(String msg) throws SQLException{
+	private void updateQuery(String message) throws SQLException{
 		Connection connection =  FactoryConnection.getInstance().getConnection();
-		PreparedStatement prepare_statement = connection.prepareStatement(msg);
-		prepare_statement.executeUpdate();		
-		prepare_statement.close();
+		PreparedStatement prepareStatement = connection.prepareStatement(message);
+		prepareStatement.executeUpdate();		
+		prepareStatement.close();
 		connection.close();
 	}
 }

@@ -39,7 +39,8 @@ public class Room extends Patrimony {
 			this.getCapacity().equals(room.getCapacity())){
 			return true;
 		}
-		
+		else{
 		return false;
+		}
 	}
 }
