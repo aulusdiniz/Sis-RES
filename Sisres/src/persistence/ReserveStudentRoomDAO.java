@@ -35,8 +35,13 @@ public class ReserveStudentRoomDAO extends DAO{
 		private ReserveStudentRoomDAO(){
 		}
 		public static ReserveStudentRoomDAO getInstance(){
-			if(instance == null)
+			if(instance == null){
 				instance = new ReserveStudentRoomDAO();
+			}
+			else{
+				//nothing here
+			}
+			
 			return instance;
 		}
 
@@ -56,32 +61,32 @@ public class ReserveStudentRoomDAO extends DAO{
 		}
 		private String findReserveByRoomAndStudent(ReserveStudentRoom reserveStudentRoom){
 			return " WHERE " +
-			"id_aluno = ( " + findStudentById(reserveStudentRoom.getStudent()) + " ) and " +
-			"id_sala = ( " + findRoomById(reserveStudentRoom.getRoom()) + " ) and " +
-			"finalidade = \"" + reserveStudentRoom.getFinality() + "\" and " +
-			"hora = \"" + reserveStudentRoom.getHour() + "\" and " +
-			"data = \"" + reserveStudentRoom.getDate() + "\" and " +
-			"cadeiras_reservadas = " + reserveStudentRoom.getReservedChairs();
+					"id_aluno = ( " + findStudentById(reserveStudentRoom.getStudent()) + " ) and " +
+					"id_sala = ( " + findRoomById(reserveStudentRoom.getRoom()) + " ) and " +
+					"finalidade = \"" + reserveStudentRoom.getFinality() + "\" and " +
+					"hora = \"" + reserveStudentRoom.getHour() + "\" and " +
+					"data = \"" + reserveStudentRoom.getDate() + "\" and " +
+					"reservedChairs = " + reserveStudentRoom.getReservedChairs();
 		}
 		private String findValuesOfReserve(ReserveStudentRoom r){
 			return "( " + findStudentById(r.getStudent()) + " ), " +
-			"( " + findRoomById(r.getRoom()) + " ), " +
-			"\"" + r.getFinality() + "\", " +
-			"\"" + r.getHour() + "\", " +
-			"\"" + r.getDate() + "\", " +
-			r.getReservedChairs();
+					"( " + findRoomById(r.getRoom()) + " ), " +
+					"\"" + r.getFinality() + "\", " +
+					"\"" + r.getHour() + "\", " +
+					"\"" + r.getDate() + "\", " +
+					r.getReservedChairs();
 		}
 		private String findAtributesValueByRoomAndStudent(ReserveStudentRoom r){
 			return "id_aluno = ( " + findStudentById(r.getStudent()) + " ), " +
-			"id_sala = ( " + findRoomById(r.getRoom()) + " ), " +
-			"finalidade = \"" + r.getFinality() + "\", " +
-			"hora = \"" + r.getHour() + "\", " +
-			"data = \"" + r.getDate() + "\", " +
-			"cadeiras_reservadas = " + r.getReservedChairs();
+					"id_sala = ( " + findRoomById(r.getRoom()) + " ), " +
+					"finalidade = \"" + r.getFinality() + "\", " +
+					"hora = \"" + r.getHour() + "\", " +
+					"data = \"" + r.getDate() + "\", " +
+					"reservedChairs = " + r.getReservedChairs();
 		}
 		private String insert(ReserveStudentRoom r){
 			return "INSERT INTO " +
-					"reserva_sala_aluno (id_aluno, id_sala, finalidade, hora, data, cadeiras_reservadas) " +
+					"reserva_sala_aluno (id_aluno, id_sala, finalidade, hora, data, reservedChairs) " +
 					"VALUES ( " + findValuesOfReserve(r) + " );";
 		}
 		private String update(ReserveStudentRoom r, ReserveStudentRoom r2){
@@ -108,11 +113,11 @@ public class ReserveStudentRoomDAO extends DAO{
 			throw new ReserveException(STUDENT_UNAVAILABLE);
 		else if(!this.thereAreChairs(r.getReservedChairs(), r.getRoom(), r.getDate(), r.getHour()))
 			throw new ReserveException(CHAIRS_UNAVAILABLE);
-		if(this.dataPassou(r.getDate()))
+		if(this.dateInPast(r.getDate()))
 			throw new ReserveException(DATE_IN_PAST);
-		if(this.dataIgual(r.getDate()))
+		if(this.dateEquals(r.getDate()))
 		{
-			if(this.horaPassou(r.getHour()))
+			if(this.hourInPast(r.getHour()))
 				throw new ReserveException(HOUR_IN_PAST);
 			else
 				super.executeQuery(this.insert(r));
@@ -121,166 +126,168 @@ public class ReserveStudentRoomDAO extends DAO{
 			super.executeQuery(this.insert(r));
 	}
 	
-	public void alterate(ReserveStudentRoom r, ReserveStudentRoom r_new) throws ReserveException, SQLException, ClientException, PatrimonyException{
-		if(r == null)
+	public void alterate(ReserveStudentRoom reserveStudentRoom,
+						 ReserveStudentRoom newReserveStudentRoom) throws ReserveException, SQLException, 
+						 												  ClientException, PatrimonyException{
+		if(reserveStudentRoom == null)
 			throw new ReserveException(NULL);
-		else if(r_new == null)
+		else if(newReserveStudentRoom == null)
 			throw new ReserveException(NULL);
 		
-		else if(!this.reserveInDB(r))
+		else if(!this.reserveInDB(reserveStudentRoom))
 			throw new ReserveException(RESERVE_NOT_EXISTING);
-		else if(this.reserveInDB(r_new))
+		else if(this.reserveInDB(newReserveStudentRoom))
 			throw new ReserveException(RESERVE_EXISTING);
-		else if(!this.studentInDB(r_new.getStudent()))
+		else if(!this.studentInDB(newReserveStudentRoom.getStudent()))
 			throw new ReserveException(STUDENT_NOT_EXISTING);
-		else if(!this.roomInDB(r_new.getRoom()))
+		else if(!this.roomInDB(newReserveStudentRoom.getRoom()))
 			throw new ReserveException(ROOM_NOT_EXISTING);
-		else if(!r.getDate().equals(r_new.getDate()) || !r.getHour().equals(r_new.getHour())){
-			if(this.studentInReserveDB(r_new.getStudent(), r_new.getDate(), r_new.getHour()))
+		else if(!reserveStudentRoom.getDate().equals(newReserveStudentRoom.getDate()) || !reserveStudentRoom.getHour().equals(newReserveStudentRoom.getHour())){
+			if(this.studentInReserveDB(newReserveStudentRoom.getStudent(), newReserveStudentRoom.getDate(), newReserveStudentRoom.getHour()))
 				throw new ReserveException(STUDENT_UNAVAILABLE);
-			else if(this.roomInTeachersReserveDB(r_new.getRoom(), r_new.getDate(), r_new.getHour()))
+			else if(this.roomInTeachersReserveDB(newReserveStudentRoom.getRoom(), newReserveStudentRoom.getDate(), newReserveStudentRoom.getHour()))
 				throw new ReserveException(ROOM_UNAVAILABLE);
 		}
-		if(!this.thereAreChairs(""+(Integer.parseInt(r_new.getReservedChairs()) - 
-				Integer.parseInt(r.getReservedChairs())), r_new.getRoom(), 
-				r_new.getDate(), r_new.getHour()))
+		if(!this.thereAreChairs(""+(Integer.parseInt(newReserveStudentRoom.getReservedChairs()) - 
+				Integer.parseInt(reserveStudentRoom.getReservedChairs())), newReserveStudentRoom.getRoom(), 
+				newReserveStudentRoom.getDate(), newReserveStudentRoom.getHour()))
 			throw new ReserveException(CHAIRS_UNAVAILABLE);
-		if(this.dataPassou(r_new.getDate()))
+		if(this.dateInPast(newReserveStudentRoom.getDate()))
 			throw new ReserveException(DATE_IN_PAST);
-		if(this.horaPassou(r_new.getHour()) && this.dataIgual(r_new.getDate()))
+		if(this.hourInPast(newReserveStudentRoom.getHour()) && this.dateEquals(newReserveStudentRoom.getDate()))
 			throw new ReserveException(HOUR_IN_PAST);
 		else
-			super.updateQuery(this.update(r, r_new));
+			super.updateQuery(this.update(reserveStudentRoom, newReserveStudentRoom));
 			
 	}
 	
-	public void delete(ReserveStudentRoom r) throws ReserveException, SQLException {
-		if(r == null)
+	public void delete(ReserveStudentRoom reserveStudentRoom) throws ReserveException, SQLException {
+		if(reserveStudentRoom == null)
 			throw new ReserveException(NULL);
-		else if(!this.reserveInDB(r))
+		else if(!this.reserveInDB(reserveStudentRoom))
 			throw new ReserveException(RESERVE_NOT_EXISTING);
 		else
-			super.executeQuery(this.deleteFrom(r));
+			super.executeQuery(this.deleteFrom(reserveStudentRoom));
 	}
 	
 	public Vector<ReserveStudentRoom> findAll() throws SQLException, ClientException, PatrimonyException, ReserveException{
 		return super.find("SELECT * FROM reserva_sala_aluno " +
-				"INNER JOIN room ON room.id_sala = reserva_sala_aluno.id_sala " +
-				"INNER JOIN student ON student.id_aluno = reserva_sala_aluno.id_aluno;");
+						  "INNER JOIN room ON room.id_sala = reserva_sala_aluno.id_sala " +
+						  "INNER JOIN student ON student.id_aluno = reserva_sala_aluno.id_aluno;");
 	}
 	public Vector<ReserveStudentRoom> findByDate(String date) throws SQLException, ClientException, PatrimonyException, ReserveException{
-		date = this.padronizeDate(date);
+		date = this.padronizateDate(date);
 		return super.find("SELECT * FROM reserva_sala_aluno " +
-				"INNER JOIN room ON room.id_sala = reserva_sala_aluno.id_sala " +
-				"INNER JOIN student ON student.id_aluno = reserva_sala_aluno.id_aluno " +
-				"WHERE data = \""+ date + "\";");
+						  "INNER JOIN room ON room.id_sala = reserva_sala_aluno.id_sala " +
+						  "INNER JOIN student ON student.id_aluno = reserva_sala_aluno.id_aluno " +
+						  "WHERE data = \""+ date + "\";");
 	}
 	public Vector<ReserveStudentRoom> findByHour(String hour) 
 			throws SQLException, ClientException, PatrimonyException, ReserveException{
 		hour = this.padronizeHour(hour);
 		return super.find("SELECT * FROM reserva_sala_aluno " +
-				"INNER JOIN room ON room.id_sala = reserva_sala_aluno.id_sala " +
-				"INNER JOIN student ON student.id_aluno = reserva_sala_aluno.id_aluno " +
-				" WHERE hora = \"" + hour +"\";");
+						  "INNER JOIN room ON room.id_sala = reserva_sala_aluno.id_sala " +
+						  "INNER JOIN student ON student.id_aluno = reserva_sala_aluno.id_aluno " +
+						  " WHERE hora = \"" + hour +"\";");
 	}
 
 	
-	public int availableChairs(Room room, String data, String hora) 
-			throws SQLException, PatrimonyException, ClientException, ReserveException{
-		data = this.padronizeDate(data);
-		hora = this.padronizeHour(hora);
+	public int availableChairs(Room room, String date, 
+							   String hour) throws SQLException, PatrimonyException, ClientException, ReserveException{
+		date = this.padronizateDate(date);
+		hour = this.padronizeHour(hour);
 		Vector<ReserveStudentRoom> vet = this.findAll();
 		Iterator<ReserveStudentRoom> iterator =  vet.iterator();
 		int total = Integer.parseInt(room.getCapacity());
 		while(iterator.hasNext()){
 			ReserveStudentRoom r = iterator.next();
-			if(r.getRoom().equals(room) && r.getDate().equals(data) && r.getHour().equals(hora))
+			if(r.getRoom().equals(room) && r.getDate().equals(date) && r.getHour().equals(hour))
 				total -= Integer.parseInt(r.getReservedChairs());
 		}
 		return total;
 	}
 	
 	
-	private boolean thereAreChairs(String cadeiras_reservadas, Room room, String data, String hora) 
-			throws SQLException, ClientException, PatrimonyException, ReserveException {
-		if(this.availableChairs(room, data, hora) >= Integer.parseInt(cadeiras_reservadas))
+	private boolean thereAreChairs(String reservedChairs, Room room,
+								   String date, String hour) throws SQLException, ClientException, PatrimonyException, ReserveException {
+		if(this.availableChairs(room, date, hour) >= Integer.parseInt(reservedChairs))
 			return true;
 		return false;
 	}
 	
 	@Override
-	protected Object fetch(ResultSet rs) throws SQLException, ClientException, PatrimonyException, ReserveException {
-		Student student = new Student(rs.getString("nome"), rs.getString("cpf"), rs.getString("matricula"),
-				rs.getString("telefone"), rs.getString("email"));
+	protected Object fetch(ResultSet resultSet) throws SQLException, ClientException, PatrimonyException, ReserveException {
+		Student student = new Student(resultSet.getString("nome"), resultSet.getString("cpf"), resultSet.getString("matricula"),
+				resultSet.getString("telefone"), resultSet.getString("email"));
 		
-		Room s = new Room(rs.getString("codigo"), rs.getString("descricao"), rs.getString("capacidade"));
+		Room s = new Room(resultSet.getString("codigo"), resultSet.getString("descricao"), resultSet.getString("capacidade"));
 		
-		ReserveStudentRoom r = new ReserveStudentRoom(rs.getString("data"),rs.getString("hora"),
-				s ,rs.getString("finalidade"),rs.getString("cadeiras_reservadas"), student);
+		ReserveStudentRoom reserveStudentRoom = new ReserveStudentRoom(resultSet.getString("data"),resultSet.getString("hora"),
+				s ,resultSet.getString("finalidade"),resultSet.getString("reservedChairs"), student);
 		
-		return r;
+		return reserveStudentRoom;
 	}
 	
 	private boolean studentInDB(Student student) throws SQLException{
 		return super.inDBGeneric("SELECT * FROM student WHERE " +
-				"aluno.nome = \"" + student.getName() + "\" and " +
-				"aluno.cpf = \"" + student.getCpf() + "\" and " +
-				"aluno.telefone = \"" + student.getPhone() + "\" and " +
-				"aluno.email = \"" + student.getEmail() + "\" and " +
-				"aluno.matricula = \"" + student.getRegistration() + "\";");
+								 "aluno.nome = \"" + student.getName() + "\" and " +
+								 "aluno.cpf = \"" + student.getCpf() + "\" and " +
+								 "aluno.telefone = \"" + student.getPhone() + "\" and " +
+								 "aluno.email = \"" + student.getEmail() + "\" and " +
+								 "aluno.matricula = \"" + student.getRegistration() + "\";");
 	}
 	
 	private boolean roomInDB(Room room) throws SQLException{
 		return super.inDBGeneric("SELECT * FROM room WHERE " +
-				"sala.codigo = \"" + room.getCode() + "\" and " +
-				"sala.descricao = \"" + room.getDescription() + "\" and " +
-				"sala.capacidade = " + room.getCapacity() +
-				";");
+								 "sala.codigo = \"" + room.getCode() + "\" and " +
+							 	 "sala.descricao = \"" + room.getDescription() + "\" and " +
+								 "sala.capacidade = " + room.getCapacity() + ";");
 	}
 	
-	private boolean studentInReserveDB(Student student, String data, String hora) throws SQLException {
+	private boolean studentInReserveDB(Student student, String date, String hour) throws SQLException {
 		return super.inDBGeneric("SELECT * FROM reserva_sala_aluno WHERE " +
-				"data = \"" + data + "\" and " +
-				"hora = \"" + hora + "\" and " +
-				"id_aluno = (SELECT id_aluno FROM student WHERE " +
-				"aluno.nome = \"" + student.getName() + "\" and " +
-				"aluno.cpf = \"" + student.getCpf() + "\" and " +
-				"aluno.telefone = \"" + student.getPhone() + "\" and " +
-				"aluno.email = \"" + student.getEmail() + "\" and " +
-				"aluno.matricula = \"" + student.getRegistration() + "\");");
+								 "data = \"" + date + "\" and " +
+								 "hora = \"" + hour + "\" and " +
+								 "id_aluno = (SELECT id_aluno FROM student WHERE " +
+								 "aluno.nome = \"" + student.getName() + "\" and " +
+								 "aluno.cpf = \"" + student.getCpf() + "\" and " +
+							 	 "aluno.telefone = \"" + student.getPhone() + "\" and " +
+								 "aluno.email = \"" + student.getEmail() + "\" and " +
+								 "aluno.matricula = \"" + student.getRegistration() + "\");");
 	}
-	private boolean roomInTeachersReserveDB(Room room, String data, String hora) throws SQLException {
+	private boolean roomInTeachersReserveDB(Room room, String date, String hour) throws SQLException {
 		return super.inDBGeneric("SELECT * FROM reserva_sala_professor WHERE " +
-				"data = \"" + this.padronizeDate(data) + "\" and " +
-				"hora = \"" + this.padronizeHour(hora) + "\" and " +
-				"id_sala = (SELECT id_sala FROM room WHERE " +
-				"room.codigo = \"" + room.getCode() + "\" and " +
-				"room.descricao = \"" + room.getDescription() +  "\" and " +
-				"room.capacidade = " + room.getCapacity() +" );");
+								 "data = \"" + this.padronizateDate(date) + "\" and " +
+								 "hora = \"" + this.padronizeHour(hour) + "\" and " +
+								 "id_sala = (SELECT id_sala FROM room WHERE " +
+								 "room.codigo = \"" + room.getCode() + "\" and " +
+								 "room.descricao = \"" + room.getDescription() +  "\" and " +
+								 "room.capacidade = " + room.getCapacity() +" );");
 	}
 	
-	private boolean reserveInDB(ReserveStudentRoom r) throws SQLException {
+	private boolean reserveInDB(ReserveStudentRoom reserveStudentRoom) throws SQLException {
+		
 		return super.inDBGeneric("SELECT * FROM reserva_sala_aluno WHERE " +
-					"id_aluno = (SELECT id_aluno FROM student WHERE " +
-							"student.nome = \"" + r.getStudent().getName() + "\" and " +
-							"student.cpf = \"" + r.getStudent().getCpf() + "\" and " +
-							"student.telefone = \"" + r.getStudent().getPhone() + "\" and " +
-							"student.email = \"" + r.getStudent().getEmail() + "\" and " +
-							"student.matricula = \"" + r.getStudent().getRegistration() + "\") and " +
-					"id_sala = (SELECT id_sala FROM room WHERE " +
-									"room.codigo = \"" + r.getRoom().getCode() + "\" and " +
-									"room.descricao = \"" + r.getRoom().getDescription() +  "\" and " +
-									"room.capacidade = " + r.getRoom().getCapacity() +" ) and " +
-					"finalidade = \"" + r.getFinality() + "\" and " +
-					"hora = \"" + r.getHour() + "\" and " +
-					"data = \"" + r.getDate() + "\" and " +
-					"cadeiras_reservadas = " + r.getReservedChairs() + ";");
+								 "id_aluno = (SELECT id_aluno FROM student WHERE " +
+								 "student.nome = \"" + reserveStudentRoom.getStudent().getName() + "\" and " +
+								 "student.cpf = \"" + reserveStudentRoom.getStudent().getCpf() + "\" and " +
+								 "student.telefone = \"" + reserveStudentRoom.getStudent().getPhone() + "\" and " +
+								 "student.email = \"" + reserveStudentRoom.getStudent().getEmail() + "\" and " +
+								 "student.matricula = \"" + reserveStudentRoom.getStudent().getRegistration() + "\") and " +
+								 "id_sala = (SELECT id_sala FROM room WHERE " +
+								 "room.codigo = \"" + reserveStudentRoom.getRoom().getCode() + "\" and " +
+								 "room.descricao = \"" + reserveStudentRoom.getRoom().getDescription() +  "\" and " +
+								 "room.capacidade = " + reserveStudentRoom.getRoom().getCapacity() +" ) and " +
+								 "finalidade = \"" + reserveStudentRoom.getFinality() + "\" and " +
+								 "hora = \"" + reserveStudentRoom.getHour() + "\" and " +
+								 "data = \"" + reserveStudentRoom.getDate() + "\" and " +
+								 "reservedChairs = " + reserveStudentRoom.getReservedChairs() + ";");
 	}
 
 	private String actualDate(){
 		Date date = new Date(System.currentTimeMillis());
-		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
-		return formatador.format(date);
+		SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
+		return formater.format(date);
 	}
 	
 	private String actualHour(){
@@ -288,49 +295,49 @@ public class ReserveStudentRoomDAO extends DAO{
 		return date.toString().substring(11, 16);
 	}
 	
-	private boolean dataPassou(String d){
-		String agora[] = this.actualDate().split("[./-]");
-		String data[] = d.split("[./-]");
+	private boolean dateInPast(String d){
+		String now[] = this.actualDate().split("[./-]");
+		String date[] = d.split("[./-]");
 		
-		int dif = agora[2].length() - data[2].length();
-		data[2] = agora[2].substring(0, dif) + data[2];
+		int dif = now[2].length() - date[2].length();
+		date[2] = now[2].substring(0, dif) + date[2];
 		
-		if(Integer.parseInt(agora[2]) > Integer.parseInt(data[2]))
+		if(Integer.parseInt(now[2]) > Integer.parseInt(date[2]))
 			return true;
 		
-		dif = agora[1].length() - data[1].length();
-		data[1] = agora[1].substring(0, dif) + data[1];
+		dif = now[1].length() - date[1].length();
+		date[1] = now[1].substring(0, dif) + date[1];
 		
-		if(Integer.parseInt(agora[1]) > Integer.parseInt(data[1]))
+		if(Integer.parseInt(now[1]) > Integer.parseInt(date[1]))
 			return true;
-		else if(Integer.parseInt(agora[1]) == Integer.parseInt(data[1])){
-			dif = agora[0].length() - data[0].length();
-			data[0] = agora[0].substring(0, dif) + data[0];
+		else if(Integer.parseInt(now[1]) == Integer.parseInt(date[1])){
+			dif = now[0].length() - date[0].length();
+			date[0] = now[0].substring(0, dif) + date[0];
 			
-			if(Integer.parseInt(agora[0]) > Integer.parseInt(data[0]))
+			if(Integer.parseInt(now[0]) > Integer.parseInt(date[0]))
 				return true;
 		}
 		return false;
 	}
 	
-	public boolean dataIgual(String d){
-		d = this.padronizeDate(d);
-		String agora[] = this.actualDate().split("[./-]");
-		String data[] = d.split("[./-]");
+	public boolean dateEquals(String d){
+		d = this.padronizateDate(d);
+		String now[] = this.actualDate().split("[./-]");
+		String date[] = d.split("[./-]");
 		
-		if(agora[0].equals(data[0]) && agora[1].equals(data[1]) && agora[2].equals(data[2]))
+		if(now[0].equals(date[0]) && now[1].equals(date[1]) && now[2].equals(date[2]))
 			return true;
 		return false;
 	}
 	
-	private boolean horaPassou(String hora){
-		String agora = this.actualHour();
-		if(hora.length() == 4)
-			hora = "0" + hora;
-		if(Integer.parseInt(agora.substring(0, 2)) > Integer.parseInt(hora.substring(0, 2)))
+	private boolean hourInPast(String hour){
+		String now = this.actualHour();
+		if(hour.length() == 4)
+			hour = "0" + hour;
+		if(Integer.parseInt(now.substring(0, 2)) > Integer.parseInt(hour.substring(0, 2)))
 			return true;
-		else if(Integer.parseInt(agora.substring(0, 2)) == Integer.parseInt(hora.substring(0, 2))){
-			if(Integer.parseInt(agora.substring(3, 5)) > Integer.parseInt(hora.substring(3, 5)))
+		else if(Integer.parseInt(now.substring(0, 2)) == Integer.parseInt(hour.substring(0, 2))){
+			if(Integer.parseInt(now.substring(3, 5)) > Integer.parseInt(hour.substring(3, 5)))
 				return true;
 			else
 				return false;
@@ -339,28 +346,28 @@ public class ReserveStudentRoomDAO extends DAO{
 			return false;
 	}
 	
-	private String padronizeDate(String data){
-		String agora[] = actualDate().split("[./-]");
-		String partes[] = data.split("[./-]");
-		String dataNoPadrao = "";
+	private String padronizateDate(String d){
+		String now[] = actualDate().split("[./-]");
+		String parts[] = d.split("[./-]");
+		String datePattern = "";
 		
 		for(int i = 0; i < 3; i++){
 			if(i == 0)
-				dataNoPadrao += agora[i].substring(0, 
-						agora[i].length() - partes[i].length()) + partes[i];
+				datePattern += now[i].substring(0, 
+						now[i].length() - parts[i].length()) + parts[i];
 			else
-				dataNoPadrao +=  "/" + agora[i].substring(0, 
-						agora[i].length() - partes[i].length()) + partes[i];
+				datePattern +=  "/" + now[i].substring(0, 
+						now[i].length() - parts[i].length()) + parts[i];
 				
 		}
 		
-		return dataNoPadrao;
+		return datePattern;
 	}
 	
-	private String padronizeHour(String hora){
-		if(hora.length() == 4)
-			return "0" + hora;
-		return hora;
+	private String padronizeHour(String hour){
+		if(hour.length() == 4)
+			return "0" + hour;
+		return hour;
 	}
 	
 }

@@ -20,34 +20,51 @@ public class RoomDAO {
 	
 		private static RoomDAO instance;
 		private RoomDAO(){
+			//nothing here
 		}
 		public static RoomDAO getInstance(){
-			if(instance == null)
+			if(instance == null){
 				instance = new RoomDAO();
+			}
+			else{
+				//nothing here
+			}
 			return instance;
 		}
 
 		
 	public void include(Room room) throws SQLException, PatrimonyException {	
-		if(room == null)
+		if(room == null){
 			throw new PatrimonyException(ROOM_NULL);
-		else if(this.inDBCode(room.getCode()))
-			throw new PatrimonyException(CODE_EXISTING);
+		}
+		else
+			if(this.inDBCode(room.getCode())){
+				throw new PatrimonyException(CODE_EXISTING);
+			}
 		this.updateQuery("INSERT INTO " +
-					"room (codigo, descricao, capacidade) VALUES (" +
-					"\"" + room.getCode() + "\", " +
-					"\"" + room.getDescription() + "\", " +
-					room.getCapacity() + ");");
+						"room (codigo, descricao, capacidade) VALUES (" +
+						"\"" + room.getCode() + "\", " +
+						"\"" + room.getDescription() + "\", " +
+						room.getCapacity() + ");");
 	}
 
 	public void alterate(Room oldRoom, Room newRoom) throws SQLException, PatrimonyException {
-		if(newRoom == null)
+		if(newRoom == null){
 			throw new PatrimonyException(ROOM_NULL);
-		if(oldRoom == null)
-			throw new PatrimonyException(ROOM_NULL);
+		}
+		else{
+			//nothing here
+		}
 		
-		Connection con = FactoryConnection.getInstance().getConnection();
-		PreparedStatement pst;
+		if(oldRoom == null){
+			throw new PatrimonyException(ROOM_NULL);
+		}
+		else{
+			//nothing here
+		}
+		
+		Connection connection = FactoryConnection.getInstance().getConnection();
+		PreparedStatement prepareStatement;
 		
 		if(!this.inDB(oldRoom))
 			throw new PatrimonyException(ROOM_NOT_EXISTING);
@@ -64,16 +81,16 @@ public class RoomDAO {
 				"room.codigo = \"" + oldRoom.getCode() + "\" and " +
 				"room.descricao = \"" + oldRoom.getDescription() +  "\" and " +
 				"room.capacidade = " + oldRoom.getCapacity() +";";
-			con.setAutoCommit(false);
-			pst = con.prepareStatement(msg);
-			pst.executeUpdate();
-			con.commit();
+			connection.setAutoCommit(false);
+			prepareStatement = connection.prepareStatement(msg);
+			prepareStatement.executeUpdate();
+			connection.commit();
 		}
 		else
 			throw new PatrimonyException(ROOM_EXISTING);
 		
-		pst.close();
-		con.close();
+		prepareStatement.close();
+		connection.close();
 	}
 
 	public void delete(Room room) throws SQLException, PatrimonyException {
@@ -109,64 +126,64 @@ public class RoomDAO {
 	
 	
 	private Vector<Room> find(String query) throws SQLException, PatrimonyException {
-		Vector<Room> vet = new Vector<Room>();
+		Vector<Room> vector = new Vector<Room>();
 		
-		Connection con =  FactoryConnection.getInstance().getConnection();
+		Connection connection =  FactoryConnection.getInstance().getConnection();
 		
-		PreparedStatement pst = con.prepareStatement(query);
-		ResultSet rs = pst.executeQuery();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		ResultSet resultSet = prepareStatement.executeQuery();
 		
-		while(rs.next())
-			vet.add(this.fetchRoom(rs));
+		while(resultSet.next())
+			vector.add(this.fetchRoom(resultSet));
 		
-		pst.close();
-		rs.close();
-		con.close();
-		return vet;
+		prepareStatement.close();
+		resultSet.close();
+		connection.close();
+		return vector;
 	}
 	
 	
 	private boolean inDBGeneric(String query) throws SQLException{
-		Connection con = FactoryConnection.getInstance().getConnection();
-		PreparedStatement pst = con.prepareStatement(query);
-		ResultSet rs = pst.executeQuery();
+		Connection connection = FactoryConnection.getInstance().getConnection();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		ResultSet resultSet = prepareStatement.executeQuery();
 		
-		if(!rs.next()) {
-			rs.close();
-			pst.close();
-			con.close();
+		if(!resultSet.next()) {
+			resultSet.close();
+			prepareStatement.close();
+			connection.close();
 			return false;
 		}
 		else {
-			rs.close();
-			pst.close();
-			con.close();
+			resultSet.close();
+			prepareStatement.close();
+			connection.close();
 			return true;
 		}
 	}
 	private boolean inDB(Room room) throws SQLException{
 		return this.inDBGeneric("SELECT * FROM room WHERE " +
-				"room.codigo = \"" + room.getCode() + "\" and " +
-				"room.descricao = \"" + room.getDescription() + "\" and " +
-				"room.capacidade = " + room.getCapacity() +
-				";");
+								"room.codigo = \"" + room.getCode() + "\" and " +
+								"room.descricao = \"" + room.getDescription() + "\" and " +
+								"room.capacidade = " + room.getCapacity() +
+								";");
 	}
 	private boolean inDBCode(String code) throws SQLException{
 		return this.inDBGeneric("SELECT * FROM room WHERE " +
-				"room.codigo = \"" + code + "\";");
+								"room.codigo = \"" + code + "\";");
 	}
 	private boolean inOtherDB(Room room) throws SQLException{
 		if( this.inDBGeneric("SELECT * FROM reserva_sala_professor WHERE " +
-				"id_sala = (SELECT id_sala FROM room WHERE " +
-				"room.codigo = \"" + room.getCode() + "\" and " +
-				"room.descricao = \"" + room.getDescription() +  "\" and " +
-				"room.capacidade = " + room.getCapacity() +" );") == false)
+							 "id_sala = (SELECT id_sala FROM room WHERE " +
+							 "room.codigo = \"" + room.getCode() + "\" and " +
+							 "room.descricao = \"" + room.getDescription() +  "\" and " +
+							 "room.capacidade = " + room.getCapacity() +" );") == false)
 		{
 			if(this.inDBGeneric("SELECT * FROM reserva_sala_aluno WHERE " +
-							"id_sala = (SELECT id_sala FROM room WHERE " +
-							"room.codigo = \"" + room.getCode() + "\" and " +
-							"room.descricao = \"" + room.getDescription() +  "\" and " +
-							"room.capacidade = " + room.getCapacity() +" );") == false)
+								"id_sala = (SELECT id_sala FROM room WHERE " +
+								"room.codigo = \"" + room.getCode() + "\" and " +
+								"room.descricao = \"" + room.getDescription() +  "\" and " +
+								"room.capacidade = " + room.getCapacity() +" );") == false)
 			{
 				return false;
 			}
@@ -176,16 +193,18 @@ public class RoomDAO {
 	}
 	
 	
-	private Room fetchRoom(ResultSet rs) throws PatrimonyException, SQLException{
-		return new Room(rs.getString("codigo"), rs.getString("descricao"), rs.getString("capacidade"));
+	private Room fetchRoom(ResultSet resultSet) throws PatrimonyException, SQLException{
+		
+		return new Room(resultSet.getString("codigo"), resultSet.getString("descricao"), resultSet.getString("capacidade"));
 	}
 	
 	private void updateQuery(String query) throws SQLException{
-		Connection con =  FactoryConnection.getInstance().getConnection();
-		PreparedStatement pst = con.prepareStatement(query);
-		pst.executeUpdate();		
-		pst.close();
-		con.close();
+		
+		Connection connection =  FactoryConnection.getInstance().getConnection();
+		PreparedStatement prepareStatement = connection.prepareStatement(query);
+		prepareStatement.executeUpdate();		
+		prepareStatement.close();
+		connection.close();
 	}
 
 }
