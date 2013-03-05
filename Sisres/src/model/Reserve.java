@@ -33,8 +33,12 @@ public class Reserve {
 	}
 
 	public void setHour(String hour) throws ReserveException {
-		if(hour == null)
+		if(hour == null){
 			throw new ReserveException(HOUR_NULL);
+		}
+		else{
+			//nothing here
+		}
 		
 		hour = hour.trim();
 		if(hour.equals(""))
@@ -45,14 +49,18 @@ public class Reserve {
 			else
 				this.hour = hour;
 		}
-		else
+		else{
 			throw new ReserveException(HOUR_INVALID);
-	}
+			}
+}
 
 	public void setDate(String date) throws ReserveException {
-		if(date == null)
+		if(date == null){
 			throw new ReserveException(DATE_NULA);
-		
+		}
+		else{
+			//nothing here
+		}
 		date = date.trim();
 		if(date.equals(""))
 			throw new ReserveException(DATE_BLANK);

@@ -29,13 +29,18 @@ public class ReserveRoom extends Reserve{
 	public void setRoom(Room room) throws ReserveException {
 		if(room == null)
 			throw new ReserveException(ROOM_NULL);
+		else{
+			//nothing here
+		}
 		this.room = room;
 	}
 
 	public void setFinality(String finality) throws ReserveException {
 		if(finality == null)
 			throw new ReserveException(FINALITY_NULL);
-		
+		else{
+			//nothing here
+		}
 		finality = finality.trim();
 		if(finality.equals(""))
 			throw new ReserveException(FINALITY_BLANK);
@@ -44,16 +49,18 @@ public class ReserveRoom extends Reserve{
 	}
 
 	public boolean equals(ReserveRoom room) {
+		
 		return (super.equals(room) && 
-			this.getRoom().equals(room.getRoom())&&
-			this.getFinality().equals(room.getFinality()));
+			    this.getRoom().equals(room.getRoom())&&
+			    this.getFinality().equals(room.getFinality()));
 	}
 	
 	@Override
 	public String toString() {
+		
 		return "\n" + this.getRoom().toString() 
-			+ "\nFinalidade=" + this.getFinality() 
-			+ super.toString();
+			   + "\nFinalidade=" + this.getFinality() 
+			   + super.toString();
 	}
 
 }

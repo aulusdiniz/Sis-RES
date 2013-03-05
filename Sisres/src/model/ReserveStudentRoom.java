@@ -15,7 +15,8 @@ public class ReserveStudentRoom extends ReserveRoom{
 		private final String CHAIRS_PATTERN = "^[\\d]+$";
 
 	public ReserveStudentRoom(String date, String hour, Room room,
-			String finality, String reservedChairs, Student student) throws ReserveException {
+			                  String finality, String reservedChairs, Student student) throws ReserveException {
+		
 		super(date, hour, room, finality);
 		this.setStudent(student);
 		this.setReservedChairs(reservedChairs);
@@ -32,6 +33,9 @@ public class ReserveStudentRoom extends ReserveRoom{
 	public void setStudent(Student student) throws ReserveException {
 		if(student == null)
 			throw new ReserveException(STUDENT_NULL);
+		else{
+			//Nothing here
+		}
 		this.student = student;
 	}
 
@@ -39,15 +43,20 @@ public class ReserveStudentRoom extends ReserveRoom{
 		String c = reservedChairs;
 		if(c == null)
 			throw new ReserveException(CHAIRS_NULL);
+		else{
+			//nothing here
+		}
 		c = c.trim();
 		if(c.equals(""))
 			throw new ReserveException(CHAIRS_BLANK);
-		else if(c.matches(CHAIRS_PATTERN)){
-			if(Integer.parseInt(super.getRoom().getCapacity()) < Integer.parseInt(reservedChairs))
-				throw new ReserveException(CHAIRS_OVER_LIMIT);
-			else
-				this.reservedChairs = reservedChairs;
-		}
+		else 
+			if(c.matches(CHAIRS_PATTERN)){
+			
+				if(Integer.parseInt(super.getRoom().getCapacity()) < Integer.parseInt(reservedChairs))
+					throw new ReserveException(CHAIRS_OVER_LIMIT);
+				else
+					this.reservedChairs = reservedChairs;
+		    }
 		else
 			throw new ReserveException(CHAIRS_INVALID);
 	}
@@ -56,8 +65,7 @@ public class ReserveStudentRoom extends ReserveRoom{
 	public boolean equals(ReserveStudentRoom reserveStudentRoom) {
 		return (super.equals(reserveStudentRoom) &&
 				this.getStudent().equals(reserveStudentRoom.getStudent()) &&
-				this.getReservedChairs().equals(reserveStudentRoom.getReservedChairs())
-				);
+				this.getReservedChairs().equals(reserveStudentRoom.getReservedChairs()));
 	}
 
 	@Override

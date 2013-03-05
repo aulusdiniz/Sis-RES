@@ -20,6 +20,9 @@ public class ReserveEquipament extends Reserve {
     public void setEquipament(Equipament equipament) throws ReserveException {
         if (equipament == null)
             throw new ReserveException(EQUIPAMENT_NULL);
+        else{
+        	//Nothing here
+        }
         this.equipament = equipament;
     }
 
