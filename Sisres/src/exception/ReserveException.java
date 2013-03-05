@@ -7,7 +7,7 @@ public class ReserveException extends Exception{
 		super();
 	}
 	
-	public ReserveException(String msg) {
-		super(msg);
+	public ReserveException(String message) {
+		super(message);
 	}
 }
