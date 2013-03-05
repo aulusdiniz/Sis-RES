@@ -32,7 +32,7 @@ public class ReserveRoomProfesssorControllerTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		vet = ReserveRoomProfessorController.getInstance().getResProfessorSala_vet();
+		vet = ReserveRoomProfessorController.getInstance().getReserveProfessorRoomVector();
 		sala1 = new Room("123", "Room de Aula", "120");
 		professor1 = new Professor("testInstance", "040.757.021-70", "0058801", "3333-3333", "nome@email");
 		
@@ -43,7 +43,7 @@ public class ReserveRoomProfesssorControllerTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		ProfessorDAO.getInstance().delete(professor1);
-		RoomDAO.getInstance().excluir(sala1);
+		RoomDAO.getInstance().delete(sala1);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class ReserveRoomProfesssorControllerTest {
 		String data = "20/12/33";
 		String hora = "9:11";
 		ReserveRoomProfessor reserva = new ReserveRoomProfessor(data, hora, sala1, finalidade, professor1);
-		ReserveRoomProfessorController.getInstance().inserir(sala1, professor1, data, hora, finalidade);
+		ReserveRoomProfessorController.getInstance().insert(sala1, professor1, data, hora, finalidade);
 		boolean resultado = this.inDB(reserva);
 		boolean resultado2 = reserva.equals(vet.lastElement());
 		if(resultado)
@@ -76,7 +76,7 @@ public class ReserveRoomProfesssorControllerTest {
 		this.insert_into(reserva);
 		vet.add(reserva);
 		ReserveRoomProfessor reserva2 = new ReserveRoomProfessor("20/12/33", "9:11", sala1, "Reuniao", professor1);
-		ReserveRoomProfessorController.getInstance().alterar("Reuniao", vet.lastElement());
+		ReserveRoomProfessorController.getInstance().alterate("Reuniao", vet.lastElement());
 		boolean resultado = this.inDB(reserva2);
 		boolean resultado2 = reserva2.equals(vet.lastElement());
 		if(resultado)
@@ -93,7 +93,7 @@ public class ReserveRoomProfesssorControllerTest {
 		ReserveRoomProfessor reserva = new ReserveRoomProfessor(data, hora, sala1, finalidade, professor1);
 		this.insert_into(reserva);
 		vet.add(reserva);
-		ReserveRoomProfessorController.getInstance().excluir(reserva);
+		ReserveRoomProfessorController.getInstance().delete(reserva);
 		boolean resultado = this.inDB(reserva);
 		vet.remove(reserva);
 

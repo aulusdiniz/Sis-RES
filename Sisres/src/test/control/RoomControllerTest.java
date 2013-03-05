@@ -45,8 +45,8 @@ public class RoomControllerTest {
 	@Test
 	public void testInserir() throws PatrimonyException, SQLException {
 		Room sala_new = new Room("codigo", "descricao", "2");
-		RoomController.getInstance().inserir("codigo", "descricao", "2");
-		assertNotNull("Falha ao inserir", this.procurarNoVetor(sala_new));
+		RoomController.getInstance().insert("codigo", "descricao", "2");
+		assertNotNull("Falha ao insert", this.procurarNoVetor(sala_new));
 		this.executaNoBanco("DELETE FROM room WHERE " +
 				"room.codigo = \"" + sala_new.getCode() + "\" and " +
 				"room.descricao = \"" + sala_new.getDescription() +  "\" and " +
@@ -65,9 +65,9 @@ public class RoomControllerTest {
 				"\"" + room.getDescription() + "\", " +
 				"" + room.getCapacity() + "); "
 				);
-		RoomController.getInstance().alterar("codigo", "descricao", "2", room);
+		RoomController.getInstance().alterate("codigo", "descricao", "2", room);
 		
-		assertNotNull("Falha ao alterar", this.procurarNoVetor(sala_new));
+		assertNotNull("Falha ao alterate", this.procurarNoVetor(sala_new));
 		
 		this.executaNoBanco("DELETE FROM room WHERE " +
 				"room.codigo = \"" + sala_new.getCode() + "\" and " +
@@ -87,13 +87,13 @@ public class RoomControllerTest {
 				"" + room.getCapacity() + "); "
 				);
 		
-		RoomController.getInstance().excluir(room);
+		RoomController.getInstance().delete(room);
 		
-		assertNull("Falha ao excluir", this.procurarNoVetor(room));
+		assertNull("Falha ao delete", this.procurarNoVetor(room));
 	}
 
 	public Room procurarNoVetor(Room teste) throws PatrimonyException, SQLException {
-		Vector<Room> todos = RoomController.getInstance().getSalas_vet();
+		Vector<Room> todos = RoomController.getInstance().getRoomVector();
 		Iterator<Room> i = todos.iterator();
 		while(i.hasNext()){
 			Room e = i.next();

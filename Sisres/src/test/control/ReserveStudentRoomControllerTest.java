@@ -45,7 +45,7 @@ public class ReserveStudentRoomControllerTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		StudentDAO.getInstance().delete(aluno1);
-		RoomDAO.getInstance().excluir(sala1);
+		RoomDAO.getInstance().delete(sala1);
 	}
 
 	
