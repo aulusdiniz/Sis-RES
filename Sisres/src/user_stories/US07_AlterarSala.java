@@ -3,7 +3,7 @@ package user_stories;
 import java.awt.Dimension;
 import java.sql.SQLException;
 
-import model.Sala;
+import model.Room;
 
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
@@ -13,25 +13,25 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import persistence.SalaDAO;
+import persistence.RoomDAO;
 import view.Main2;
 import exception.PatrimonyException;
 
 /**
- * US7 Título: Alterar sala. Como usuário Eu quero alterar dados de salas Para
+ * US7 Título: Alterar room. Como usuário Eu quero alterar dados de salas Para
  * que haja confiabilidade nos dados contidos no sistema.
  * 
- * Cenário 1: Existe sala cadastrada e dados novos são válidos. Dado que a sala
+ * Cenário 1: Existe room cadastrada e dados novos são válidos. Dado que a room
  * está cadastrada; Quando o usuário edita algum campo E todos os dados são
  * válidos, E solicita alteração; Então o sistema deve alterar os registros da
- * sala. E informar o sucesso da alteração.
+ * room. E informar o sucesso da alteração.
  * 
- * Cenário 2: Não existe sala cadastrada. Dado que não existe o registro da
- * sala; Quando o usuário solicita alteração; Então o sistema informa que não há
+ * Cenário 2: Não existe room cadastrada. Dado que não existe o registro da
+ * room; Quando o usuário solicita alteração; Então o sistema informa que não há
  * o registro.
  * 
- * Cenário 3: Existe sala cadastrada e dados novos não são válidos. Dado que a
- * sala está cadastrada; Quando o usuário edita algum campo E algum dado não é
+ * Cenário 3: Existe room cadastrada e dados novos não são válidos. Dado que a
+ * room está cadastrada; Quando o usuário edita algum campo E algum dado não é
  * válido, E solicita alteração; Então o sistema deve exibir a seguinte
  * mensagem: “O campo [campo] é inválido”, E não realizar alteração.
  */
@@ -39,7 +39,7 @@ import exception.PatrimonyException;
 public class US07_AlterarSala {
     private FrameFixture window;
     private Robot robot;
-    private Sala sala;
+    private Room room;
     private DialogFixture dialog;
     private int index;
 
@@ -50,19 +50,19 @@ public class US07_AlterarSala {
         window = new FrameFixture(robot, new Main2());
         window.show(new Dimension(900, 500)); // shows the frame to test
 
-        sala = new Sala("code", "Sala para testes de aceitacao", "123");
-        SalaDAO.getInstance().incluir(sala);
+        room = new Room("code", "Room para testes de aceitacao", "123");
+        RoomDAO.getInstance().incluir(room);
 
-        index = SalaDAO.getInstance().buscarTodos().size() - 1;
+        index = RoomDAO.getInstance().buscarTodos().size() - 1;
 
-        window.button("Sala").click();
-        dialog = window.dialog("SalaView");
+        window.button("Room").click();
+        dialog = window.dialog("RoomView");
 
     }
 
     @After public void tearDown() throws SQLException, PatrimonyException {
-        if (sala != null)
-            SalaDAO.getInstance().excluir(sala);
+        if (room != null)
+            RoomDAO.getInstance().excluir(room);
         window.cleanUp();
     }
 
@@ -92,18 +92,18 @@ public class US07_AlterarSala {
         cadastro.textBox("Capacidade").setText("1234");
 
         cadastro.button("Alterar").click();
-        cadastro.optionPane().requireMessage("Sala Alterada com sucesso");
+        cadastro.optionPane().requireMessage("Room Alterada com sucesso");
         sleep();
         cadastro.optionPane().okButton().click();
 
-        sala = SalaDAO.getInstance().buscarTodos().get(index);
+        room = RoomDAO.getInstance().buscarTodos().get(index);
     }
 
     @Test public void testCenario2() throws SQLException, PatrimonyException {
 
-        if (sala != null)
-            SalaDAO.getInstance().excluir(sala);
-        sala = null;
+        if (room != null)
+            RoomDAO.getInstance().excluir(room);
+        room = null;
         dialog.button("Alterar").click();
         dialog.optionPane().requireMessage("Selecione uma linha!");
         sleep();
@@ -118,13 +118,13 @@ public class US07_AlterarSala {
 
         cadastro.textBox("Capacidade").setText("abc");
         cadastro.textBox("Codigo").setText("code");
-        cadastro.textBox("Descricao").setText("Sala para testes de aceitacao");
+        cadastro.textBox("Descricao").setText("Room para testes de aceitacao");
 
         cadastro.button("Alterar").click();
         cadastro.optionPane().requireMessage("Capacidade Invalida.");
         sleep();
         cadastro.optionPane().okButton().click();
-        sala = SalaDAO.getInstance().buscarTodos().get(index);
+        room = RoomDAO.getInstance().buscarTodos().get(index);
 
     }
 
@@ -136,13 +136,13 @@ public class US07_AlterarSala {
 
         cadastro.textBox("Capacidade").setText("");
         cadastro.textBox("Codigo").setText("code");
-        cadastro.textBox("Descricao").setText("Sala para testes de aceitacao");
+        cadastro.textBox("Descricao").setText("Room para testes de aceitacao");
 
         cadastro.button("Alterar").click();
         cadastro.optionPane().requireMessage("Capacidade em Branco.");
         sleep();
         cadastro.optionPane().okButton().click();
-        sala = SalaDAO.getInstance().buscarTodos().get(index);
+        room = RoomDAO.getInstance().buscarTodos().get(index);
     }
 
     @Test public void testCenario3CodigoBranco() throws SQLException, PatrimonyException {
@@ -153,13 +153,13 @@ public class US07_AlterarSala {
 
         cadastro.textBox("Capacidade").setText("123");
         cadastro.textBox("Codigo").setText("");
-        cadastro.textBox("Descricao").setText("Sala para testes de aceitacao");
+        cadastro.textBox("Descricao").setText("Room para testes de aceitacao");
 
         cadastro.button("Alterar").click();
         cadastro.optionPane().requireMessage("Codigo em Branco.");
         sleep();
         cadastro.optionPane().okButton().click();
-        sala = SalaDAO.getInstance().buscarTodos().get(index);
+        room = RoomDAO.getInstance().buscarTodos().get(index);
     }
 
     @Test public void testCenario3DescricaoBranco() throws SQLException, PatrimonyException {
@@ -176,7 +176,7 @@ public class US07_AlterarSala {
         cadastro.optionPane().requireMessage("Descricao em Branco.");
         sleep();
         cadastro.optionPane().okButton().click();
-        sala = SalaDAO.getInstance().buscarTodos().get(index);
+        room = RoomDAO.getInstance().buscarTodos().get(index);
     }
 
 }

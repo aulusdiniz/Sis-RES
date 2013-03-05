@@ -8,16 +8,21 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import control.ManterAluno;
-import exception.ClienteException;
+import control.StudentController;
+import exception.ClientException;
 
 /**
  * 
- * @author Parley
+ * @author Arthur
  */
-public class CadastroAluno extends CadastroCliente {
+public class CadastroAluno extends CreateClient {
 
-    public CadastroAluno(java.awt.Frame parent, boolean modal) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8675627244719550479L;
+
+	public CadastroAluno(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.setName("CadastroAluno");
     }
@@ -25,7 +30,7 @@ public class CadastroAluno extends CadastroCliente {
     @Override public void cadastroAction() {
         try {
             if (cadastroBtn.getText().equals("Cadastrar")) {
-                ManterAluno.getInstance().insert(nomeTxtField.getText(), cpfTxtField.getText(), matriculaTxtField.getText(),
+                StudentController.getInstance().insert(nomeTxtField.getText(), cpfTxtField.getText(), matriculaTxtField.getText(),
                         telefoneTxtField.getText(), emailTxtField.getText());
 
                 JOptionPane.showMessageDialog(this, "Aluno Cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE,
@@ -33,7 +38,7 @@ public class CadastroAluno extends CadastroCliente {
 
                 this.setVisible(false);
             }
-        } catch (ClienteException ex) {
+        } catch (ClientException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);

@@ -5,11 +5,11 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import model.Aluno;
+import model.Student;
 import model.Professor;
-import model.ReservaSalaAluno;
-import model.ReservaSalaProfessor;
-import model.Sala;
+import model.ReserveStudentRoom;
+import model.ReserveRoomProfessor;
+import model.Room;
 
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
@@ -19,23 +19,23 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import persistence.AlunoDAO;
+import persistence.StudentDAO;
 import persistence.ProfessorDAO;
-import persistence.ResSalaAlunoDAO;
-import persistence.ResSalaProfessorDAO;
-import persistence.SalaDAO;
+import persistence.ReserveStudentRoomDAO;
+import persistence.ReserveProfessorRoomDAO;
+import persistence.RoomDAO;
 import view.Main2;
-import exception.ClienteException;
+import exception.ClientException;
 import exception.PatrimonyException;
-import exception.ReservaException;
+import exception.ReserveException;
 
 public class US01_AlterarReservaSala {
     private FrameFixture window;
     private Robot robot;
-    private Sala sala;
-    private ReservaSalaProfessor reservaProf;
-    private ReservaSalaAluno reservaAluno;
-    private Aluno aluno;
+    private Room room;
+    private ReserveRoomProfessor reservaProf;
+    private ReserveStudentRoom reservaStudent;
+    private Student aluno;
     private Professor prof;
     private DialogFixture dialog;
     private int index;
@@ -49,45 +49,45 @@ public class US01_AlterarReservaSala {
         this.data = formatador.format(date);
     }
 
-    @Before public void setUp() throws PatrimonyException, SQLException, ClienteException, ReservaException {
+    @Before public void setUp() throws PatrimonyException, SQLException, ClientException, ReserveException {
         robot = BasicRobot.robotWithNewAwtHierarchy();
         robot.settings().delayBetweenEvents(5);
 
         window = new FrameFixture(robot, new Main2());
         window.show(new Dimension(900, 500)); // shows the frame to test
 
-        sala = new Sala("code", "Sala para testes de aceitacao", "123");
-        SalaDAO.getInstance().incluir(sala);
+        room = new Room("code", "Room para testes de aceitacao", "123");
+        RoomDAO.getInstance().include(room);
 
-        prof = new Professor("Professor Teste", "658.535.144-40", "110038096", "9211-2144", "teste incluir repetido");
+        prof = new Professor("Professor Teste", "658.535.144-40", "110038096", "9211-2144", "teste include repetido");
         ProfessorDAO.getInstance().include(prof);
 
-        aluno = new Aluno("Aluno Teste", "658.535.144-40", "110038096", "9211-2144", "teste incluir repetido");
-        AlunoDAO.getInstance().include(aluno);
+        aluno = new Student("Student Teste", "658.535.144-40", "110038096", "9211-2144", "teste include repetido");
+        StudentDAO.getInstance().include(aluno);
 
         dataAtual();
                 
-        index = SalaDAO.getInstance().buscarTodos().size() - 1;
-        indexReserva = ResSalaProfessorDAO.getInstance().buscarPorData(data).size() - 1;
+        index = RoomDAO.getInstance().buscarTodos().size() - 1;
+        indexReserva = ReserveProfessorRoomDAO.getInstance().buscarPorData(data).size() - 1;
 
-        AlunoDAO.getInstance().include(aluno);
+        StudentDAO.getInstance().include(aluno);
 
-        reservaAluno = new ReservaSalaAluno(data, "23:59", sala, "abc", "100", aluno);
-        ResSalaAlunoDAO.getInstance().incluir(reservaAluno);
+        reservaStudent = new ReserveStudentRoom(data, "23:59", room, "abc", "100", aluno);
+        ReserveStudentRoomDAO.getInstance().include(reservaStudent);
 
-        window.button("Sala").click();
-        dialog = window.dialog("SalaView");
+        window.button("Room").click();
+        dialog = window.dialog("RoomView");
     }
 
-    @After public void tearDown() throws SQLException, PatrimonyException, ClienteException, ReservaException {
+    @After public void tearDown() throws SQLException, PatrimonyException, ClientException, ReserveException {
         if (reservaProf != null)
-            ResSalaProfessorDAO.getInstance().excluir(reservaProf);
-        if (reservaAluno != null)
-            ResSalaAlunoDAO.getInstance().excluir(reservaAluno);
-        if (sala != null)
-            SalaDAO.getInstance().excluir(sala);
+            ReserveProfessorRoomDAO.getInstance().excluir(reservaProf);
+        if (reservaStudent != null)
+            ReserveStudentRoomDAO.getInstance().delete(reservaStudent);
+        if (room != null)
+            RoomDAO.getInstance().excluir(room);
         if (aluno != null)
-            AlunoDAO.getInstance().delete(aluno);
+            StudentDAO.getInstance().delete(aluno);
         if (prof != null)
             ProfessorDAO.getInstance().delete(prof);
         window.cleanUp();
@@ -101,7 +101,7 @@ public class US01_AlterarReservaSala {
         }
 
     }
-    @Test public void testCenario2AlunoCadeirasIndisponiveis() throws SQLException, ClienteException, PatrimonyException, ReservaException {
+    @Test public void testCenario2StudentCadeirasIndisponiveis() throws SQLException, ClientException, PatrimonyException, ReserveException {
         
         dialog.table("tabelaPatrimonio").selectRows(index);
         dialog.button("Visualizar Horarios").click();
@@ -122,7 +122,7 @@ public class US01_AlterarReservaSala {
         fazerReservaSalaView.textBox("Quantidade de Cadeiras Reservadas").enterText("1234");
         fazerReservaSalaView.button("Reservar").click();
 
-        fazerReservaSalaView.optionPane().requireMessage("A sala nao possui este numero de cadeiras para reservar.");
+        fazerReservaSalaView.optionPane().requireMessage("A room nao possui este numero de cadeiras para reservar.");
         fazerReservaSalaView.optionPane().okButton().click();
 
     }

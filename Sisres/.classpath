@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Program Files/mysql-connector-java/mysql-connector-java-5.1.22-bin.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry exported="true" kind="lib" path="C:/Program Files/mysql-connector-java/emma.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Program Files/mysql-connector-java/emma_ant.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Program Files/mysql-connector-java/mysql-connector-java-5.1.22-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Desktop/JCaledar/lib/jcalendar-1.4.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-assert-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-assert-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-reflect-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-reflect-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-swing-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-swing-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-swing-junit-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-swing-junit-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-swing-junit-4.3.1-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-swing-junit-4.3.1-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-swing-junit-4.5-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-swing-junit-4.5-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-util-1.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/fest-util-1.1.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/jcip-annotations-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/jcip-annotations-1.0-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Arthur/Downloads/SisRES-master/Codigo/lib/jgoodies-common-1.2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

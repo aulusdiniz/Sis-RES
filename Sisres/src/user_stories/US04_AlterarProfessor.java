@@ -81,7 +81,7 @@ public class US04_AlterarProfessor {
 	public void testCancelar() {
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
-		DialogFixture cadastro = dialog.dialog("AlterarProfessor");
+		DialogFixture cadastro = dialog.dialog("AlterateProfessor");
 		cadastro.button("Cancelar").click();
 	}
 	
@@ -99,7 +99,7 @@ public class US04_AlterarProfessor {
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
-		DialogFixture cadastro = dialog.dialog("AlterarProfessor");
+		DialogFixture cadastro = dialog.dialog("AlterateProfessor");
 		
 		cadastro.textBox("Nome").setText("Novo Teste");
 		cadastro.textBox("E-mail").setText("Alteracao Teste automatizado");
@@ -118,7 +118,7 @@ public class US04_AlterarProfessor {
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
-		DialogFixture cadastro = dialog.dialog("AlterarProfessor");
+		DialogFixture cadastro = dialog.dialog("AlterateProfessor");
 		
 		cadastro.textBox("Nome").setText("123");
 		cadastro.textBox("E-mail").setText("Alteracao Teste automatizado");
@@ -137,7 +137,7 @@ public class US04_AlterarProfessor {
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
-		DialogFixture cadastro = dialog.dialog("AlterarProfessor");
+		DialogFixture cadastro = dialog.dialog("AlterateProfessor");
 		
 		cadastro.textBox("Nome").setText("");
 		cadastro.textBox("E-mail").setText("Alteracao Teste automatizado");
@@ -156,7 +156,7 @@ public class US04_AlterarProfessor {
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
-		DialogFixture cadastro = dialog.dialog("AlterarProfessor");
+		DialogFixture cadastro = dialog.dialog("AlterateProfessor");
 		
 		cadastro.textBox("CPF").setText("123");
 		cadastro.textBox("E-mail").setText("Alteracao Teste automatizado");
@@ -175,7 +175,7 @@ public class US04_AlterarProfessor {
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
-		DialogFixture cadastro = dialog.dialog("AlterarProfessor");
+		DialogFixture cadastro = dialog.dialog("AlterateProfessor");
 		
 		cadastro.textBox("CPF").setText("");
 		cadastro.textBox("E-mail").setText("Alteracao Teste automatizado");
@@ -194,7 +194,7 @@ public class US04_AlterarProfessor {
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
-		DialogFixture cadastro = dialog.dialog("AlterarProfessor");
+		DialogFixture cadastro = dialog.dialog("AlterateProfessor");
 		
 		cadastro.textBox("Telefone").setText("123");
 		cadastro.textBox("E-mail").setText("Alteracao Teste automatizado");

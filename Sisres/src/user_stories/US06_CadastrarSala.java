@@ -3,7 +3,7 @@ package user_stories;
 import java.awt.Dimension;
 import java.sql.SQLException;
 
-import model.Sala;
+import model.Room;
 
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
@@ -13,27 +13,27 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import persistence.SalaDAO;
+import persistence.RoomDAO;
 import view.Main2;
 import exception.PatrimonyException;
 
 /**
- * US6 Título: Cadastrar sala. Como usuário Eu quero cadastrar salas Para que
+ * US6 Título: Cadastrar room. Como usuário Eu quero cadastrar salas Para que
  * haja possibilidade de reserva quando disponível.
  * 
  * Cenário 1: Não há cadastro e dados inseridos são válidos. Dado que não há
- * cadastro da sala, E os dados inseridos todos são válidos, Quando o usuário
- * solicitar o cadastro da sala, Então o sistema deve registrar o novo cadastro,
+ * cadastro da room, E os dados inseridos todos são válidos, Quando o usuário
+ * solicitar o cadastro da room, Então o sistema deve registrar o novo cadastro,
  * E informar o sucesso da operação.
  * 
  * Cenário 2: Há cadastro e dados inseridos são válidos. Dado que há o cadastro
- * da sala, E os dados do novo cadastro são válidos, Quando o usuário solicitar
- * o cadastro da sala, Então o sistema deve informar que a sala já está
+ * da room, E os dados do novo cadastro são válidos, Quando o usuário solicitar
+ * o cadastro da room, Então o sistema deve informar que a room já está
  * cadastrada, E não deve registrar um novo cadastro.
  * 
  * Cenário 3: Não há cadastro e dados inseridos são inválidos. Dado que não há o
- * cadastro da sala, E os dados do novo cadastro são inválidos, Quando o usuário
- * solicitar o cadastro da sala, Então o sistema deve exibir a seguinte
+ * cadastro da room, E os dados do novo cadastro são inválidos, Quando o usuário
+ * solicitar o cadastro da room, Então o sistema deve exibir a seguinte
  * mensagem: “O campo [campo] é inválido”, E não deve registrar um novo
  * cadastro.
  */
@@ -42,7 +42,7 @@ public class US06_CadastrarSala {
 
     private FrameFixture window;
     private Robot robot;
-    private Sala sala;
+    private Room room;
     private DialogFixture dialog;
     private int index;
 
@@ -52,13 +52,13 @@ public class US06_CadastrarSala {
 
         window = new FrameFixture(robot, new Main2());
         window.show(new Dimension(900, 500)); // shows the frame to test
-        window.button("Sala").click();
-        dialog = window.dialog("SalaView");
+        window.button("Room").click();
+        dialog = window.dialog("RoomView");
     }
 
     @After public void tearDown() throws SQLException, PatrimonyException {
-        if (sala != null)
-            SalaDAO.getInstance().excluir(sala);
+        if (room != null)
+            RoomDAO.getInstance().excluir(room);
         window.cleanUp();
     }
 
@@ -83,31 +83,31 @@ public class US06_CadastrarSala {
 
         cadastro.textBox("Capacidade").enterText("123");
         cadastro.textBox("Codigo").enterText("code");
-        cadastro.textBox("Descricao").enterText("Sala para testes de aceitacao");
+        cadastro.textBox("Descricao").enterText("Room para testes de aceitacao");
 
         cadastro.button("Cadastrar").click();
-        cadastro.optionPane().requireMessage("Sala Cadastrada com sucesso");
+        cadastro.optionPane().requireMessage("Room Cadastrada com sucesso");
         sleep();
         cadastro.optionPane().okButton().click();
 
-        index = SalaDAO.getInstance().buscarTodos().size() - 1;
-        sala = SalaDAO.getInstance().buscarTodos().get(index);
+        index = RoomDAO.getInstance().buscarTodos().size() - 1;
+        room = RoomDAO.getInstance().buscarTodos().get(index);
     }
 
     @Test public void testCenario2() throws SQLException, PatrimonyException {
 
-        sala = new Sala("code","Sala para testes de aceitacao","123");
-        SalaDAO.getInstance().incluir(sala);
+        room = new Room("code","Room para testes de aceitacao","123");
+        RoomDAO.getInstance().incluir(room);
 
         dialog.button("Cadastrar").click();
         DialogFixture cadastro = dialog.dialog("CadastroSala");
 
         cadastro.textBox("Capacidade").enterText("123");
         cadastro.textBox("Codigo").enterText("code");
-        cadastro.textBox("Descricao").enterText("Sala para testes de aceitacao");
+        cadastro.textBox("Descricao").enterText("Room para testes de aceitacao");
 
         cadastro.button("Cadastrar").click();
-        cadastro.optionPane().requireMessage("Sala com o mesmo codigo ja cadastrada.");
+        cadastro.optionPane().requireMessage("Room com o mesmo codigo ja cadastrada.");
         sleep();
         cadastro.optionPane().okButton().click();
     }
@@ -119,7 +119,7 @@ public class US06_CadastrarSala {
         
         cadastro.textBox("Capacidade").enterText("abc");
         cadastro.textBox("Codigo").enterText("code");
-        cadastro.textBox("Descricao").enterText("Sala para testes de aceitacao");
+        cadastro.textBox("Descricao").enterText("Room para testes de aceitacao");
 
         cadastro.button("Cadastrar").click();
         cadastro.optionPane().requireMessage("Capacidade Invalida.");
@@ -135,7 +135,7 @@ public class US06_CadastrarSala {
 
         cadastro.textBox("Capacidade").enterText("");
         cadastro.textBox("Codigo").enterText("code");
-        cadastro.textBox("Descricao").enterText("Sala para testes de aceitacao");
+        cadastro.textBox("Descricao").enterText("Room para testes de aceitacao");
 
         cadastro.button("Cadastrar").click();
         cadastro.optionPane().requireMessage("Capacidade em Branco.");
@@ -151,7 +151,7 @@ public class US06_CadastrarSala {
 
         cadastro.textBox("Capacidade").enterText("123");
         cadastro.textBox("Codigo").enterText("");
-        cadastro.textBox("Descricao").enterText("Sala para testes de aceitacao");
+        cadastro.textBox("Descricao").enterText("Room para testes de aceitacao");
 
         cadastro.button("Cadastrar").click();
         cadastro.optionPane().requireMessage("Codigo em Branco.");

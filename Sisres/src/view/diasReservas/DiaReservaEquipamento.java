@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import model.Equipament;
 import view.horariosReservas.HorariosReservaEquipamento;
 import view.horariosReservas.HorariosReservaPatrimonio;
-import control.KeepEquipament;
+import control.EquipamentController;
 import exception.PatrimonyException;
 
 /**
@@ -25,7 +25,7 @@ public class DiaReservaEquipamento extends DiaReservaPatrimonio {
 
     public DiaReservaEquipamento(Frame parent, boolean modal, int indexEquipamento) throws SQLException, PatrimonyException {
         super(parent, modal);
-        eq = KeepEquipament.getInstance().getEquipament_vector().get(indexEquipamento);
+        eq = EquipamentController.getInstance().getEquipamentVector().get(indexEquipamento);
     }
 
     @Override protected void visualizarAction(String data) {
