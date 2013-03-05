@@ -5,13 +5,17 @@
 package view.cadastros;
 
 /**
- * 
  * @author Parley
+ * @editor  Arthur & Aulus
  */
 public abstract class CadastroPatrimonio extends javax.swing.JDialog {
 
     /**
-     * Creates new form CadastroCliente
+	 * 
+	 */
+	private static final long serialVersionUID = 5877775599679951395L;
+	/**
+     * Creates new form CreateClient
      */
     public CadastroPatrimonio(java.awt.Frame parent, boolean modal) {
         super(parent, modal);

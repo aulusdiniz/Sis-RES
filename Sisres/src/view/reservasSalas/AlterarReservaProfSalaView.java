@@ -10,10 +10,10 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import model.ReservaSalaProfessor;
-import exception.ClienteException;
+import model.ReserveRoomProfessor;
+import exception.ClientException;
 import exception.PatrimonyException;
-import exception.ReservaException;
+import exception.ReserveException;
 
 /**
  * 
@@ -22,7 +22,7 @@ import exception.ReservaException;
 public class AlterarReservaProfSalaView extends ReservaSalaView {
 
     int index;
-    ReservaSalaProfessor reservaProfessor;
+    ReserveRoomProfessor reservaProfessor;
 
     private void resetComponents() {
         this.reservarButton.setText("Alterar");
@@ -33,7 +33,7 @@ public class AlterarReservaProfSalaView extends ReservaSalaView {
     }
 
     public AlterarReservaProfSalaView(Frame parent, boolean modal, int index, String data) throws SQLException,
-            PatrimonyException, PatrimonyException, ClienteException, ReservaException {
+            PatrimonyException, PatrimonyException, ClientException, ReserveException {
         super(parent, modal);
         this.setName("AlterarReservaSalaView");
         this.reservaProfessor = instanceProf.buscarPorData(data).get(index);
@@ -48,7 +48,7 @@ public class AlterarReservaProfSalaView extends ReservaSalaView {
             JOptionPane.showMessageDialog(this, "Reserva alterada com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE, null);
 
             this.setVisible(false);
-        } catch (ReservaException ex) {
+        } catch (ReserveException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE, null);
@@ -60,26 +60,26 @@ public class AlterarReservaProfSalaView extends ReservaSalaView {
     @Override protected void professorRadioButtonAction() {
         Color blue = new Color(200, 208, 254);
         this.instanceAluno = null;
-        this.alunoRadioButton.setEnabled(false);
+        this.studentRadioButton.setEnabled(false);
         this.cpfTextField.setBackground(blue);
         this.cpfTextField.setEditable(false);
         this.qntCadeirasReservadasTextField.setEditable(true);
         this.qntCadeirasReservadasTextField.setBackground(Color.white);
         this.horaTextField.setBackground(blue);
         this.horaTextField.setEditable(false);
-        this.horaTextField.setText(reservaProfessor.getHora());
-        this.alunoTextArea.setText(reservaProfessor.getProfessor().toString());
-        this.salaTextArea.setText(reservaProfessor.getSala().toString());
-        this.dataTextField.setText(reservaProfessor.getData());
-        this.qntCadeirasTxtField.setText(reservaProfessor.getSala().getCapacidade());
-        this.qntCadeirasReservadasTextField.setText(reservaProfessor.getSala().getCapacidade());
+        this.horaTextField.setText(reservaProfessor.getHour());
+        this.studentTextArea.setText(reservaProfessor.getProfessor().toString());
+        this.salaTextArea.setText(reservaProfessor.getRoom().toString());
+        this.dataTextField.setText(reservaProfessor.getDate());
+        this.qntCadeirasTxtField.setText(reservaProfessor.getRoom().getCapacity());
+        this.qntCadeirasReservadasTextField.setText(reservaProfessor.getRoom().getCapacity());
         this.qntCadeirasReservadasTextField.setBackground(blue);
         this.qntCadeirasReservadasTextField.setEditable(false);
-        this.finalidadeTextField.setText(reservaProfessor.getFinalidade());
+        this.finalidadeTextField.setText(reservaProfessor.getFinality());
         this.verificarCadeiraButton.setEnabled(false);
     }
 
-    @Override protected void alunoRadioButtonAction() {
+    @Override protected void studentRadioButtonAction() {
 
     }
 

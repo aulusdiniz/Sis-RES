@@ -7,17 +7,17 @@ import exception.ClientException;
 
 public class StudentDAO {
 
-	private static final String STUDENT_EXISTING = "O Student ja esta cadastrado.";
-	private static final String STUDENT_NULL = "O Student esta nulo.";
-	private static final String STUDENT_NOT_EXISTING = "O Student nao esta cadastrado.";
-	private static final String STUDENT_RESERVED = "Sala esta sendo utilizada em uma reserva.";
+	private static final String STUDENT_EXISTING = "O aluno ja esta cadastrado.";
+	private static final String STUDENT_NULL = "O aluno está nulo.";
+	private static final String STUDENT_NOT_EXISTING = "O aluno não está cadastrado.";
+	private static final String STUDENT_RESERVED = "Room esta sendo utilizada em uma reserva.";
 	private static final String CPF_EXISTING = "Ja existe um aluno cadastrado com esse CPF.";
 	private static final String REGISTRATION_EXISTING = "Ja existe um aluno cadastrado com essa matricula.";	
 
 
 	private static StudentDAO instance;
 	private StudentDAO(){
-		//nothing
+		//nothing here
 	}
 	public static StudentDAO getInstance() {
 		if(instance == null) {
@@ -152,7 +152,7 @@ public class StudentDAO {
 	}
 	
 	/**
-	 * Métodos Privados
+	 * Private Methods
 	 * */
 	
 	private Vector<Student> search(String query) throws SQLException, ClientException {

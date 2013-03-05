@@ -59,7 +59,7 @@ public class US11_ExcluirEquipamento {
         index = EquipamentDAO.getInstance().searchAllEquipaments().size() - 1;
 
         window.button("Equipamento").click();
-        dialog = window.dialog("EquipamentoView");
+        dialog = window.dialog("EquipamentView");
 
     }
 

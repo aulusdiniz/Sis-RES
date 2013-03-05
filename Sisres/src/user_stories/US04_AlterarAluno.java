@@ -58,7 +58,7 @@ public class US04_AlterarAluno {
 		index = AlunoDAO.getInstance().searchAllEquipaments().size() - 1;
 		
 		window.button("Aluno").click();
-		dialog = window.dialog("AlunoView");
+		dialog = window.dialog("StudentView");
 	}
 	
 	@After

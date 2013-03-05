@@ -9,16 +9,20 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import view.cadastros.CadastroPatrimonio;
-import control.ManterSala;
+import control.RoomController;
 import exception.PatrimonyException;
 
 /**
- * 
  * @author Parley
+ * @editor Aulus & Arthur
  */
 public class AlterarSala extends CadastroPatrimonio {
 
-    private int index2 = 0;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5027264511485201760L;
+	private int index2 = 0;
 
     public AlterarSala(java.awt.Frame parent, boolean modal, int index) {
         super(parent, modal);
@@ -30,9 +34,9 @@ public class AlterarSala extends CadastroPatrimonio {
 
         try {
 
-            this.codigoTxtField.setText(ManterSala.getInstance().getSalas_vet().get(index).getCode());
-            this.capacidadeTxtField.setText(ManterSala.getInstance().getSalas_vet().get(index).getCapacidade());
-            this.descricaoTextArea.setText(ManterSala.getInstance().getSalas_vet().get(index).getDescription());
+            this.codigoTxtField.setText(RoomController.getInstance().getSalas_vet().get(index).getCode());
+            this.capacidadeTxtField.setText(RoomController.getInstance().getSalas_vet().get(index).getCapacity());
+            this.descricaoTextArea.setText(RoomController.getInstance().getSalas_vet().get(index).getDescription());
             this.index2 = index;
 
         } catch (PatrimonyException ex) {
@@ -48,10 +52,10 @@ public class AlterarSala extends CadastroPatrimonio {
     @Override protected void cadastroAction() {
         try {
 
-            ManterSala.getInstance().alterar(codigoTxtField.getText(), descricaoTextArea.getText(), capacidadeTxtField.getText(),
-                    ManterSala.getInstance().getSalas_vet().get(index2));
+            RoomController.getInstance().alterar(codigoTxtField.getText(), descricaoTextArea.getText(), capacidadeTxtField.getText(),
+                    RoomController.getInstance().getSalas_vet().get(index2));
 
-            JOptionPane.showMessageDialog(this, "Sala Alterada com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE, null);
+            JOptionPane.showMessageDialog(this, "Room Alterada com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE, null);
             this.setVisible(false);
 
         } catch (PatrimonyException ex) {
