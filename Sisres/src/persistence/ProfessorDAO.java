@@ -40,7 +40,7 @@ public class ProfessorDAO {
 					throw new ClientException(CPF_EXISTING);
 				}
 				else
-					if(this.inDBMatricula(prof.getRegistration())) {
+					if(this.inDBRegistration(prof.getRegistration())) {
 						throw new ClientException(REGISTRATION_EXISTING);
 					}
 			this.updateQuery("INSERT INTO " +
@@ -53,49 +53,49 @@ public class ProfessorDAO {
 					);			
 	}
 
-	public void alterate(Professor professor_old, Professor professor_new) throws SQLException, ClientException {
-		if(professor_old == null) {
+	public void alterate(Professor oldProfessor, Professor newProfessor) throws SQLException, ClientException {
+		if(oldProfessor == null) {
 			throw new ClientException(PROFESSOR_NULL);
 		}
 		
-		if(professor_new == null) {
+		if(newProfessor == null) {
 			throw new ClientException(PROFESSOR_NULL);
 		}
 		
 		Connection connection = FactoryConnection.getInstance().getConnection();
 		PreparedStatement prepare_statement;
 		
-		if(!this.inDB(professor_old)) {
+		if(!this.inDB(oldProfessor)) {
 			throw new ClientException(PROFESSOR_NOT_EXISTING);
 		}
-		if(this.inOtherDB(professor_old)) {
+		if(this.inOtherDB(oldProfessor)) {
 			throw new ClientException(PROFESSOR_RESERVED);
 		}
 		else 
-			if(!professor_old.getCpf().equals(professor_new.getCpf()) && this.inDBCpf(professor_new.getCpf())) {
+			if(!oldProfessor.getCpf().equals(newProfessor.getCpf()) && this.inDBCpf(newProfessor.getCpf())) {
 				throw new ClientException(CPF_EXISTING);
 			}
 			else
-				if(!professor_old.getRegistration().equals(professor_new.getRegistration()) &&
-						this.inDBMatricula(professor_new.getRegistration())) {
+				if(!oldProfessor.getRegistration().equals(newProfessor.getRegistration()) &&
+						this.inDBRegistration(newProfessor.getRegistration())) {
 					throw new ClientException(REGISTRATION_EXISTING);
 				}
 				else
-					if(!this.inDB(professor_new)) {
-						String msg = "UPDATE professor SET " +
-								"nome = \"" + professor_new.getName() + "\", " +
-								"cpf = \"" + professor_new.getCpf() + "\", " +
-								"telefone = \"" + professor_new.getPhone() + "\", " +
-								"email = \"" + professor_new.getEmail() + "\", " +
-								"matricula = \"" + professor_new.getRegistration() + "\""+
+					if(!this.inDB(newProfessor)) {
+						String message = "UPDATE professor SET " +
+								"nome = \"" + newProfessor.getName() + "\", " +
+								"cpf = \"" + newProfessor.getCpf() + "\", " +
+								"telefone = \"" + newProfessor.getPhone() + "\", " +
+								"email = \"" + newProfessor.getEmail() + "\", " +
+								"matricula = \"" + newProfessor.getRegistration() + "\""+
 								" WHERE " +
-								"professor.nome = \"" + professor_old.getName() + "\" and " +
-								"professor.cpf = \"" + professor_old.getCpf() + "\" and " +
-								"professor.telefone = \"" + professor_old.getPhone() + "\" and " +
-								"professor.email = \"" + professor_old.getEmail() + "\" and " +
-								"professor.matricula = \"" + professor_old.getRegistration() + "\";";
+								"professor.nome = \"" + oldProfessor.getName() + "\" and " +
+								"professor.cpf = \"" + oldProfessor.getCpf() + "\" and " +
+								"professor.telefone = \"" + oldProfessor.getPhone() + "\" and " +
+								"professor.email = \"" + oldProfessor.getEmail() + "\" and " +
+								"professor.matricula = \"" + oldProfessor.getRegistration() + "\";";
 						connection.setAutoCommit(false);
-						prepare_statement = connection.prepareStatement(msg);
+						prepare_statement = connection.prepareStatement(message);
 						prepare_statement.executeUpdate();
 						connection.commit();
 					}
@@ -155,7 +155,7 @@ public class ProfessorDAO {
 	}
 
 	/**
-	 * Metodos Privados
+	 * Private Methods
 	 * */
 	
 	private Vector<Professor> search(String query) throws SQLException, ClientException {		
@@ -164,14 +164,14 @@ public class ProfessorDAO {
 		Connection connection =  FactoryConnection.getInstance().getConnection();
 		
 		PreparedStatement prepare_statement = connection.prepareStatement(query);
-		ResultSet result_set = prepare_statement.executeQuery();
+		ResultSet resultSet = prepare_statement.executeQuery();
 		
-		while(result_set.next()) {
-			vet.add(this.fetchProfessor(result_set));
+		while(resultSet.next()) {
+			vet.add(this.fetchProfessor(resultSet));
 		}
 		
 		prepare_statement.close();
-		result_set.close();
+		resultSet.close();
 		connection.close();
 		return vet;
 	}
@@ -180,16 +180,16 @@ public class ProfessorDAO {
 	private boolean inDBGeneric(String query) throws SQLException{
 		Connection connection = FactoryConnection.getInstance().getConnection();
 		PreparedStatement prepare_statement = connection.prepareStatement(query);
-		ResultSet result_set = prepare_statement.executeQuery();
+		ResultSet resultSet = prepare_statement.executeQuery();
 		
-		if(!result_set.next()) {
-			result_set.close();
+		if(!resultSet.next()) {
+			resultSet.close();
 			prepare_statement.close();
 			connection.close();
 			return false;
 		}
 		else {
-			result_set.close();
+			resultSet.close();
 			prepare_statement.close();
 			connection.close();
 			return true;
@@ -210,7 +210,7 @@ public class ProfessorDAO {
 				"cpf = \"" + code + "\";");
 	}
 	
-	private boolean inDBMatricula(String code) throws SQLException{
+	private boolean inDBRegistration(String code) throws SQLException{
 		return this.inDBGeneric("SELECT * FROM professor WHERE " +
 				"matricula = \"" + code + "\";");
 	}
@@ -239,14 +239,14 @@ public class ProfessorDAO {
 	}
 	
 	
-	private Professor fetchProfessor(ResultSet result_set) throws ClientException, SQLException{
-		return new Professor(result_set.getString("nome"), result_set.getString("cpf"), result_set.getString("matricula"),
-				result_set.getString("telefone"), result_set.getString("email"));
+	private Professor fetchProfessor(ResultSet resultSet) throws ClientException, SQLException{
+		return new Professor(resultSet.getString("nome"), resultSet.getString("cpf"), resultSet.getString("matricula"),
+				resultSet.getString("telefone"), resultSet.getString("email"));
 	}
 	
-	private void updateQuery(String msg) throws SQLException{
+	private void updateQuery(String message) throws SQLException{
 		Connection connection =  FactoryConnection.getInstance().getConnection();
-		PreparedStatement prepare_statement = connection.prepareStatement(msg);
+		PreparedStatement prepare_statement = connection.prepareStatement(message);
 		prepare_statement.executeUpdate();		
 		prepare_statement.close();
 		connection.close();
