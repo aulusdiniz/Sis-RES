@@ -29,46 +29,55 @@ public class ReserveStudentRoomController {
 
 
 	public Vector<ReserveStudentRoom> getReserveHour(String hour) throws SQLException, PatrimonyException, ClientException, ReserveException{
+		
 		this.reserveStudentRoomVector = ReserveStudentRoomDAO.getInstance().findByHour(hour);
 		return this.reserveStudentRoomVector; 
 		
 	}
 	
-	public Vector<ReserveStudentRoom> getReserveMonth(String data) throws SQLException, PatrimonyException, ClientException, ReserveException{
-		this.reserveStudentRoomVector = ReserveStudentRoomDAO.getInstance().findByDate(data);
+	public Vector<ReserveStudentRoom> getReserveMonth(String date) throws SQLException, PatrimonyException, ClientException, ReserveException{
+		
+		this.reserveStudentRoomVector = ReserveStudentRoomDAO.getInstance().findByDate(date);
 		return this.reserveStudentRoomVector;
 	}
 	
 	public Vector<ReserveStudentRoom> getReserveStudentRoomVector() throws SQLException, PatrimonyException, ClientException, ReserveException {
+		
 		this.reserveStudentRoomVector = ReserveStudentRoomDAO.getInstance().findAll();
 		return this.reserveStudentRoomVector;
 	}
 
-	public int availableChairs(Room room, String data, String hour) throws SQLException, PatrimonyException, ClientException, ReserveException {
-		return ReserveStudentRoomDAO.getInstance().availableChairs(room, data, hour);
+	public int availableChairs(Room room, String date, String hour) throws SQLException, PatrimonyException, ClientException, ReserveException {
+		
+		return ReserveStudentRoomDAO.getInstance().availableChairs(room, date, hour);
 	}
 
-	public void insert(Room room, Student student,
-		String data, String hour, String finalidade, String cadeiras_reservadas)
-		throws SQLException, ReserveException, ClientException, PatrimonyException {
+	public void insert(Room room, Student student, String date,
+					   String hour, String finality, 
+					   String reservedChairs) throws SQLException, ReserveException, ClientException, PatrimonyException {
 
-		ReserveStudentRoom r = new ReserveStudentRoom(data, hour, room, finalidade, cadeiras_reservadas, student);
-		ReserveStudentRoomDAO.getInstance().include(r);
-		this.reserveStudentRoomVector.add(r);
+		ReserveStudentRoom reserveStudentRoom = new ReserveStudentRoom(date, hour, room, finality, reservedChairs, student);
+		ReserveStudentRoomDAO.getInstance().include(reserveStudentRoom);
+		this.reserveStudentRoomVector.add(reserveStudentRoom);
 	}
 
-	public void alterate(String finalidade, String cadeiras_reservadas, ReserveStudentRoom reserveStudentRoom)
+	public void alterate(String finality, String reservedChairs, ReserveStudentRoom reserveStudentRoom)
 		throws SQLException, ReserveException, ClientException, PatrimonyException {
 
-		ReserveStudentRoom oldReserveStudentRoom = new ReserveStudentRoom(reserveStudentRoom.getDate(), reserveStudentRoom.getHour(), reserveStudentRoom.getRoom(),
-			reserveStudentRoom.getFinality(), reserveStudentRoom.getReservedChairs(), reserveStudentRoom.getStudent());
-		reserveStudentRoom.setFinality(finalidade);
-		reserveStudentRoom.setReservedChairs(cadeiras_reservadas);
+		ReserveStudentRoom oldReserveStudentRoom = new ReserveStudentRoom(reserveStudentRoom.getDate(),
+																		  reserveStudentRoom.getHour(), 
+																		  reserveStudentRoom.getRoom(),
+																		  reserveStudentRoom.getFinality(), 
+																		  reserveStudentRoom.getReservedChairs(), 
+																		  reserveStudentRoom.getStudent());
+		reserveStudentRoom.setFinality(finality);
+		reserveStudentRoom.setReservedChairs(reservedChairs);
 		ReserveStudentRoomDAO.getInstance().alterate(oldReserveStudentRoom, reserveStudentRoom);
 	}
 
-	public void delete(ReserveStudentRoom r) throws SQLException, ReserveException {
-		ReserveStudentRoomDAO.getInstance().delete(r);
-		this.reserveStudentRoomVector.remove(r);
+	public void delete(ReserveStudentRoom reserveStudentRoom) throws SQLException, ReserveException {
+		
+		ReserveStudentRoomDAO.getInstance().delete(reserveStudentRoom);
+		this.reserveStudentRoomVector.remove(reserveStudentRoom);
 	}
 }

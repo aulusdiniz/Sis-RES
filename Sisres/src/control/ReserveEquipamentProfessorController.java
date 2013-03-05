@@ -32,20 +32,19 @@ public class ReserveEquipamentProfessorController {
 
 
     public Vector<ReserveEquipamentProfessor> getReserveHour(String hour) throws SQLException, PatrimonyException,
-            ClientException, ReserveException {
+            																	 ClientException, ReserveException {
         return ReserveEquipamentProfessorDAO.getInstance().findByHour(hour);
 
     }
 
-    public Vector<ReserveEquipamentProfessor> getReserveMonth(int month) throws SQLException, PatrimonyException, ClientException,
-            ReserveException {
+    public Vector<ReserveEquipamentProfessor> getReserveMonth(int month) throws SQLException, PatrimonyException, 
+    																			ClientException, ReserveException {
         return ReserveEquipamentProfessorDAO.getInstance().findByMonth(month);
     }
 
-    public Vector<ReserveEquipamentProfessor> getReserveEquipamentProfessorVector() throws SQLException, ClientException, PatrimonyException,
-            ReserveException {
-        this.reserveEquipamentProfessorVector = ReserveEquipamentProfessorDAO.getInstance().findAll();
-        return this.reserveEquipamentProfessorVector;
+    public Vector<ReserveEquipamentProfessor> getReserveEquipamentProfessorVector() throws SQLException, PatrimonyException,
+    																					   ClientException, ReserveException {
+        return ReserveEquipamentProfessorDAO.getInstance().findAll();
     }
 
     public void insert(Equipament equipament, Professor professor, String date, String hour) throws SQLException, ReserveException {
@@ -55,11 +54,11 @@ public class ReserveEquipamentProfessorController {
     }
 
     public void alterate(String finality, ReserveEquipamentProfessor reserveEquipamentProfessor) throws SQLException, ReserveException {
-
-        ReserveEquipamentProfessor oldReserve = new ReserveEquipamentProfessor(reserveEquipamentProfessor.getDate(), reserveEquipamentProfessor.getHour(),
-                reserveEquipamentProfessor.getEquipament(), reserveEquipamentProfessor.getProfessor());
+        ReserveEquipamentProfessor oldReserve = new ReserveEquipamentProfessor(reserveEquipamentProfessor.getDate(),
+        																	   reserveEquipamentProfessor.getHour(),
+        																	   reserveEquipamentProfessor.getEquipament(), 
+        																	   reserveEquipamentProfessor.getProfessor());
         ReserveEquipamentProfessorDAO.getInstance().alterate(oldReserve, reserveEquipamentProfessor);
-
     }
 
     public void delete(ReserveEquipamentProfessor reserveEquipamentProfessor) throws SQLException, ReserveException {

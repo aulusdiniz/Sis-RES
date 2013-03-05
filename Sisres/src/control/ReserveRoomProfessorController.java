@@ -21,42 +21,44 @@ public class ReserveRoomProfessorController {
 		public static ReserveRoomProfessorController getInstance() {
 		if(instance == null)
 			instance = new ReserveRoomProfessorController();
+		else{
+			//Nothing here
+		}
 		return instance;
 	}
 		
-		public Vector<ReserveRoomProfessor> findByDate(String data) throws SQLException, ClientException, PatrimonyException, ReserveException{
-			this.reserveRoomProfessorVector =  ReserveProfessorRoomDAO.getInstance().findByDate(data);
+		public Vector<ReserveRoomProfessor> findByDate(String date) throws SQLException, PatrimonyException, 
+																		   ClientException, ReserveException{
+			this.reserveRoomProfessorVector =  ReserveProfessorRoomDAO.getInstance().findByDate(date);
 			return this.reserveRoomProfessorVector;
 	    } 
 	    	
 		
-	public Vector<ReserveRoomProfessor> getReserveProfessorRoomVector() throws SQLException, ClientException, PatrimonyException, ReserveException {
+	public Vector<ReserveRoomProfessor> getReserveProfessorRoomVector() throws SQLException, PatrimonyException, 
+																			   ClientException, ReserveException {
 		this.reserveRoomProfessorVector = ReserveProfessorRoomDAO.getInstance().findAll();
 		return this.reserveRoomProfessorVector;
 	}
 
-	public void insert(Room room, Professor prof,
-						String data, String hora, String finalidade) 
-					throws SQLException, ReserveException {
+	public void insert(Room room, Professor professor, String date, String hour, String finality) throws SQLException, ReserveException {
 
-		ReserveRoomProfessor reserva = new ReserveRoomProfessor(data, hora, room , finalidade, prof);
-		ReserveProfessorRoomDAO.getInstance().include(reserva);
-		this.reserveRoomProfessorVector.add(reserva);
+		ReserveRoomProfessor reserve = new ReserveRoomProfessor(date, hour, room , finality, professor);
+		ReserveProfessorRoomDAO.getInstance().include(reserve);
+		this.reserveRoomProfessorVector.add(reserve);
 	}
 
-	public void alterate(String finalidade, ReserveRoomProfessor reserva) 
-				throws SQLException, ReserveException {
+	public void alterate(String finality, ReserveRoomProfessor reserve) throws SQLException, ReserveException {
 		
-		ReserveRoomProfessor reserva_old = new ReserveRoomProfessor(reserva.getDate(), reserva.getHour(), reserva.getRoom() , 
-				reserva.getFinality(), reserva.getProfessor());
+		ReserveRoomProfessor oldReserve = new ReserveRoomProfessor(reserve.getDate(), reserve.getHour(), reserve.getRoom() , 
+				reserve.getFinality(), reserve.getProfessor());
 		
-		reserva.setFinality(finalidade);
-		ReserveProfessorRoomDAO.getInstance().alterate(reserva_old, reserva);
+		reserve.setFinality(finality);
+		ReserveProfessorRoomDAO.getInstance().alterate(oldReserve, reserve);
 		
 	}
 
-	public void delete(ReserveRoomProfessor reserva) throws SQLException, ReserveException {
-		ReserveProfessorRoomDAO.getInstance().delete(reserva);
-		this.reserveRoomProfessorVector.remove(reserva);
+	public void delete(ReserveRoomProfessor reserve) throws SQLException, ReserveException {
+		ReserveProfessorRoomDAO.getInstance().delete(reserve);
+		this.reserveRoomProfessorVector.remove(reserve);
 	}
 }
