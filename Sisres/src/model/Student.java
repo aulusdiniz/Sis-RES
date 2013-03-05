@@ -9,7 +9,8 @@ public class Student extends Client {
 		
 	
 	public Student(String name, String cpf, String registration, 
-			String phone, String email) throws ClientException {
+			       String phone, String email) throws ClientException {
+		
 		super(name, cpf, registration, phone, email);
 	}
 
@@ -21,6 +22,9 @@ public class Student extends Client {
 		else{
 			if("".equals(registration.trim())) {
 				throw new ClientException(REGISTRATION_BLANK);
+			}
+			else{
+				//nothing here
 			}
 		}
 		super.registration = registration;

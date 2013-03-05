@@ -3,7 +3,7 @@ package user_stories;
 import java.awt.Dimension;
 import java.sql.SQLException;
 
-import model.Aluno;
+import model.Student;
 import model.Room;
 
 import org.fest.swing.core.BasicRobot;
@@ -14,10 +14,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import persistence.AlunoDAO;
+import persistence.StudentDAO;
 import persistence.RoomDAO;
 import view.Main2;
-import exception.ClienteException;
+import exception.ClientException;
 import exception.PatrimonyException;
 
 /**
@@ -49,9 +49,9 @@ public class US08_ExcluirSala {
         window.show(new Dimension(900, 500)); // shows the frame to test
 
         room = new Room("code", "Room para testes de aceitacao", "123");
-        RoomDAO.getInstance().incluir(room);
+        RoomDAO.getInstance().include(room);
 
-        index = RoomDAO.getInstance().buscarTodos().size() - 1;
+        index = RoomDAO.getInstance().findAll().size() - 1;
 
         window.button("Room").click();
         dialog = window.dialog("RoomView");
@@ -60,7 +60,7 @@ public class US08_ExcluirSala {
 
     @After public void tearDown() throws SQLException, PatrimonyException {
         if (room != null)
-            RoomDAO.getInstance().excluir(room);
+            RoomDAO.getInstance().delete(room);
         window.cleanUp();
     }
 
@@ -73,7 +73,7 @@ public class US08_ExcluirSala {
 
     }
     @Test
-    public void testCenario1() throws SQLException, ClienteException{
+    public void testCenario1() throws SQLException, ClientException{
         dialog.table("tabelaPatrimonio").selectRows(index);
         dialog.button("Excluir").click();
         dialog.optionPane().requireMessage("Deseja mesmo excluir Room: " + room.getDescription() + "?");
@@ -86,7 +86,7 @@ public class US08_ExcluirSala {
     }
     
     @Test
-    public void testCenario2() throws SQLException, ClienteException{
+    public void testCenario2() throws SQLException, ClientException{
         
         dialog.button("Excluir").click();
         dialog.optionPane().requireMessage("Selecione uma linha!");

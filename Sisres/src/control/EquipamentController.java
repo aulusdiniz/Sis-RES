@@ -23,6 +23,9 @@ public class EquipamentController {
 		if (instance == null) {
 			instance = new EquipamentController();
 		}
+		else{
+			//nothing here
+		}
 		
 		return instance;
 	}

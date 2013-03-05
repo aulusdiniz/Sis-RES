@@ -44,7 +44,9 @@ public class Patrimony {
 		if( this.getCode().equals(e.getCode()) && 
 			this.getDescription().equals(e.getDescription()))
 			return true;
-		
+		else{
+			//nothing here
+		}
 		return false;
 	}
 	

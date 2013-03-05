@@ -3,7 +3,7 @@ package user_stories;
 import java.awt.Dimension;
 import java.sql.SQLException;
 
-import model.Aluno;
+import model.Student;
 
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;
@@ -13,9 +13,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import persistence.AlunoDAO;
+import persistence.StudentDAO;
 import view.Main2;
-import exception.ClienteException;
+import exception.ClientException;
 
 /**
  * US4 Título: Alterar Aluno. Como aluno Eu quero alterar meus dados Para
@@ -40,31 +40,31 @@ import exception.ClienteException;
 public class US04_AlterarAluno {
 	private FrameFixture window;
 	private Robot robot;
-	private Aluno aluno;
+	private Student aluno;
 	private DialogFixture dialog;
 	private int index;
 	
 	@Before
-	public void setUp() throws ClienteException, SQLException {
+	public void setUp() throws ClientException, SQLException {
 		robot = BasicRobot.robotWithNewAwtHierarchy();
 		robot.settings().delayBetweenEvents(5);
 
 		window = new FrameFixture(robot, new Main2());
 		window.show(new Dimension(900, 500)); // shows the frame to test
 		
-		aluno = new Aluno("Teste", "658.535.144-40", "110038096","9211-2144", "teste incluir repetido");
-		AlunoDAO.getInstance().include(aluno);
+		aluno = new Student("Teste", "658.535.144-40", "110038096","9211-2144", "teste incluir repetido");
+		StudentDAO.getInstance().include(aluno);
 		
-		index = AlunoDAO.getInstance().searchAllEquipaments().size() - 1;
+		index = StudentDAO.getInstance().searchAllStudents().size() - 1;
 		
 		window.button("Aluno").click();
 		dialog = window.dialog("StudentView");
 	}
 	
 	@After
-	public void tearDown() throws SQLException, ClienteException {
+	public void tearDown() throws SQLException, ClientException {
 		if(aluno != null)
-			AlunoDAO.getInstance().delete(aluno);
+			StudentDAO.getInstance().delete(aluno);
 		window.cleanUp();
 	}
 
@@ -86,16 +86,16 @@ public class US04_AlterarAluno {
 	}
 	
 	@Test
-	public void testCenario1() throws SQLException, ClienteException{
+	public void testCenario1() throws SQLException, ClientException{
 		if(aluno != null)
-			AlunoDAO.getInstance().delete(aluno);
+			StudentDAO.getInstance().delete(aluno);
 		dialog.button("Alterar").click();
 		dialog.optionPane().requireMessage("Selecione uma linha!");
 		aluno = null;
 	}
 	
 	@Test
-	public void testCenario2() throws SQLException, ClienteException{
+	public void testCenario2() throws SQLException, ClientException{
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
@@ -109,12 +109,12 @@ public class US04_AlterarAluno {
 		sleep();
 		cadastro.optionPane().okButton().click();
 
-		aluno = AlunoDAO.getInstance().searchAllEquipaments().get(index);
+		aluno = StudentDAO.getInstance().searchAllStudents().get(index);
 		sleep();
 	}
 	
 	@Test
-	public void testCenario3NomeInvalido() throws SQLException, ClienteException{
+	public void testCenario3NomeInvalido() throws SQLException, ClientException{
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
@@ -128,12 +128,12 @@ public class US04_AlterarAluno {
 		sleep();
 		cadastro.optionPane().okButton().click();
 
-		aluno = AlunoDAO.getInstance().searchAllEquipaments().get(index);
+		aluno = StudentDAO.getInstance().searchAllStudents().get(index);
 		sleep();
 	}
 	
 	@Test
-	public void testCenario3NomeEmBranco() throws SQLException, ClienteException{
+	public void testCenario3NomeEmBranco() throws SQLException, ClientException{
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
@@ -147,12 +147,12 @@ public class US04_AlterarAluno {
 		sleep();
 		cadastro.optionPane().okButton().click();
 
-		aluno = AlunoDAO.getInstance().searchAllEquipaments().get(index);
+		aluno = StudentDAO.getInstance().searchAllStudents().get(index);
 		sleep();
 	}
 	
 	@Test
-	public void testCenario3CpfInvalido() throws SQLException, ClienteException{
+	public void testCenario3CpfInvalido() throws SQLException, ClientException{
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
@@ -166,12 +166,12 @@ public class US04_AlterarAluno {
 		sleep();
 		cadastro.optionPane().okButton().click();
 
-		aluno = AlunoDAO.getInstance().searchAllEquipaments().get(index);
+		aluno = StudentDAO.getInstance().searchAllStudents().get(index);
 		sleep();
 	}
 	
 	@Test
-	public void testCenario3CpfEmBranco() throws SQLException, ClienteException{
+	public void testCenario3CpfEmBranco() throws SQLException, ClientException{
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
@@ -185,12 +185,12 @@ public class US04_AlterarAluno {
 		sleep();
 		cadastro.optionPane().okButton().click();
 
-		aluno = AlunoDAO.getInstance().searchAllEquipaments().get(index);
+		aluno = StudentDAO.getInstance().searchAllStudents().get(index);
 		sleep();
 	}
 	
 	@Test
-	public void testCenario3TelefeoneInvalido() throws SQLException, ClienteException{
+	public void testCenario3TelefeoneInvalido() throws SQLException, ClientException{
 		
 		dialog.table("tabelaCliente").selectRows(index);
 		dialog.button("Alterar").click();
@@ -204,7 +204,7 @@ public class US04_AlterarAluno {
 		sleep();
 		cadastro.optionPane().okButton().click();
 
-		aluno = AlunoDAO.getInstance().searchAllEquipaments().get(index);
+		aluno = StudentDAO.getInstance().searchAllStudents().get(index);
 		sleep();
 	}
 }
